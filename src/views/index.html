@@ -4,12 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My App</title>
+    <title>Food Organisation System</title>
     <link rel="stylesheet" href="./styles/index.css">
+    <link rel="icon" href="/images/logo.png" type="image/png">
 </head>
 
+<!-- BEM (Block, Element, Modifier Naming convention 
+                .button { }
+                .button__icon { }
+                .button--large { }
+            -->
+
 <body>
-    <h1>Hello World</h1>
+
+    <header class="header">
+        <img class="header__logo" src="/images/logo.png" alt="Logo">
+        <nav class="header__navbar">
+            <div class="header__navbar-left">
+                <a class="header__navbar-item" href="./index.html">Dashboard</a>
+            </div>
+            <div class="header__navbar-right">
+                <a class="header__navbar-item" href="./login.html">Login</a>
+                <a class="header__navbar-item" href="./sign-up.html">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <main>
+
+        <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ratione aperiam fuga corporis cumque
+            repudiandae
+            laborum magni, alias dolor officiis ex modi sequi. Sunt, odit cum. Maxime aut harum reprehenderit
+            placeat!
+        </div>
+
+    </main>
+    <footer>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat dolorum sit delectus aspernatur facilis
+            saepe esse reprehenderit error veniam itaque. Aliquam assumenda excepturi doloribus blanditiis amet
+            suscipit
+            sed iure eum.</p>
+        <a class="navbar__item" href=" ./tos.html">Terms of Service</a>
+        <a class="navbar__item" href="./privacy-policy.html">Privacy Policy</a>
+        <a class="navbar__item" href="./about.html">About</a>
+    </footer>
+
+    </header>
     <script src="./scripts/index.js"></script>
 </body>
 
