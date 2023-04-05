@@ -5,7 +5,7 @@ FOS is a web application that allows users to manage their food preferences and 
 
 
 <p align="center">
-  <img src="https://i.ibb.co/F0Zt1yt/flowchart.png" alt="Flowchart">
+  <img src="https://i.ibb.co/b7BNs1S/logo.png" alt="Flowchart">
 </p>
 
 
