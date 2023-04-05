@@ -43,6 +43,9 @@ const server = http.createServer((req, res) => {
     else if (requestUrl.startsWith('/images') || requestUrl.startsWith('/fonts')) {
         filePath = path.join(__dirname, '..', 'public', requestUrl);
     }
+    else {
+        filePath = path.join(__dirname, 'views', path.basename(requestUrl));
+    }
     const extname = String(path.extname(filePath)).toLowerCase();
     const mimeTypes = {
         '.html': 'text/html',

@@ -8,6 +8,7 @@ const port = 3000;
 const server = http.createServer((req, res) => {
     const requestUrl = req.url || '/';
     let filePath = path.join(__dirname, requestUrl);
+
     if (requestUrl === '/') {
         filePath = path.join(__dirname, 'views', 'index.html');
     } else if (requestUrl.startsWith('/styles')) {
@@ -16,6 +17,8 @@ const server = http.createServer((req, res) => {
         filePath = path.join(__dirname, 'views', 'scripts', path.basename(requestUrl).replace('.ts', '.js'));
     } else if (requestUrl.startsWith('/images') || requestUrl.startsWith('/fonts')) {
         filePath = path.join(__dirname, '..', 'public', requestUrl);
+    } else {
+        filePath = path.join(__dirname, 'views', path.basename(requestUrl));
     }
 
     const extname = String(path.extname(filePath)).toLowerCase();
