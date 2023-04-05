@@ -4,7 +4,10 @@
 FOS is a web application that allows users to manage their food preferences and create custom shopping lists based on a large number of filter parameters. The application is built using a REST/GraphQL API and leverages data freely available at Open Food Facts.
 
 
-![](https://i.ibb.co/b7BNs1S/logo.png)
+<p align="center">
+  <img src="https://i.ibb.co/F0Zt1yt/flowchart.png" alt="Flowchart">
+</p>
+
 
 
 ## Authors
