@@ -9,9 +9,9 @@ FOS is a web application that allows users to manage their food preferences and 
 
 ## Authors
 
-- [@Koroem](https://github.com/Koroem)
-- [@George166382](https://github.com/George166382)
-- [@GDP13](https://github.com/GDP13)
+- [@Koroem](https://github.com/Koroem)             -  Condurat Victor
+- [@George166382](https://github.com/George166382) -  Cojocaru George
+- [@GDP13](https://github.com/GDP13)               -  Pricop George-Daniel
 
 
 ## Prerequisites
