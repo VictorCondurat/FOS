@@ -1,7 +1,7 @@
 {
   "name": "package.json",
   "version": "1.0.0",
-  "description": "TBD",
+  "description": "FOS (Food Organization System) is a web application that allows users to manage their food preferences and create custom shopping lists based on a large number of filter parameters. The application is built using a REST/GraphQL API and leverages data freely available at Open Food Facts.",
   "main": "dist/views/scripts/index.js",
   "scripts": {
     "copy-assets": "npx copyfiles -u 1 src/public/**/* dist/public",
