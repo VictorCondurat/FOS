@@ -56,5 +56,5 @@ This project is licensed under the [MIT](https://choosealicense.com/licenses/mit
 
  Professor Andrei Panu for providing guidance and support throughout the development of this project.
  
- This project was created as a part of [Web Technologies](https://profs.info.uaic.ro/~andrei.panu/) course at [Faculty of Computer Science Iasi](https://www.info.uaic.ro/en/home-page-2/) University.
+ This project was created as a part of [Web Technologies](https://profs.info.uaic.ro/~andrei.panu/) course at [Faculty of Computer Science Iasi](https://www.info.uaic.ro/en/home-page-2/).
 
