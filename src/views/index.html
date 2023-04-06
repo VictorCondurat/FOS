@@ -6,53 +6,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Organisation System</title>
     <link rel="stylesheet" href="./styles/index.css">
-    <link rel="icon" href="/images/logo.png" type="image/png">
+    <link rel="icon" href="/images/logo_favicon.png" type="image/png">
+
 </head>
 
-<!-- BEM (Block, Element, Modifier Naming convention 
-                .button { }
-                .button__icon { }
-                .button--large { }
-            -->
-
 <body>
-
     <header class="header">
-        <img class="header__logo" src="/images/logo.png" alt="Logo">
+        <div class="header__logo-container">
+            <img class="header__logo" src="/images/logo.png" alt="Logo">
+            <span class="header__product-name">Food Organization System</span>
+        </div>
         <nav class="header__navbar">
-            <div class="header__navbar-left">
-                <a class="header__navbar-item" href="./index.html">Dashboard</a>
-                <a class="header__navbar-item" href="./user-settings.html">User Settings</a>
+            <button class="header__navbar-button header__navbar-button--dashboard"
+                onclick="location.href='./index.html'">Dashboard</button>
+            <div class="header__navbar-dropdown">
+                <button class="header__navbar-button header__navbar-button--features">Features</button>
+                <div class="header__navbar-dropdown-content">
+                    <a href="#feature1">Feature 1</a>
+                    <a href="#feature2">Feature 2</a>
+                    <a href="#feature3">Feature 3</a>
+                </div>
             </div>
             <div class="header__navbar-right">
-                <a class="header__navbar-item" href="./login.html">Login</a>
-                <a class="header__navbar-item" href="./sign-up.html">Sign Up</a>
+                <a class="header__navbar-item hidden" href="./user-settings.html">User Settings</a>
+                <button class="header__navbar-button" onclick="location.href='./login.html'">Login</button>
+                <button class="header__navbar-button header__navbar-button--signup"
+                    onclick="location.href='./sign-up.html'">Sign Up</button>
             </div>
         </nav>
     </header>
 
-
-
     <main>
-
-        <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ratione aperiam fuga corporis cumque
-            repudiandae
-            laborum magni, alias dolor officiis ex modi sequi. Sunt, odit cum. Maxime aut harum reprehenderit
-            placeat!
-        </div>
-
+        <section class="hero">
+            <div class="hero__text">
+                <h1>Food Organisation System</h1>
+                <p>Manage your culinary preferences and create custom shopping lists with ease.</p>
+            </div>
+        </section>
+        <img src="/images/hero_background.png" alt="Very cool image" class="hero__image">
+        <section class="features">
+            <div class="feature">
+                <h2>Meal Planner</h2>
+                <p>Plan your meals based on your preferences and available ingredients.</p>
+            </div>
+            <div class="feature">
+                <h2>Pantry Management</h2>
+                <p>Keep track of your pantry inventory and manage expiration dates.</p>
+            </div>
+            <div class="feature">
+                <h2>Shopping Lists</h2>
+                <p>Create and manage custom shopping lists based on your meal plans and pantry needs.</p>
+            </div>
+        </section>
     </main>
+
     <footer>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat dolorum sit delectus aspernatur facilis
-            saepe esse reprehenderit error veniam itaque. Aliquam assumenda excepturi doloribus blanditiis amet
-            suscipit
-            sed iure eum.</p>
-        <a class="navbar__item" href=" ./tos.html">Terms of Service</a>
-        <a class="navbar__item" href="./privacy-policy.html">Privacy Policy</a>
-        <a class="navbar__item" href="./about.html">About</a>
+        <div class="footer__links">
+            <a class="footer__link" href="./tos.html">Terms of Service</a>
+            <a class="footer__link" href="./privacy-policy.html">Privacy Policy</a>
+            <a class="footer__link" href="./about.html">About</a>
+        </div>
     </footer>
 
-    </header>
     <script src="./scripts/index.js"></script>
 </body>
 
