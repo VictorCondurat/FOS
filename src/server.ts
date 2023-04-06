@@ -1,6 +1,8 @@
 import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as url from 'url';
+import * as querystring from 'querystring';
 
 const hostname = '127.0.0.1';
 const port = 3000;
