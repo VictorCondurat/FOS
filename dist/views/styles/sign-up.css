@@ -1,78 +1,78 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
 }
 
 h2 {
-    text-align: center;
+  text-align: center;
 }
 
 form {
-    background-color: #ffffff;
-    border: 3px solid #f1f1f1;
-    margin: 0 auto;
-    width: 300px;
-    padding: 20px;
+  background-color: #ffffff;
+  border: 3px solid #f1f1f1;
+  margin: 0 auto;
+  width: 300px;
+  padding: 20px;
 }
 
 input[type=text],
 input[type=password],
 input[type=email] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
 button {
-    background-color: blue;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
+  background-color: blue;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
 }
-
 button:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .cancelbtn {
-    width: auto;
-    padding: 10px 18px;
-    background-color: #f44336;
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
 }
 
 .imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
-    position: relative;
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
 }
 
 img.Logo {
-    width: 100px;
-    border-radius: 50%;
+  width: 100px;
+  border-radius: 50%;
 }
 
 .container {
-    padding: 16px;
+  padding: 16px;
 }
 
 span.psw {
-    float: right;
-    padding-top: 16px;
+  float: right;
+  padding-top: 16px;
 }
 
 @media screen and (max-width: 300px) {
-    span.psw {
-        display: block;
-        float: none;
-    }
-
-    .cancelbtn {
-        width: 100%;
-    }
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
 }
+
+/*# sourceMappingURL=sign-up.css.map */
