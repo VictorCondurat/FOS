@@ -1,0 +1,89 @@
+$box-shadow-color: rgba(0, 0, 0, 0.1);
+$header-background-color: #fff;
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: $header-background-color;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 4rem;
+    box-shadow: 0 2px 4px $box-shadow-color;
+
+    &__logo-container {
+        display: flex;
+        align-items: center;
+    }
+
+    &__logo {
+        height: 3.5rem;
+        width: 3.5rem;
+        border-radius: 50%;
+        margin-right: 1rem;
+    }
+
+    &__product-name {
+        color: #333;
+        font-size: 1.2rem;
+        margin-right: 300px;
+    }
+
+    &__header__product-market {
+        align-self: center;
+    }
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    margin-top: 80px;
+    margin-bottom: 43px;
+}
+
+
+#add-item-form {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+#add-item-form input[type=text] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+#fir {
+    background-color: #31b90e;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#sec {
+    background-color: blue;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
