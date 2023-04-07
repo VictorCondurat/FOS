@@ -2,9 +2,15 @@ $font-family: 'Roboto', sans-serif;
 $main-background-color: #f4f4f4;
 $header-background-color: #fff;
 $box-shadow-color: rgba(0, 0, 0, 0.1);
-$navbar-button-color: #4CAF50;
-$navbar-button-hover-color: #45a049;
+
+$navbar-button-color: #6c757d;
+$navbar-button-hover-color: #5a6268;
+$navbar-button-active-color: #495057;
+
+$login-button-color: #84cc44;
+$login-button-hover-color: #f1c40f;
 $signup-button-color: #f1c40f;
+
 $signup-button-hover-color: #d4ac0d;
 $dropdown-content-color: #f9f9f9;
 $dropdown-content-hover-color: #f1f1f1;
@@ -72,11 +78,16 @@ main {
         margin-right: 0.5rem;
         cursor: pointer;
         border-radius: 4px;
-        transition: background-color 0.3s;
+        transition: background-color 0.3s, box-shadow 0.3s;
 
         &:hover {
             background-color: $navbar-button-hover-color;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+    }
+
+    &.header__navbar-button--active {
+        background-color: $navbar-button-active-color;
     }
 
     &__navbar-button--signup {
@@ -85,6 +96,15 @@ main {
         &:hover {
             background-color: $signup-button-hover-color;
         }
+    }
+
+    &__navbar_bytton--login {
+        background-color: $login-button-color;
+
+        &:hover {
+            background-color: $login-button-hover-color;
+        }
+
     }
 
     &__navbar-button--dashboard {
@@ -148,7 +168,7 @@ main {
 
         p {
             font-size: 1.2rem;
-            color: #777;
+            color: #000;
         }
     }
 
@@ -156,8 +176,8 @@ main {
         display: block;
         margin-left: auto;
         margin-right: auto;
-        height: 60vh;
-        width: 80vw;
+        height: 25vw;
+        width: 65vw;
     }
 }
 
@@ -181,6 +201,7 @@ main {
     background-color: #333;
     padding: 1rem;
     text-align: center;
+    color: rgba(0, 0, 0, 0.2);
 
     &__links {
         display: flex;
@@ -190,12 +211,99 @@ main {
     }
 
     &__link {
-        color: #001122;
+        color: #003;
         text-decoration: none;
         margin: 0.5rem;
 
         &:hover {
-            color: #ddd;
+            color: #bbb;
         }
+    }
+
+    &__contact {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 1rem;
+        color: #000;
+    }
+
+    &__social-media {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    &__social-icon {
+        font-size: 1.5rem;
+        margin: 0 0.5rem;
+    }
+}
+
+/* Mobile View */
+@media (max-width: 860px) {
+    .header__product-name {
+        display: none;
+    }
+
+    .header__navbar {
+        display: none;
+    }
+
+    // the container 
+    .header__navbar-mobile {
+        position: relative;
+        display: inline-block;
+    }
+
+    //the content container
+    .header__navbar-dropdown-mobile {
+        display: none;
+        position: absolute;
+        background-color: $dropdown-content-color;
+        min-width: 160px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        top: 100%;
+        right: 0;
+
+        a {
+            display: block;
+            color: #000;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+
+            &:hover {
+                background-color: $signup-button-color;
+            }
+        }
+    }
+
+    //exit
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature {
+        margin-bottom: 2rem;
+    }
+
+    .hero {
+        &__image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            height: 35vw;
+            width: 75vw;
+        }
+    }
+}
+
+@media (min-width: 861px) {
+    .header__navbar-mobile {
+        display: none;
     }
 }

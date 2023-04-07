@@ -1,13 +1,13 @@
-import * as http from 'http';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as url from 'url';
-import * as querystring from 'querystring';
+import http from 'http';
+import fs from 'fs/promises';
+import path from 'path';
+import url from 'url';
 
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const hostname = '127.0.0.1';
 const port = 3000;
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
     const requestUrl = req.url || '/';
     let filePath = path.join(__dirname, requestUrl);
 
@@ -36,15 +36,14 @@ const server = http.createServer((req, res) => {
 
     const contentType = mimeTypes[extname] || 'application/octet-stream';
 
-    fs.readFile(filePath, (error, content) => {
-        if (error) {
-            res.writeHead(500);
-            res.end(`Sorry, an error occurred: ${error.code}`);
-        } else {
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(content, 'utf-8');
-        }
-    });
+    try {
+        const content = await fs.readFile(filePath);
+        res.writeHead(200, { 'Content-Type': contentType });
+        res.end(content, 'utf-8');
+    } catch (error) {
+        res.writeHead(500);
+        res.end(`Sorry, an error occurred: ${(error as { code: string }).code}`);
+    }
 });
 
 server.listen(port, hostname, () => {
