@@ -1,4 +1,5 @@
-"use strict";
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Frontend TypeScript is working!');
-});
+import { toggleMobileMenu } from './toggleMobileMenu.js';
+const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+}

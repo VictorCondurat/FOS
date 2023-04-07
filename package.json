@@ -1,12 +1,13 @@
 {
   "name": "package.json",
   "version": "1.0.0",
+  "type": "module",
   "description": "FOS (Food Organization System) is a web application that allows users to manage their food preferences and create custom shopping lists based on a large number of filter parameters. The application is built using a REST/GraphQL API and leverages data freely available at Open Food Facts.",
   "main": "dist/views/scripts/index.js",
   "scripts": {
     "copy-assets": "npx copyfiles -u 1 src/public/**/* dist/public",
     "sass-compile": "npx sass src/views/styles:dist/views/styles",
-    "dev": "npx nodemon --watch src --watch public -e js,ts,html,css,png,jpg --exec \"npm run build && npm start\"",
+    "dev": "npx nodemon --watch src --watch public -e js,ts,html,css,png,jpg,scss --exec \"npm run build && npm start\"",
     "build": "tsc && npm run copy-assets && npm run sass-compile",
     "start": "node dist/server.js",
     "postbuild": "npx copyfiles -f \"src/views/*.html\" dist/views && npx copyfiles -f \"src/views/styles/*.css\" dist/views/styles"
