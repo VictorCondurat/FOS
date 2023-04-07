@@ -87,3 +87,33 @@ h2 {
     font-size: 16px;
     cursor: pointer;
 }
+
+section {
+    display: block;
+    margin: 0;
+    margin-bottom: 0px;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: inherit;
+    font-size: 100%;
+    //vertical-align: baseline;
+}
+
+img {
+    max-width: 20%;
+    height: auto;
+}
+
+.things .container .featured-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    padding: 10px;
+    margin: 5px;
+}
+
+.things .container .featured-container .item {
+    border-color: #31b90e;
+    border-width: 3px;
+}
