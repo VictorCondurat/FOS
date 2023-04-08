@@ -3,6 +3,7 @@
 
 <head>
     <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/dashboard.css">
 </head>
 
@@ -11,29 +12,31 @@
         <div class="header__logo-container">
             <img class="header__logo" src="/images/logo.png" alt="Logo">
             <span class="header__product-name">Food Organization System</span>
-            <h1 class="header__product-market">Dashboard</h1>
         </div>
-
-
     </header>
 
-    <main>
-        <h2>Items</h2>
-        <!-- <ul id="shopping-list">
-             Shopping list items will be dynamically generated here 
-        </ul> -->
+    <div class="wrapper">
+        <nav class="left-menu">
+            <ul>
+                <li><a id="my-shopping-lists" href="#">My shopping lists</a></li>
+                <li><a href="create-shopping-list.html">Create a shopping list</a></li>
+                <li><a href="my-profile.html">My profile</a></li>
+                <li><a href="user-settings.html">User settings</a></li>
+            </ul>
+            <div class="left-menu__bottom">
+                <a href="index.html" id="back"><button>Back</button></a>
+                <a href="index.html" id="logout"><button>Logout</button></a>
+            </div>
+        </nav>
 
-        <a href="index.html">
 
-            <button class="back-button">Back</button>
-        </a>
-        <form id="cancel-item-form">
-            <input type="text" id="existent-item" placeholder="Your item">
-            <button type="button">Remove</button>
-        </form>
-    </main>
+        <main>
+            <section id="shopping-lists"></section>
+        </main>
+    </div>
 
-    <script src="shopping-list.js"></script>
+    <script src="./scripts/shopping-list.ts"></script>
+
 </body>
 
 </html>

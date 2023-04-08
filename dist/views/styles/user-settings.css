@@ -20,7 +20,7 @@ input[type=checkbox] {
 }
 
 button {
-  background-color: blue;
+  background-color: #007BFF;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -33,10 +33,13 @@ button:hover {
   opacity: 0.8;
 }
 
-.cancelbtn {
+.backbtn {
   width: auto;
   padding: 10px 18px;
   background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .container {
@@ -44,7 +47,7 @@ button:hover {
 }
 
 @media screen and (max-width: 300px) {
-  .cancelbtn {
+  .backbtn {
     width: 100%;
   }
 }
