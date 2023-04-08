@@ -7,7 +7,7 @@
   "scripts": {
     "copy-assets": "npx copyfiles -u 1 src/public/**/* dist/public",
     "sass-compile": "npx sass src/views/styles:dist/views/styles",
-    "dev": "npx nodemon --watch src --watch public -e js,ts,html,css,png,jpg,scss --exec \"npm run build && npm start\"",
+    "dev": "npx nodemon --watch src -e js,ts,html,css,png,jpg,scss --watch public -e js,ts,html,css,png,jpg,scss --exec \"npm run build && npm start\"",
     "build": "tsc && npm run copy-assets && npm run sass-compile",
     "start": "node dist/server.js",
     "postbuild": "npx copyfiles -f \"src/views/*.html\" dist/views && npx copyfiles -f \"src/views/styles/*.css\" dist/views/styles"

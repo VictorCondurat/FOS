@@ -3,15 +3,16 @@ $main-background-color: #f4f4f4;
 $header-background-color: #fff;
 $box-shadow-color: rgba(0, 0, 0, 0.1);
 
-$navbar-button-color: #6c757d;
-$navbar-button-hover-color: #5a6268;
-$navbar-button-active-color: #495057;
+// Updated button colors
+$navbar-button-color: #3c4858;
+$navbar-button-hover-color: #32465e;
+$navbar-button-active-color: #2a3642;
 
-$login-button-color: #84cc44;
-$login-button-hover-color: #f1c40f;
-$signup-button-color: #f1c40f;
+$login-button-color: #40739e;
+$login-button-hover-color: #3867d6;
+$signup-button-color: #e67e22;
+$signup-button-hover-color: #d35400;
 
-$signup-button-hover-color: #d4ac0d;
 $dropdown-content-color: #f9f9f9;
 $dropdown-content-hover-color: #f1f1f1;
 
@@ -77,12 +78,12 @@ main {
         font-size: 1rem;
         margin-right: 0.5rem;
         cursor: pointer;
-        border-radius: 4px;
+        border-radius: 6px; // Increased border-radius
         transition: background-color 0.3s, box-shadow 0.3s;
 
         &:hover {
             background-color: $navbar-button-hover-color;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); // Updated box-shadow
         }
     }
 
@@ -98,13 +99,12 @@ main {
         }
     }
 
-    &__navbar_bytton--login {
+    &__navbar_button--login {
         background-color: $login-button-color;
 
         &:hover {
             background-color: $login-button-hover-color;
         }
-
     }
 
     &__navbar-button--dashboard {
@@ -135,11 +135,12 @@ main {
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
         z-index: 1;
 
-        a {
+        & a {
             color: black;
             padding: 12px 16px;
             text-decoration: none;
             display: block;
+            text-align: left;
 
             &:hover {
                 background-color: $dropdown-content-hover-color;
@@ -255,33 +256,31 @@ main {
     .header__navbar-mobile {
         position: relative;
         display: inline-block;
-    }
 
-    //the content container
-    .header__navbar-dropdown-mobile {
-        display: none;
-        position: absolute;
-        background-color: $dropdown-content-color;
-        min-width: 160px;
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        top: 100%;
-        right: 0;
+        //the content container
+        .header__navbar-dropdown-mobile {
+            position: absolute;
+            background-color: $dropdown-content-color;
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            top: 100%;
+            right: 0;
 
-        a {
-            display: block;
-            color: #000;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
+            a {
+                display: block;
+                color: #000;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
 
-            &:hover {
-                background-color: $signup-button-color;
+                &:hover {
+                    background-color: $signup-button-color;
+                }
             }
         }
     }
 
-    //exit
     .features {
         flex-direction: column;
         align-items: center;
@@ -296,8 +295,8 @@ main {
             display: block;
             margin-left: auto;
             margin-right: auto;
-            height: 35vw;
-            width: 75vw;
+            height: 45vw;
+            width: 85vw;
         }
     }
 }

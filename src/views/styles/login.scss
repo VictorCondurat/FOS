@@ -2,24 +2,38 @@ $main-font: Arial, sans-serif;
 $background-color: #f2f2f2;
 $border-color: #f1f1f1;
 $input-border-color: #ccc;
-$button-background-color: blue;
-$cancelbtn-background-color: #f44336;
+$button-background-color: #007BFF;
+$backbtn-background-color: #f44336;
+$forgot_password_color: #007BFF;
 
 body {
     font-family: $main-font;
     background-color: $background-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.login-form {
+    background-color: #ffffff;
+    border: 3px solid $border-color;
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
     text-align: center;
+    margin-bottom: 20px;
 }
 
 form {
-    background-color: #ffffff;
-    border: 3px solid $border-color;
-    margin: 0 auto;
-    width: 300px;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 input[type=text],
@@ -30,6 +44,7 @@ input[type=password] {
     display: inline-block;
     border: 1px solid $input-border-color;
     box-sizing: border-box;
+    border-radius: 5px;
 }
 
 button {
@@ -40,16 +55,25 @@ button {
     border: none;
     cursor: pointer;
     width: 100%;
+    border-radius: 5px;
 
     &:hover {
         opacity: 0.8;
     }
 }
 
-.cancelbtn {
+.backbtn {
     width: auto;
     padding: 10px 18px;
-    background-color: $cancelbtn-background-color;
+    background-color: $backbtn-background-color;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+
+    &:hover {
+        opacity: 0.8;
+    }
 }
 
 .imgcontainer {
@@ -58,7 +82,7 @@ button {
     position: relative;
 }
 
-img.Logo {
+img.header__logo {
     width: 100px;
     border-radius: 50%;
 }
@@ -67,18 +91,54 @@ img.Logo {
     padding: 16px;
 }
 
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+
 span.pass {
     float: right;
     padding-top: 16px;
+
+    a {
+        color: $forgot_password_color;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
-@media screen and (max-width: 300px) {
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.backbtn {
+    background-color: $backbtn-background-color;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+        background-color: darken($backbtn-background-color, 10%);
+    }
+}
+
+@media screen and (max-width: 400px) {
     span.pass {
         display: block;
         float: none;
     }
 
-    .cancelbtn {
+    .backbtn {
         width: 100%;
     }
 }
