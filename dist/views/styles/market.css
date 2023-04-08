@@ -42,8 +42,25 @@ main {
 }
 
 h2 {
+  display: inline-block;
+  margin-right: 700px;
   margin-top: 80px;
   margin-bottom: 43px;
+}
+
+.back-button {
+  display: inline-block;
+  background-color: blue;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 400px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.back-button:hover {
+  background-color: darkblue;
 }
 
 #add-item-form {
