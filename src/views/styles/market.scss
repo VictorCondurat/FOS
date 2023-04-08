@@ -42,6 +42,8 @@ body {
     &__header__product-market {
         align-self: center;
     }
+
+
 }
 
 main {
@@ -49,10 +51,29 @@ main {
 }
 
 h2 {
+    display: inline-block;
+    margin-right: 700px;
     margin-top: 80px;
     margin-bottom: 43px;
+    //justify-content: flex-start;
 }
 
+
+.back-button {
+    display: inline-block;
+    background-color: blue;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 400px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darkblue;
+    }
+}
 
 #add-item-form {
     display: flex;
