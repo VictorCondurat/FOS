@@ -10,8 +10,7 @@
 
 <body>
     <div class="signup-wrapper">
-        <h2>Sign Up Form</h2>
-        <form action="http://localhost:3000">
+        <form action="/sign-up" method="POST">
             <div class="imgcontainer">
                 <img class="header__logo" src="/images/logo.png" alt="Logo">
             </div>
@@ -26,8 +25,8 @@
                 <label for="psw"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="psw" required>
 
-                <label for="psw-repeat"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+                <label for="psw-repeat"><b>Reenter password</b></label>
+                <input type="password" placeholder="Reenter password" name="psw-repeat" required>
 
                 <button type="submit">Sign Up</button>
             </div>

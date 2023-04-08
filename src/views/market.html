@@ -4,6 +4,7 @@
 <head>
     <title>Market</title>
     <link rel="stylesheet" href="styles/market.css">
+    <script defer src="scripts/market.js"></script>
 </head>
 
 <body>
@@ -11,40 +12,17 @@
         <div class="header__logo-container">
             <img class="header__logo" src="/images/logo.png" alt="Logo">
             <span class="header__product-name">Food Organization System</span>
-            <h1 class="header__product-market">Market</h1>
+            <h1 class="header__product-market">Marketplace</h1>
         </div>
+        <button class="header__back-button">Back</button>
+        <!-- Move the back button outside the .header__logo-container -->
     </header>
     <main>
-        <h2>Items</h2>
-
-        <form id="add-item-form">
-            <input type="text" id="new-item" placeholder="Search Item">
-            <button type="button" id="sec">Buy</button>
-            <button type="button" id="fir">Add</button>
-        </form>
+        <h2>Public Lists</h2>
+        <input type="text" id="search-list" placeholder="Search by name">
+        <div id="public-lists"></div>
     </main>
-    <section class='things'>
-        <div class='container'>
-            <h2>
-                Featured
-            </h2>
-            <a href="index.html">
-
-                <button class="back-button">Back</button>
-            </a>
-            <div class='featured-container'>
-
-                <div class="item">
-                    <img src="https://prd-images.trentapizza.ro/Products/Original/Diavola_-_Homepage_B-3224.jpg"
-                        alt="Diavola">
-                    <div class="description">
-                        Pizza gostosa with salami
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
 </body>
+<script src="./scripts/market.js"></script>
 
 </html>

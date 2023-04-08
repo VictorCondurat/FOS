@@ -1,5 +1,10 @@
-$box-shadow-color: rgba(0, 0, 0, 0.1);
-$header-background-color: #fff;
+$main-font: Arial, sans-serif;
+$background-color: #f2f2f2;
+$border-color: #f1f1f1;
+$input-border-color: #ccc;
+$button-background-color: blue;
+$cancelbtn-background-color: #f44336;
+$signup-wrapper-width: 450px;
 
 body {
     font-family: Arial, sans-serif;
@@ -12,129 +17,114 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    background-color: $header-background-color;
+    background-color: #fff;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
     height: 4rem;
-    box-shadow: 0 2px 4px $box-shadow-color;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-    &__logo-container {
-        display: flex;
-        align-items: center;
-    }
+.header__logo-container {
+    display: flex;
+    align-items: center;
+}
 
-    &__logo {
-        height: 3.5rem;
-        width: 3.5rem;
-        border-radius: 50%;
-        margin-right: 1rem;
-    }
+.header__logo {
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
 
-    &__product-name {
-        color: #333;
-        font-size: 1.2rem;
-        margin-right: 300px;
-    }
+.header__product-name {
+    color: #333;
+    font-size: 1.2rem;
+    margin-right: 300px;
+}
 
-    &__header__product-market {
-        align-self: center;
-    }
-
-
+.header__product-market {
+    align-self: center;
 }
 
 main {
     padding: 20px;
-}
-
-h2 {
-    display: inline-block;
-    margin-right: 700px;
     margin-top: 80px;
-    margin-bottom: 43px;
-    //justify-content: flex-start;
 }
 
-
-.back-button {
-    display: inline-block;
-    background-color: blue;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin-left: 400px;
+.list-item {
+    background-color: #f2f2f2;
+    border: 1px solid #e1e1e1;
     border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
+    padding: 15px;
+    margin-bottom: 10px;
+}
 
-    &:hover {
-        background-color: darkblue;
+.list-item__name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.list-item__tags {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list-item__tag {
+    background-color: #e1e1e1;
+    border-radius: 3px;
+    padding: 2px 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+#search-list {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+@media (max-width: 767px) {
+    .header__logo-container {
+        margin: 0 auto;
+    }
+
+    .header__product-name {
+        text-align: center;
+        margin-right: 0;
+    }
+
+    .header__product-market {
+        display: none;
     }
 }
 
-#add-item-form {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-#add-item-form input[type=text] {
-    flex: 1;
-    padding: 10px;
-    border-radius: 5px;
+.header__back-button {
+    background-color: $cancelbtn-background-color;
+    color: white;
+    padding: 10px 18px;
     border: none;
-    margin-right: 10px;
-    font-size: 16px;
-}
-
-#fir {
-    background-color: #31b90e;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
-}
-
-#sec {
-    background-color: blue;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-section {
-    display: block;
-    margin: 0;
-    margin-bottom: 0px;
-    padding: 0;
-    border: 0;
-    font: inherit;
-    font-size: inherit;
-    font-size: 100%;
-    //vertical-align: baseline;
-}
-
-img {
-    max-width: 20%;
-    height: auto;
-}
-
-.things .container .featured-container {
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 3px;
+    margin-left: auto;
     display: flex;
-    justify-content: flex-start;
-    align-items: baseline;
-    padding: 10px;
-    margin: 5px;
+    align-items: center;
+
+    &:hover {
+        background-color: darken($cancelbtn-background-color, 10%);
+    }
 }
 
-.things .container .featured-container .item {
-    border-color: #31b90e;
-    border-width: 3px;
+@media (max-width: 767px) {
+    .header__product-name {
+        display: none;
+    }
 }
