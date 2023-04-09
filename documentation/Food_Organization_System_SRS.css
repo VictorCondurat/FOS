@@ -1,0 +1,60 @@
+html {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+body {
+    margin: 0;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 1rem 0;
+    font-weight: bold;
+    color: #222;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+p {
+    margin: 1rem 0;
+}
+
+ul,
+ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+li {
+    margin: 0.25rem 0;
+}
+
+code {
+    font-family: monospace;
+    background-color: #f6f8fa;
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid #e1e4e8;
+}
+
+pre {
+    background-color: #f6f8fa;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid #e1e4e8;
+    overflow-x: auto;
+}
