@@ -9,332 +9,570 @@
 </head>
 
 <body>
-    <h1>Introduction</h1>
-    <h2>1.1 Purpose</h2>
-    <p>
-        The purpose of this Software Requirements Specification (SRS) is to define the requirements, features, and
-        functionality of the Food Organization System (FOS) web application to ensure that it meets the needs of its
-        users, including individuals tracking their diets, chefs, nutritionists, and restaurant owners.
-    </p>
-    <h2>1.2 Scope</h2>
-    <p>
-        The FOS web application will provide users with the ability to create, update, and manage custom shopping and
-        food lists, track pantry inventory and expiration dates, and access a public marketplace of food lists. The
-        application will utilize the OpenFoodFacts public API for retrieving product information and offer user account
-        management features.
-    </p>
-    <h2>1.3 Definitions, Acronyms, and Abbreviations</h2>
-    <ul>
-        <li>FOS: Food Organization System</li>
-        <li>SRS: Software Requirements Specification</li>
-        <li>API: Application Programming Interface</li>
-        <li>MVC: Model-View-Controller</li>
-        <li>SASS: Syntactically Awesome Style Sheets</li>
-        <li>CSV: Comma Separated Values</li>
-        <li>JSON: JavaScript Object Notation</li>
-        <li>PDF: Portable Document Format</li>
-        <li>UI: User Interface</li>
-        <li>UX: User Experience</li>
-        <li>GDPR: General Data Protection Regulation</li>
-        <li>CCPA: California Consumer Privacy Act</li>
-    </ul>
-    <h2>1.4 References</h2>
-    <ul>
-        <li>OpenFoodFacts API documentation: <a
-                href="https://world.openfoodfacts.org/data">https://world.openfoodfacts.org/data</a></li>
-        <li>MIT License: <a href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></li>
-    </ul>
-    <h2>1.5 Overview</h2>
-    <p>
-        This document is organized into sections that outline the functional requirements, performance requirements,
-        design constraints, and other aspects of the FOS web application. The intended audience includes project
-        stakeholders, developers, and testers.
-    </p>
+    <header>
+        <h1>Food Web Smart Organization System</h1>
+    </header>
+    <div id="containinfo">
+        <section typeof="sa:AuthorsList">
+            <h2>Authors</h2>
+            <ul>
+                <li typeof="sa:ContributorRole" property="schema:author">
+                    <span typeof="schema:Person">
+                        <meta property="schema:givenName" content="George">
+                        <meta property="schema:familyName" content="Cojocaru">
+                        <span property="schema:name">George Cojocaru</span>
+                    </span>
 
-    <h1>Overall Description</h1>
-    <h2>2.1 Product Perspective</h2>
-    <p>
-        The FOS web application will be a standalone product accessible from major web browsers on desktop and mobile
-        devices. Users will interact with the application through a web interface, which communicates with the
-        OpenFoodFacts API and a local database for storing user data and food lists.
-    </p>
-    <h2>2.2 Product Functions</h2>
-    <ul>
-        <li>User account creation, authentication, and management</li>
-        <li>Creation, modification, and deletion of custom shopping and food lists</li>
-        <li>Exporting food lists in CSV, PDF, and JSON formats</li>
-        <li>Pantry inventory tracking and expiration date alerts</li>
-        <li>Public marketplace for sharing and discovering food lists</li>
-        <li>Integration with OpenFoodFacts API for product information retrieval</li>
-        <li>Filtering and searching capabilities for food lists and marketplace</li>
-        <li>Access to application settings, including dark mode and other preferences</li>
-    </ul>
-    <h2>2.3 User Classes and Characteristics</h2>
-    <ul>
-        <li>Free users: Access to basic features, including list creation, inventory tracking, and marketplace browsing
-        </li>
-        <li>Paid users: Access to advanced features, such as automatic list generation based on specified parameters and
-            exporting lists in various formats</li>
-        <li>Individuals tracking their diets, chefs, nutritionists, and restaurant owners: Primary user groups targeted
-            by
-            the application</li>
-    </ul>
-    <h2>2.4 Operating Environment</h2>
-    <p>
-        The FOS web application will be compatible with major operating systems, including Windows, macOS, Linux, iOS,
-        and
-        Android. The application will be accessible from popular web browsers, such as Google Chrome, Mozilla Firefox,
-        Safari, and Microsoft Edge.
-    </p>
-    <h2>2.5 Architecture and Tech Stack</h2>
-    <h3>2.5.1 Description</h3>
-    <p>
-        The FOS web application will be built using the Model-View-Controller (MVC) architecture. The tech stack will
-        include the following:
-    </p>
-    <ul>
-        <li>Frontend: SASS, TypeScript, HTML5</li>
-        <li>Backend: Node.js with TypeScript, non-relational databases</li>
-        <li>API: OpenFoodFacts</li>
-    </ul>
-    <h3>2.5.2 Rationale</h3>
-    <p>
-        The MVC architecture is chosen for its modularity, separation of concerns, and ease of maintenance, which will
-        facilitate future development and updates. The tech stack is selected based on its modern, efficient, and
-        widely-supported nature, ensuring compatibility, performance, and maintainability.
-    </p>
-    <p>OpenFoodFacts API:</p>
-    <ol>
-        <li>Product information retrieval</li>
-        <li>Filtering and searching capabilities for food lists and marketplace</li>
-        <li>Access to application settings, including dark mode and other preferences</li>
-    </ol>
-    <h2>2.6 User Documentation</h2>
-    <p>
-        The Food Organization System web application will include user documentation to assist users in understanding
-        and
-        utilizing the application effectively. The user documentation will cover the following aspects:
-    </p>
-    <ol>
-        <li>
-            A comprehensive user guide detailing the features and functionalities of the application, with step-by-step
-            instructions for common tasks and scenarios
-        </li>
-        <li>
-            A Frequently Asked Questions (FAQ) section addressing common questions and issues that users may encounter
-            while
-            using the application
-        </li>
-        <li>
-            Video tutorials demonstrating how to use the various features of the application
-        </li>
-        <li>
-            A dedicated support section where users can submit inquiries or report issues with the application
-        </li>
-    </ol>
-    <p>
-        The user documentation will be easily accessible within the application and regularly updated to reflect any
-        changes
-        or updates to the features and functionality of the Food Organization System web application.
-    </p>
-    <h2>2.7 Constraints and Assumptions</h2>
-    <ul>
-        <li>The FOS web application relies on the Open Food Facts API for retrieving product information, and its
-            functionality is limited by the availability and accuracy of the data provided by the API</li>
-        <li>The application should be compliant with applicable laws and regulations related to data privacy and
-            security,
-            such as GDPR, which may impose limitations on the handling and storage of user data</li>
-        <li>The FOS web application should be compatible with modern web browsers, including Google Chrome, Mozilla
-            Firefox,
-            Microsoft Edge, and Apple Safari</li>
+                    <ul>
+                        <li property="schema:roleContactPoint" typeof="schema:ContactPoint">
+                            <a href="mailto:geocaru@gmail.com" property="schema:email">geocaru@gmail.com</a>
+                        </li>
 
-        <li>It is assumed that users have access to a stable internet connection to fully utilize the FOS web
-            application
-        </li>
-        <li>Users are assumed to have a basic understanding of how to use web applications and navigate through their
-            features</li>
-        <li>It is assumed that the Open Food Facts API will remain publicly available and continue to provide accurate
-            and up-to-date information on food products</li>
-    </ul>
-    <h1>3. External Interface Requirements</h1>
-    <h2>3.1 User Interfaces</h2>
-    <p>
-        The FOS web application will have a modern, intuitive, and responsive user interface that works seamlessly on
-        desktop and mobile devices. The user interface will include a navigation menu, search bar, forms for account
-        management and list creation, and settings/preferences page.
-    </p>
-    <h2>3.2 Hardware Interfaces</h2>
-    <p>No specific hardware interfaces are required.</p>
-    <h2>3.3 Software Interfaces</h2>
-    <p>
-        The FOS web application will communicate with the OpenFoodFacts API for product information retrieval and with a
-        local database for user data and list storage.
-    </p>
-    <h2>3.4 Communication Interfaces</h2>
-    <p>
-        The FOS web application will use standard HTTPS protocol for communication between the client and server, and
-        with
-        the OpenFoodFacts API.
-    </p>
-    <h1>System Features</h1>
-    <h2>4.1 User Account Management</h2>
-    <h3>4.1.1 Description and Priority</h3>
-    <ul>
-        <li>High priority feature</li>
-        <li>Enables users to create, authenticate, and manage their accounts</li>
-    </ul>
-    <h3>4.1.2 Functional Requirements</h3>
-    <ul>
-        <li>FR1: Users can register for a new account by providing a valid email address and creating a password</li>
-        <li>FR2: Users can log in to their account by providing their email address and password</li>
-        <li>FR3: Users can reset their password through a password recovery process</li>
-    </ul>
-    <h2>4.2 Custom Shopping and Food Lists</h2>
-    <h3>4.2.1 Description and Priority</h3>
-    <ul>
-        <li>High priority feature</li>
-        <li>Enables users to create, update, and manage custom shopping and food lists based on various filter
-            parameters
-        </li>
-    </ul>
-    <h3>4.2.2 Functional Requirements</h3>
-    <ul>
-        <li>FR4: Users can create a new shopping or food list by specifying a name, description, and filter parameters
-            (e.g., calories, nutrients, etc.)</li>
-        <li>FR5: Users can update an existing list by modifying its name, description, filter parameters, and individual
-            items</li>
-        <li>FR6: Users can delete a list from their account</li>
-        <li>FR7: Users can set the visibility of their lists to either public or private</li>
-        <li>FR8: Users can search and filter the public marketplace by list name, tags, and filter parameters</li>
-    </ul>
-    <h2>4.3 Pantry Inventory Management</h2>
-    <h3>4.3.1 Description and Priority</h3>
-    <ul>
-        <li>High priority feature</li>
-        <li>Allows users to track and manage their pantry inventory and product expiration dates</li>
-    </ul>
-    <h3>4.3.2 Functional Requirements</h3>
-    <ul>
-        <li>FR9: Users can add items to their pantry inventory, along with the quantity and expiration date</li>
-        <li>FR10: Users can update the details of an item in their inventory, including the quantity and expiration date
-        </li>
-        <li>FR11: Users can remove items from their pantry inventory</li>
-        <li>FR12: Users will receive alerts for items approaching their expiration date</li>
-    </ul>
-    <h2>4.4 Exporting and Importing Food Lists</h2>
-    <h3>4.4.1 Description and Priority</h3>
-    <ul>
-        <li>Medium priority feature</li>
-        <li>Allows users to export and import food lists in various formats (CSV, PDF, JSON)</li>
-    </ul>
-    <h3>4.4.2 Functional Requirements</h3>
-    <ul>
-        <li>FR13: Users can export their food lists as CSV, PDF, or JSON files</li>
-        <li>FR14: Users can import food lists from CSV, PDF, or JSON files</li>
-    </ul>
-    <h2>4.5 Application Settings and Preferences</h2>
-    <h3>4.5.1 Description and Priority</h3>
-    <ul>
-        <li>Low priority feature</li>
-        <li>Enables users to customize the application's appearance and behavior</li>
-    </ul>
-    <h3>4.5.2 Functional Requirements</h3>
-    <ul>
-        <li>FR15: Users can enable or disable dark mode</li>
-        <li>FR16: Users can set their preferred language and measurement units</li>
-    </ul>
+                    </ul>
+                </li>
+                <li typeof="sa:ContributorRole" property="schema:author">
+                    <span typeof="schema:Person">
+                        <meta property="schema:givenName" content="Victor">
+                        <meta property="schema:familyName" content="Condurat">
+                        <span property="schema:name">Victor Condurat</span>
+                    </span>
 
+                    <ul>
+                        <li property="schema:roleContactPoint" typeof="schema:ContactPoint">
+                            <a href="mailto:conduratvictor@yahoo.com"
+                                property="schema:email">conduratvictor@yahoo.com</a>
+                        </li>
 
-    <h1>5. Other Nonfunctional Requirements</h1>
-    <h2>5.1 Performance Requirements</h2>
-    <ul>
-        <li>The FOS web application must provide fast and responsive performance, with minimal latency and quick
-            load times
-        </li>
-    </ul>
-    <h2>5.2 Security and Privacy Requirements</h2>
-    <ul>
-        <li>User credentials will be encrypted, and all private data must be securely stored</li>
-        <li>The application will comply with GDPR, CCPA, and other relevant data protection regulations</li>
-    </ul>
-    <h2>5.3 Scalability</h2>
-    <ul>
-        <li>The FOS web application should be designed to scale with an increasing number of users and lists</li>
-    </ul>
-    <h2>5.4 Availability</h2>
-    <ul>
-        <li>The FOS web application should strive for high availability</li>
-    </ul>
-    <h2>5.5 Compatibility</h2>
-    <ul>
-        <li>The FOS web application will be compatible with major web browsers, including Google Chrome, Mozilla
-            Firefox,
-            Safari, and Microsoft Edge</li>
-        <li>The application will support major operating systems, including Windows, macOS, Linux, iOS, and Android
-        </li>
-    </ul>
-    <h2>5.6 Legal and Regulatory Requirements</h2>
-    <ul>
-        <li>The FOS web application must comply with all applicable local, national, and international laws and
-            regulations
-            related to data privacy, security, and consumer protection</li>
-        <li>The application must adhere to the terms of the MIT License under which it is released</li>
-    </ul>
-    <h2>5.7 Third-Party Integrations</h2>
-    <ul>
-        <li>The FOS web application will integrate with the OpenFoodFacts API for product information retrieval</li>
-        <li>Any additional third-party integrations must be compatible with the application's tech stack and license
-            requirements</li>
-    </ul>
+                    </ul>
+                </li>
 
-    <h2>5.8 Performance</h2>
-    <ul>
-        <li>The FOS web application should offer quick response times for user interactions, ensuring a smooth and
-            efficient
-            user experience</li>
-        <li>The application should be optimized for various devices and screen sizes, including desktops, laptops,
-            tablets,
-            and smartphones</li>
-    </ul>
-    <h2>5.9 Reliability</h2>
-    <ul>
-        <li>The FOS web application should be reliable and available to users with minimal downtime</li>
-        <li>Error handling mechanisms should be in place to prevent unexpected crashes and ensure a stable experience
-            for
-            users</li>
-    </ul>
-    <h2>5.10 Usability</h2>
-    <ul>
-        <li>The FOS web application should have an intuitive and user-friendly interface, enabling users to easily
-            navigate
-            and access features</li>
-        <li>The application should provide tooltips, help sections, or other instructional materials to assist users in
-            understanding and utilizing the various features</li>
-    </ul>
-    <h2>5.11 Security</h2>
-    <ul>
-        <li>The FOS web application should implement robust security measures to protect user data, including encryption
-            of
-            sensitive information and secure storage of credentials</li>
-        <li>Regular security audits should be conducted to identify and address potential vulnerabilities in the
-            application
-        </li>
-    </ul>
-    <h2>5.12 Maintainability</h2>
-    <ul>
-        <li>The FOS web application should be designed with modularity and maintainability in mind, allowing for easy
-            updates, upgrades, and bug fixes</li>
-        <li>The application's codebase should be well-documented, adhering to established coding standards and best
-            practices to facilitate future maintenance and development</li>
-    </ul>
-    <h2>5.13 Scalability</h2>
-    <ul>
-        <li>The FOS web application should be built to accommodate future growth in terms of user base, feature set, and
-            data volume</li>
-        <li>The application's architecture should be designed to allow for horizontal scaling, ensuring that it can
-            handle
-            increased load as needed</li>
-    </ul>
+            </ul>
+        </section>
+    </div>
+    <main>
+        <section>
+            <h2>Introduction</h2>
+            <section>
+                <h3>1.1 Purpose</h3>
+                <p>
+                    The purpose of this Software Requirements Specification (SRS) is to define the requirements,
+                    features, and
+                    functionality of the Food Organization System (FOS) web application to ensure that it meets the
+                    needs of its
+                    users, including individuals tracking their diets, chefs, nutritionists, and restaurant owners.
+                </p>
+            </section>
+            <section>
+                <h3>1.2 Scope</h3>
+                <p>
+                    The FOS web application will provide users with the ability to create, update, and manage custom
+                    shopping
+                    and
+                    food lists, track pantry inventory and expiration dates, and access a public marketplace of food
+                    lists. The
+                    application will utilize the OpenFoodFacts public API for retrieving product information and offer
+                    user
+                    account
+                    management features.
+                </p>
+            </section>
+            <section>
+                <h3>1.3 Definitions, Acronyms, and Abbreviations</h3>
+
+                <ul>
+                    <li>FOS: Food Organization System</li>
+                    <li>SRS: Software Requirements Specification</li>
+                    <li>API: Application Programming Interface</li>
+                    <li>MVC: Model-View-Controller</li>
+                    <li>SASS: Syntactically Awesome Style Sheets</li>
+                    <li>CSV: Comma Separated Values</li>
+                    <li>JSON: JavaScript Object Notation</li>
+                    <li>PDF: Portable Document Format</li>
+                    <li>UI: User Interface</li>
+                    <li>UX: User Experience</li>
+                    <li>GDPR: General Data Protection Regulation</li>
+                    <li>CCPA: California Consumer Privacy Act</li>
+                </ul>
+
+            </section>
+            <section>
+                <h3>1.4 References</h3>
+
+                <ul>
+                    <li>OpenFoodFacts API documentation: <a
+                            href="https://world.openfoodfacts.org/data">https://world.openfoodfacts.org/data</a></li>
+                    <li>MIT License: <a
+                            href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></li>
+
+                </ul>
+            </section>
+            <section>
+                <h3>1.5 Overview</h3>
+                <p>
+                    This document is organized into sections that outline the functional requirements, performance
+                    requirements,
+                    design constraints, and other aspects of the FOS web application. The intended audience includes
+                    project
+                    stakeholders, developers, and testers.
+                </p>
+
+            </section>
+        </section>
+        <section>
+            <h2>Overall Description</h2>
+            <section>
+                <h3>2.1 Product Perspective</h3>
+                <p>
+                    The FOS web application will be a standalone product accessible from major web browsers on desktop
+                    and
+                    mobile
+                    devices. Users will interact with the application through a web interface, which communicates with
+                    the
+                    OpenFoodFacts API and a local database for storing user data and food lists.
+                </p>
+            </section>
+            <section>
+                <h3>2.2 Product Functions</h3>
+                <ul>
+                    <li>User account creation, authentication, and management</li>
+                    <li>Creation, modification, and deletion of custom shopping and food lists</li>
+                    <li>Exporting food lists in CSV, PDF, and JSON formats</li>
+                    <li>Pantry inventory tracking and expiration date alerts</li>
+                    <li>Public marketplace for sharing and discovering food lists</li>
+                    <li>Integration with OpenFoodFacts API for product information retrieval</li>
+                    <li>Filtering and searching capabilities for food lists and marketplace</li>
+                    <li>Access to application settings, including dark mode and other preferences</li>
+                </ul>
+            </section>
+            <section>
+                <h3>2.3 User Classes and Characteristics</h3>
+
+                <ul>
+                    <li>Free users: Access to basic features, including list creation, inventory tracking, and
+                        marketplace
+                        browsing
+                    </li>
+                    <li>Paid users: Access to advanced features, such as automatic list generation based on specified
+                        parameters
+                        and
+                        exporting lists in various formats</li>
+                    <li>Individuals tracking their diets, chefs, nutritionists, and restaurant owners: Primary user
+                        groups
+                        targeted
+                        by
+                        the application</li>
+                </ul>
+
+            </section>
+            <section>
+                <h3>2.4 Operating Environment</h3>
+                <p>
+                    The FOS web application will be compatible with major operating systems, including Windows, macOS,
+                    Linux,
+                    iOS,
+                    and
+                    Android. The application will be accessible from popular web browsers, such as Google Chrome,
+                    Mozilla
+                    Firefox,
+                    Safari, and Microsoft Edge.
+                </p>
+            </section>
+            <section>
+                <h3>2.5 Architecture and Tech Stack</h3>
+                <section>
+                    <h4>2.5.1 Description</h4>
+                    <p>
+                        The FOS web application will be built using the Model-View-Controller (MVC) architecture. The
+                        tech
+                        stack
+                        will
+                        include the following:
+                    </p>
+                    <ul>
+                        <li>Frontend: SASS, TypeScript, HTML5</li>
+                        <li>Backend: Node.js with TypeScript, non-relational databases</li>
+                        <li>API: OpenFoodFacts</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4>2.5.2 Rationale</h4>
+                    <p>
+                        The MVC architecture is chosen for its modularity, separation of concerns, and ease of
+                        maintenance,
+                        which
+                        will
+                        facilitate future development and updates. The tech stack is selected based on its modern,
+                        efficient, and
+                        widely-supported nature, ensuring compatibility, performance, and maintainability.
+                    </p>
+                    <p>OpenFoodFacts API:</p>
+                    <ol>
+                        <li>Product information retrieval</li>
+                        <li>Filtering and searching capabilities for food lists and marketplace</li>
+                        <li>Access to application settings, including dark mode and other preferences</li>
+                    </ol>
+                </section>
+            </section>
+            <section>
+                <h3>2.6 User Documentation</h3>
+                <p>
+                    The Food Organization System web application will include user documentation to assist users in
+                    understanding
+                    and
+                    utilizing the application effectively. The user documentation will cover the following aspects:
+                </p>
+                <ol>
+                    <li>
+                        A comprehensive user guide detailing the features and functionalities of the application, with
+                        step-by-step
+                        instructions for common tasks and scenarios
+                    </li>
+                    <li>
+                        A Frequently Asked Questions (FAQ) section addressing common questions and issues that users may
+                        encounter
+                        while
+                        using the application
+                    </li>
+                    <li>
+                        Video tutorials demonstrating how to use the various features of the application
+                    </li>
+                    <li>
+                        A dedicated support section where users can submit inquiries or report issues with the
+                        application
+                    </li>
+                </ol>
+                <p>
+                    The user documentation will be easily accessible within the application and regularly updated to
+                    reflect
+                    any
+                    changes
+                    or updates to the features and functionality of the Food Organization System web application.
+                </p>
+            </section>
+            <section>
+                <h3>2.7 Constraints and Assumptions</h3>
+                <ul>
+                    <li>The FOS web application relies on the Open Food Facts API for retrieving product information,
+                        and
+                        its
+                        functionality is limited by the availability and accuracy of the data provided by the API</li>
+                    <li>The application should be compliant with applicable laws and regulations related to data privacy
+                        and
+                        security,
+                        such as GDPR, which may impose limitations on the handling and storage of user data</li>
+                    <li>The FOS web application should be compatible with modern web browsers, including Google Chrome,
+                        Mozilla
+                        Firefox,
+                        Microsoft Edge, and Apple Safari</li>
+
+                    <li>It is assumed that users have access to a stable internet connection to fully utilize the FOS
+                        web
+                        application
+                    </li>
+                    <li>Users are assumed to have a basic understanding of how to use web applications and navigate
+                        through
+                        their
+                        features</li>
+                    <li>It is assumed that the Open Food Facts API will remain publicly available and continue to
+                        provide
+                        accurate
+                        and up-to-date information on food products</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <h2>3. External Interface Requirements</h2>
+            <section>
+                <h3>3.1 User Interfaces</h3>
+                <p>
+                    The FOS web application will have a modern, intuitive, and responsive user interface that works
+                    seamlessly
+                    on
+                    desktop and mobile devices. The user interface will include a navigation menu, search bar, forms for
+                    account
+                    management and list creation, and settings/preferences page.
+                </p>
+            </section>
+            <section>
+                <h3>3.2 Hardware Interfaces</h3>
+                <p>No specific hardware interfaces are required.</p>
+            </section>
+            <section>
+                <h3>3.3 Software Interfaces</h3>
+                <p>
+                    The FOS web application will communicate with the OpenFoodFacts API for product information
+                    retrieval and
+                    with a
+                    local database for user data and list storage.
+                </p>
+            </section>
+            <section>
+                <h3>3.4 Communication Interfaces</h3>
+                <p>
+                    The FOS web application will use standard HTTPS protocol for communication between the client and
+                    server,
+                    and
+                    with
+                    the OpenFoodFacts API.
+                </p>
+            </section>
+        </section>
+        <section>
+            <h2>System Features</h2>
+            <section>
+                <h3>4.1 User Account Management</h3>
+                <h4>4.1.1 Description and Priority</h4>
+                <ul>
+                    <li>High priority feature</li>
+                    <li>Enables users to create, authenticate, and manage their accounts</li>
+                </ul>
+                <h4>4.1.2 Functional Requirements</h4>
+                <ul>
+                    <li>FR1: Users can register for a new account by providing a valid email address and creating a
+                        password
+                    </li>
+                    <li>FR2: Users can log in to their account by providing their email address and password</li>
+                    <li>FR3: Users can reset their password through a password recovery process</li>
+                </ul>
+            </section>
+            <section>
+                <h3>4.2 Custom Shopping and Food Lists</h3>
+                <section>
+                    <h4>4.2.1 Description and Priority</h4>
+                    <ul>
+                        <li>High priority feature</li>
+                        <li>Enables users to create, update, and manage custom shopping and food lists based on various
+                            filter
+                            parameters
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h4>4.2.2 Functional Requirements</h4>
+                    <ul>
+                        <li>FR4: Users can create a new shopping or food list by specifying a name, description, and
+                            filter
+                            parameters
+                            (e.g., calories, nutrients, etc.)</li>
+                        <li>FR5: Users can update an existing list by modifying its name, description, filter
+                            parameters,
+                            and
+                            individual
+                            items</li>
+                        <li>FR6: Users can delete a list from their account</li>
+                        <li>FR7: Users can set the visibility of their lists to either public or private</li>
+                        <li>FR8: Users can search and filter the public marketplace by list name, tags, and filter
+                            parameters</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <h3>4.3 Pantry Inventory Management</h3>
+                <section>
+                    <h4>4.3.1 Description and Priority</h4>
+                    <ul>
+                        <li>High priority feature</li>
+                        <li>Allows users to track and manage their pantry inventory and product expiration dates</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4>4.3.2 Functional Requirements</h4>
+                    <ul>
+                        <li>FR9: Users can add items to their pantry inventory, along with the quantity and expiration
+                            date
+                        </li>
+                        <li>FR10: Users can update the details of an item in their inventory, including the quantity and
+                            expiration
+                            date
+                        </li>
+                        <li>FR11: Users can remove items from their pantry inventory</li>
+                        <li>FR12: Users will receive alerts for items approaching their expiration date</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <h3>4.4 Exporting and Importing Food Lists</h3>
+                <section>
+                    <h4>4.4.1 Description and Priority</h4>
+                    <ul>
+                        <li>Medium priority feature</li>
+                        <li>Allows users to export and import food lists in various formats (CSV, PDF, JSON)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4>4.4.2 Functional Requirements</h4>
+                    <ul>
+                        <li>FR13: Users can export their food lists as CSV, PDF, or JSON files</li>
+                        <li>FR14: Users can import food lists from CSV, PDF, or JSON files</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <h3>4.5 Application Settings and Preferences</h3>
+                <section>
+                    <h4>4.5.1 Description and Priority</h4>
+                    <ul>
+                        <li>Low priority feature</li>
+                        <li>Enables users to customize the application's appearance and behavior</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4>4.5.2 Functional Requirements</h4>
+                    <ul>
+                        <li>FR15: Users can enable or disable dark mode</li>
+                        <li>FR16: Users can set their preferred language and measurement units</li>
+                    </ul>
+                </section>
+            </section>
+        </section>
+        <section>
+            <h2>5. Other Nonfunctional Requirements</h2>
+            <section>
+                <h3>5.1 Performance Requirements</h3>
+                <ul>
+                    <li>The FOS web application must provide fast and responsive performance, with minimal latency and
+                        quick
+                        load times
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.2 Security and Privacy Requirements</h3>
+                <ul>
+                    <li>User credentials will be encrypted, and all private data must be securely stored</li>
+                    <li>The application will comply with GDPR, CCPA, and other relevant data protection regulations</li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.3 Scalability</h3>
+                <ul>
+                    <li>The FOS web application should be designed to scale with an increasing number of users and lists
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.4 Availability</h3>
+                <ul>
+                    <li>The FOS web application should strive for high availability</li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.5 Compatibility</h3>
+                <ul>
+                    <li>The FOS web application will be compatible with major web browsers, including Google Chrome,
+                        Mozilla
+                        Firefox,
+                        Safari, and Microsoft Edge</li>
+                    <li>The application will support major operating systems, including Windows, macOS, Linux, iOS, and
+                        Android
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.6 Legal and Regulatory Requirements</h3>
+                <ul>
+                    <li>The FOS web application must comply with all applicable local, national, and international laws
+                        and
+                        regulations
+                        related to data privacy, security, and consumer protection</li>
+                    <li>The application must adhere to the terms of the MIT License under which it is released</li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.7 Third-Party Integrations</h3>
+                <ul>
+                    <li>The FOS web application will integrate with the OpenFoodFacts API for product information
+                        retrieval</li>
+                    <li>Any additional third-party integrations must be compatible with the application's tech stack and
+                        license
+                        requirements</li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.8 Performance</h3>
+                <ul>
+                    <li>The FOS web application should offer quick response times for user interactions, ensuring a
+                        smooth and
+                        efficient
+                        user experience</li>
+                    <li>The application should be optimized for various devices and screen sizes, including desktops,
+                        laptops,
+                        tablets,
+                        and smartphones</li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.9 Reliability</h3>
+                <ul>
+                    <li>The FOS web application should be reliable and available to users with minimal downtime</li>
+                    <li>Error handling mechanisms should be in place to prevent unexpected crashes and ensure a stable
+                        experience
+                        for
+                        users</li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.10 Usability</h3>
+                <ul>
+                    <li>The FOS web application should have an intuitive and user-friendly interface, enabling users to
+                        easily
+                        navigate
+                        and access features</li>
+                    <li>The application should provide tooltips, help sections, or other instructional materials to
+                        assist users
+                        in
+                        understanding and utilizing the various features</li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.11 Security</h3>
+                <ul>
+                    <li>The FOS web application should implement robust security measures to protect user data,
+                        including
+                        encryption
+                        of
+                        sensitive information and secure storage of credentials</li>
+                    <li>
+                        The app requires user authentication to access and modify user-specific data, such as
+                        shopping lists and saved recipes. User authentication includes strong password policies and
+                        mechanisms
+                        for
+                        resetting forgotten passwords.
+                    </li>
+                    <li>Regular security audits should be conducted to identify and address potential vulnerabilities in
+                        the
+                        application
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.12 Maintainability</h3>
+                <ul>
+                    <li>The FOS web application should be designed with modularity and maintainability in mind, allowing
+                        for
+                        easy
+                        updates, upgrades, and bug fixes</li>
+                    <li>The application's codebase should be well-documented, adhering to established coding standards
+                        and best
+                        practices to facilitate future maintenance and development</li>
+                </ul>
+            </section>
+            <section>
+                <h3>5.13 Scalability</h3>
+                <ul>
+                    <li>The FOS web application should be built to accommodate future growth in terms of user base,
+                        feature set,
+                        and
+                        data volume</li>
+                    <li>The application's architecture should be designed to allow for horizontal scaling, ensuring that
+                        it can
+                        handle
+                        increased load as needed</li>
+                </ul>
+            </section>
+        </section>
+    </main>
+
 
 </body>
 
