@@ -1,7 +1,7 @@
 
 # FOS (Food Organization System)
 
-FOS is a web application that will provide users with the ability to create, update, and manage custom
+FOS is a web application that will provide users the ability to create, update, and manage custom
                     shopping
                     and
                     food lists, track pantry inventory and expiration dates, and access a public marketplace of food
