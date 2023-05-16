@@ -1,23 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const myProfile = document.getElementById('my-profile');
+    //const myProfile = document.getElementById('my-profile');
     const userInfoSection = document.getElementById('user-info');
+    const usernameElement = document.getElementById('uname');
     const emailElement = document.getElementById('email');
     const passwordElement = document.getElementById('password');
     const preferredFoodsElement = document.getElementById('preferred-foods');
 
-    if (!userInfoSection || !emailElement || !passwordElement || !preferredFoodsElement) return;
+    if (!userInfoSection || !usernameElement || !emailElement || !passwordElement || !preferredFoodsElement) return;
 
-    if (myProfile) {
-        myProfile.addEventListener('click', () => {
-            const user: User = {
-                email: 'example@example.com',
-                password: '********',
-                preferredFoods: ['Pizza', 'Burger', 'Sushi'],
-            };
 
-            displayUserInfo(user, emailElement, passwordElement, preferredFoodsElement);
-        });
-    }
+    const user: User = {
+        uname: 'Man123',
+        email: 'example@example.com',
+        password: '********',
+        preferredFoods: ['Pizza', 'Burger', 'Sushi']
+    };
+
+    displayUserInfo(user, usernameElement, emailElement, passwordElement, preferredFoodsElement);
+
 
     const navLinks = document.querySelectorAll('.left-menu a:not(#my-profile)');
     navLinks.forEach((link) => {
@@ -27,12 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     interface User {
-        email: string;
-        password: string;
-        preferredFoods: string[];
+        uname: string,
+        email: string,
+        password: string,
+        preferredFoods: string[]
     }
 
-    function displayUserInfo(user: User, emailElement: HTMLElement, passwordElement: HTMLElement, preferredFoodsElement: HTMLElement) {
+    function displayUserInfo(user: User, usernameElement: HTMLElement, emailElement: HTMLElement, passwordElement: HTMLElement, preferredFoodsElement: HTMLElement) {
+        usernameElement.textContent = user.uname;
         emailElement.textContent = user.email;
         passwordElement.textContent = user.password;
 
