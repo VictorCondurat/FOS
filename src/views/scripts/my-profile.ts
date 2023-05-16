@@ -1,18 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     const myProfile = document.getElementById('my-profile');
     const userInfoSection = document.getElementById('user-info');
+    const emailElement = document.getElementById('email');
+    const passwordElement = document.getElementById('password');
+    const preferredFoodsElement = document.getElementById('preferred-foods');
 
-    if (!userInfoSection) return;
+    if (!userInfoSection || !emailElement || !passwordElement || !preferredFoodsElement) return;
 
     if (myProfile) {
         myProfile.addEventListener('click', () => {
-            const user = {
+            const user: User = {
                 email: 'example@example.com',
                 password: '********',
                 preferredFoods: ['Pizza', 'Burger', 'Sushi'],
             };
 
-            displayUserInfo(user, userInfoSection);
+            displayUserInfo(user, emailElement, passwordElement, preferredFoodsElement);
         });
     }
 
@@ -22,33 +25,22 @@ document.addEventListener('DOMContentLoaded', () => {
             userInfoSection.innerHTML = '';
         });
     });
+
+    interface User {
+        email: string;
+        password: string;
+        preferredFoods: string[];
+    }
+
+    function displayUserInfo(user: User, emailElement: HTMLElement, passwordElement: HTMLElement, preferredFoodsElement: HTMLElement) {
+        emailElement.textContent = user.email;
+        passwordElement.textContent = user.password;
+
+        preferredFoodsElement.innerHTML = '';
+        user.preferredFoods.forEach((food: string) => {
+            const li = document.createElement('li');
+            li.textContent = food;
+            preferredFoodsElement.appendChild(li);
+        });
+    }
 });
-
-interface User {
-    email: string;
-    password: string;
-    preferredFoods: string[];
-}
-
-function displayUserInfo(user: User, container: HTMLElement | null) {
-    if (!container) return;
-
-    container.innerHTML = '';
-
-    const email = document.createElement('p');
-    email.textContent = 'Email: ' + user.email;
-
-    const password = document.createElement('p');
-    password.textContent = 'Password: ' + user.password;
-
-    const preferredFoods = document.createElement('ul');
-    user.preferredFoods.forEach((food) => {
-        const li = document.createElement('li');
-        li.textContent = food;
-        preferredFoods.appendChild(li);
-    });
-
-    container.appendChild(email);
-    container.appendChild(password);
-    container.appendChild(preferredFoods);
-}

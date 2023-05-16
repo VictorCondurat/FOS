@@ -2,7 +2,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const myProfile = document.getElementById('my-profile');
     const userInfoSection = document.getElementById('user-info');
-    if (!userInfoSection)
+    const emailElement = document.getElementById('email');
+    const passwordElement = document.getElementById('password');
+    const preferredFoodsElement = document.getElementById('preferred-foods');
+    if (!userInfoSection || !emailElement || !passwordElement || !preferredFoodsElement)
         return;
     if (myProfile) {
         myProfile.addEventListener('click', () => {
@@ -11,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 password: '********',
                 preferredFoods: ['Pizza', 'Burger', 'Sushi'],
             };
-            displayUserInfo(user, userInfoSection);
+            displayUserInfo(user, emailElement, passwordElement, preferredFoodsElement);
         });
     }
     const navLinks = document.querySelectorAll('.left-menu a:not(#my-profile)');
@@ -20,22 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
             userInfoSection.innerHTML = '';
         });
     });
+    function displayUserInfo(user, emailElement, passwordElement, preferredFoodsElement) {
+        emailElement.textContent = user.email;
+        passwordElement.textContent = user.password;
+        preferredFoodsElement.innerHTML = '';
+        user.preferredFoods.forEach((food) => {
+            const li = document.createElement('li');
+            li.textContent = food;
+            preferredFoodsElement.appendChild(li);
+        });
+    }
 });
-function displayUserInfo(user, container) {
-    if (!container)
-        return;
-    container.innerHTML = '';
-    const email = document.createElement('p');
-    email.textContent = 'Email: ' + user.email;
-    const password = document.createElement('p');
-    password.textContent = 'Password: ' + user.password;
-    const preferredFoods = document.createElement('ul');
-    user.preferredFoods.forEach((food) => {
-        const li = document.createElement('li');
-        li.textContent = food;
-        preferredFoods.appendChild(li);
-    });
-    container.appendChild(email);
-    container.appendChild(password);
-    container.appendChild(preferredFoods);
-}
