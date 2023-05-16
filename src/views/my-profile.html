@@ -1,46 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>My Profile</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/my-profile.css">
+    <link rel="stylesheet" href="styles/my-profile.css"">
+    <title>My Profile</title>
 </head>
 
 <body>
-    <header class="header">
-        <div class="header__logo-container">
-            <img class="header__logo" src="/images/logo.png" alt="Logo">
-            <span class="header__product-name">Food Organization System</span>
-        </div>
+    <header class=" header">
+    <div class="header__logo-container">
+        <img src="images/logo.png" alt="Logo" class="header__logo">
+        <h1 class="header__product-name">My App</h1>
+    </div>
     </header>
 
     <div class="wrapper">
         <nav class="left-menu">
             <ul>
-                <li><a id="my-profile" href="#">My profile</a></li>
+                <li><a href="#">My Profile</a></li>
+
             </ul>
             <div class="left-menu__bottom">
-                <a href="dashboard.html" id="back"><button>Back</button></a>
-                <a href="index.html" id="logout"><button>Logout</button></a>
+                <a href="dashboard.html">
+                    <button id="back">Back</button>
+                </a>
+                <a href="index.html">
+                    <button id="logout">Logout</button>
+                </a>
             </div>
         </nav>
 
         <main>
-            <section id="user-info">
-                <h1>My Profile</h1>
-                <div>
-                    <h3>E-mail: <span id="mail"></span></h3>
-                    <h3>Password: <span id="pass"></span></h3>
-                    <h3>Prefered Foods:</h3>
-                    <ul id="prefered-foods"></ul>
+            <section id="user-info" class="user-info">
+                <h2 class="user-info__title">My Profile</h2>
+                <div class="user-info__details">
+                    <div class="user-info__item">
+                        <h3 class="user-info__label">Email:</h3>
+                        <span class="user-info__value" id="email"></span>
+                    </div>
+                    <div class="user-info__item">
+                        <h3 class="user-info__label">Password:</h3>
+                        <span class="user-info__value" id="password"></span>
+                    </div>
+                    <div class="user-info__item">
+                        <h3 class="user-info__label">Preferred Foods:</h3>
+                        <ul class="user-info__foods" id="preferred-foods"></ul>
+                    </div>
                 </div>
             </section>
         </main>
     </div>
 
-    <script src="./scripts/profile.js"></script>
-
-</body>
+    <script src="my-profile.js"></script>
+    </body>
 
 </html>

@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (myProfile) {
         myProfile.addEventListener('click', () => {
             const user = {
-                mail: 'geocaru@gmail.com',
-                pass: 'jsda123',
-                preferedFoods: ['Broccoli', 'Salmon', 'Quinoa']
+                email: 'example@example.com',
+                password: '********',
+                preferredFoods: ['Pizza', 'Burger', 'Sushi'],
             };
             displayUserInfo(user, userInfoSection);
         });
@@ -25,17 +25,17 @@ function displayUserInfo(user, container) {
     if (!container)
         return;
     container.innerHTML = '';
-    const mail = document.createElement('span');
-    mail.textContent = user.mail;
-    const pass = document.createElement('span');
-    pass.textContent = user.pass;
-    const preferedFoods = document.createElement('ul');
-    user.preferedFoods.forEach((food) => {
+    const email = document.createElement('p');
+    email.textContent = 'Email: ' + user.email;
+    const password = document.createElement('p');
+    password.textContent = 'Password: ' + user.password;
+    const preferredFoods = document.createElement('ul');
+    user.preferredFoods.forEach((food) => {
         const li = document.createElement('li');
         li.textContent = food;
-        preferedFoods.appendChild(li);
+        preferredFoods.appendChild(li);
     });
-    container.querySelector('#mail')?.appendChild(mail);
-    container.querySelector('#pass')?.appendChild(pass);
-    container.querySelector('#prefered-foods')?.appendChild(preferedFoods);
+    container.appendChild(email);
+    container.appendChild(password);
+    container.appendChild(preferredFoods);
 }

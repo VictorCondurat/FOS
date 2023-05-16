@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (myProfile) {
         myProfile.addEventListener('click', () => {
             const user = {
-                mail: 'geocaru@gmail.com',
-                pass: 'jsda123',
-                preferedFoods: ['Broccoli', 'Salmon', 'Quinoa']
+                email: 'example@example.com',
+                password: '********',
+                preferredFoods: ['Pizza', 'Burger', 'Sushi'],
             };
 
             displayUserInfo(user, userInfoSection);
@@ -24,25 +24,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function displayUserInfo(user: { mail: string; pass: string; preferedFoods: string[] }, container: HTMLElement | null) {
+interface User {
+    email: string;
+    password: string;
+    preferredFoods: string[];
+}
+
+function displayUserInfo(user: User, container: HTMLElement | null) {
     if (!container) return;
 
     container.innerHTML = '';
 
-    const mail = document.createElement('span');
-    mail.textContent = user.mail;
+    const email = document.createElement('p');
+    email.textContent = 'Email: ' + user.email;
 
-    const pass = document.createElement('span');
-    pass.textContent = user.pass;
+    const password = document.createElement('p');
+    password.textContent = 'Password: ' + user.password;
 
-    const preferedFoods = document.createElement('ul');
-    user.preferedFoods.forEach((food) => {
+    const preferredFoods = document.createElement('ul');
+    user.preferredFoods.forEach((food) => {
         const li = document.createElement('li');
         li.textContent = food;
-        preferedFoods.appendChild(li);
+        preferredFoods.appendChild(li);
     });
 
-    container.querySelector('#mail')?.appendChild(mail);
-    container.querySelector('#pass')?.appendChild(pass);
-    container.querySelector('#prefered-foods')?.appendChild(preferedFoods);
+    container.appendChild(email);
+    container.appendChild(password);
+    container.appendChild(preferredFoods);
 }
