@@ -1,10 +1,59 @@
-<p>Thank you for visiting our webpage! We are currently working on building a new and improved website that will provide
-    you with the latest information and features.
+<!DOCTYPE html>
+<html lang="en">
 
-    In the meantime, if you have any questions or would like to learn more about our project, feel free to
-    reach out to us through email or social media. We will do our best to respond to your inquiries as soon as possible.
-    <br><br>
-    Thank you for your patience and understanding.
-</p>
-<div id="countdown-clock"></div>
-<script src="./scripts/clock.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/my-profile.css"">
+    <title>My Profile</title>
+</head>
+
+<body>
+    <header class=" header">
+    <div class="header__logo-container">
+        <img src="images/logo.png" alt="Logo" class="header__logo">
+        <h1 class="header__product-name">My App</h1>
+    </div>
+    </header>
+
+    <div class="wrapper">
+        <nav class="left-menu">
+            <ul>
+                <li><a href="#">My Profile</a></li>
+
+            </ul>
+            <div class="left-menu__bottom">
+                <a href="dashboard.html">
+                    <button id="back">Back</button>
+                </a>
+                <a href="index.html">
+                    <button id="logout">Logout</button>
+                </a>
+            </div>
+        </nav>
+
+        <main>
+            <section id="user-info" class="user-info">
+                <h2 class="user-info__title">My Profile</h2>
+                <div class="user-info__details">
+                    <div class="user-info__item">
+                        <h3 class="user-info__label">Email:</h3>
+                        <span class="user-info__value" id="email"></span>
+                    </div>
+                    <div class="user-info__item">
+                        <h3 class="user-info__label">Password:</h3>
+                        <span class="user-info__value" id="password"></span>
+                    </div>
+                    <div class="user-info__item">
+                        <h3 class="user-info__label">Preferred Foods:</h3>
+                        <ul class="user-info__foods" id="preferred-foods"></ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="my-profile.js"></script>
+    </body>
+
+</html>
