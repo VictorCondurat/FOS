@@ -1,29 +1,28 @@
 "use strict";
 document.addEventListener('DOMContentLoaded', () => {
-    const myProfile = document.getElementById('my-profile');
+    //const myProfile = document.getElementById('my-profile');
     const userInfoSection = document.getElementById('user-info');
+    const usernameElement = document.getElementById('uname');
     const emailElement = document.getElementById('email');
     const passwordElement = document.getElementById('password');
     const preferredFoodsElement = document.getElementById('preferred-foods');
-    if (!userInfoSection || !emailElement || !passwordElement || !preferredFoodsElement)
+    if (!userInfoSection || !usernameElement || !emailElement || !passwordElement || !preferredFoodsElement)
         return;
-    if (myProfile) {
-        myProfile.addEventListener('click', () => {
-            const user = {
-                email: 'example@example.com',
-                password: '********',
-                preferredFoods: ['Pizza', 'Burger', 'Sushi'],
-            };
-            displayUserInfo(user, emailElement, passwordElement, preferredFoodsElement);
-        });
-    }
+    const user = {
+        uname: 'Man123',
+        email: 'example@example.com',
+        password: '********',
+        preferredFoods: ['Pizza', 'Burger', 'Sushi']
+    };
+    displayUserInfo(user, usernameElement, emailElement, passwordElement, preferredFoodsElement);
     const navLinks = document.querySelectorAll('.left-menu a:not(#my-profile)');
     navLinks.forEach((link) => {
         link.addEventListener('click', () => {
             userInfoSection.innerHTML = '';
         });
     });
-    function displayUserInfo(user, emailElement, passwordElement, preferredFoodsElement) {
+    function displayUserInfo(user, usernameElement, emailElement, passwordElement, preferredFoodsElement) {
+        usernameElement.textContent = user.uname;
         emailElement.textContent = user.email;
         passwordElement.textContent = user.password;
         preferredFoodsElement.innerHTML = '';
