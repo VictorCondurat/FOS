@@ -1,10 +1,46 @@
-<p>Thank you for visiting our webpage! We are currently working on building a new and improved website that will provide
-    you with the latest information and features.
+<!DOCTYPE html>
+<html>
 
-    In the meantime, if you have any questions or would like to learn more about our project, feel free to
-    reach out to us through email or social media. We will do our best to respond to your inquiries as soon as possible.
-    <br><br>
-    Thank you for your patience and understanding.
-</p>
-<div id="countdown-clock"></div>
-<script src="./scripts/clock.js"></script>
+<head>
+    <title>My Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/my-profile.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__logo-container">
+            <img class="header__logo" src="/images/logo.png" alt="Logo">
+            <span class="header__product-name">Food Organization System</span>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <nav class="left-menu">
+            <ul>
+                <li><a id="my-profile" href="#">My profile</a></li>
+            </ul>
+            <div class="left-menu__bottom">
+                <a href="dashboard.html" id="back"><button>Back</button></a>
+                <a href="index.html" id="logout"><button>Logout</button></a>
+            </div>
+        </nav>
+
+        <main>
+            <section id="user-info">
+                <h1>My Profile</h1>
+                <div>
+                    <h3>E-mail: <span id="mail"></span></h3>
+                    <h3>Password: <span id="pass"></span></h3>
+                    <h3>Prefered Foods:</h3>
+                    <ul id="prefered-foods"></ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="./scripts/profile.js"></script>
+
+</body>
+
+</html>
