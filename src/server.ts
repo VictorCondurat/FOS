@@ -30,7 +30,42 @@ const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 const server = http.createServer(async (req, res) => {
     const requestUrl = req.url || '/';
-    if (requestUrl === '/login' && req.method === 'POST') {
+    if (requestUrl === '/sign-up' && req.method === 'POST') {
+        const requestBody = await new Promise<string>((resolve, reject) => {
+            let body = '';
+            req.on('data', (chunk) => {
+                body += chunk.toString();
+            });
+            req.on('end', () => {
+                resolve(body);
+            });
+            req.on('error', (error) => {
+                reject(error);
+            });
+        });
+
+        const { uname, email, psw, 'psw-repeat': pswRepeat } = querystring.parse(requestBody);
+
+        // Check if passwords match
+        if (psw !== pswRepeat) {
+            res.writeHead(400); // Bad request status code
+            res.end('Passwords do not match');
+            return;
+        }
+
+        // Insert user credentials into the database
+        const connection = await oracledb.getConnection(dbConfig);
+        const query = `INSERT INTO users (uname, email, password) VALUES ('${uname}', '${email}', '${psw}')`;
+        await connection.execute(query);
+
+
+        await connection.commit();
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end();
+    }
+
+    else if (requestUrl === '/login' && req.method === 'POST') {
         const requestBody = await new Promise<string>((resolve, reject) => {
             let body = '';
             req.on('data', (chunk) => {
