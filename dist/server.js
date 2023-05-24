@@ -61,7 +61,7 @@ const server = http.createServer(async (req, res) => {
         const { uname, pass } = querystring.parse(requestBody);
         // Verify the user's credentials
         const connection = await oracledb.getConnection(dbConfig);
-        const query = `SELECT uname, email, password, preferred_foods, alergen, diet FROM users WHERE uname='${uname}' AND password='${pass}'`;
+        const query = `SELECT uname, email, preferred_foods, alergen, diet FROM users WHERE uname='${uname}' AND password='${pass}'`;
         const result = await connection.execute(query);
         if (result.rows && result.rows.length > 0) {
             // User credentials are valid
@@ -93,13 +93,13 @@ const server = http.createServer(async (req, res) => {
                 const { uname } = sessionData;
                 // Fetch user data from the database based on the session information
                 const connection = await oracledb.getConnection(dbConfig);
-                const query = `SELECT uname, email, password, preferred_foods, alergen, diet FROM users WHERE uname='${uname}'`;
+                const query = `SELECT uname, email, preferred_foods, alergen, diet FROM users WHERE uname='${uname}'`;
                 const result = await connection.execute(query);
                 if (result.rows && result.rows.length > 0) {
                     const users = result.rows.map((row) => ({
                         uname: row[0],
                         email: row[1],
-                        password: row[2],
+                        //password: row[2] as string,
                         preferredFoods: row[3].split(','),
                         alergen: row[4],
                         diet: row[5],

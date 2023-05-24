@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/edit-profile.css">
+    <script defer src="scripts/edit-profile.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <title>Edit Profile</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__logo-container">
+            <img src="images/logo.png" alt="Logo" class="header__logo">
+            <h1 class="header__product-name">My App</h1>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <nav class="left-menu">
+            <ul>
+                <li><a href="my-profile.html">My Profile</a></li>
+            </ul>
+            <div class="left-menu__bottom">
+                <a href="dashboard.html">
+                    <button id="back">Back</button>
+                </a>
+                <a href="index.html">
+                    <button id="logout">Logout</button>
+                </a>
+            </div>
+        </nav>
+
+        <main>
+            <section id="edit-profile" class="edit-profile">
+                <h2 class="edit-profile__title">Edit Profile</h2>
+                <form id="profile-form">
+                    <div class="edit-profile__item">
+                        <label for="uname">Username:</label>
+                        <input type="text" id="uname" name="uname">
+                    </div>
+                    <div class="edit-profile__item">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    <div class="edit-profile__item">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password">
+                    </div>
+                    <div class="edit-profile__item">
+                        <label for="preferred-foods">Preferred Foods:</label>
+                        <textarea id="preferred-foods" name="preferred-foods"></textarea>
+                    </div>
+                    <div class="edit-profile__item">
+                        <label for="allergen">Allergen:</label>
+                        <textarea id="allergen" name="allergen"></textarea>
+                    </div>
+                    <div class="edit-profile__item">
+                        <label for="diet">Diet:</label>
+                        <input type="text" id="diet" name="diet">
+                    </div>
+                    <div class="edit-profile__item">
+                        <button type="submit" id="save-btn">Save</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+</body>
+
+</html>
