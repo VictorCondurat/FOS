@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     interface User {
         uname: string;
         email: string;
-        password: string;
+        //password: string;
         preferredFoods: string[];
         alergen: string;
         diet: string;
@@ -19,13 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Assuming you have corresponding HTML elements for displaying user information
                 const usernameElement = document.getElementById('uname');
                 const emailElement = document.getElementById('email');
-                const passwordElement = document.getElementById('password');
+                // const passwordElement = document.getElementById('password');
                 const preferredFoodsElement = document.getElementById('preferred-foods');
                 const alergenElement = document.getElementById('alergen');
                 const dietElement = document.getElementById('diet');
 
-                if (usernameElement && emailElement && passwordElement && preferredFoodsElement && alergenElement && dietElement) {
-                    displayUserInfo(user, usernameElement, emailElement, passwordElement, preferredFoodsElement, alergenElement, dietElement);
+                if (usernameElement && emailElement && /*passwordElement*/  preferredFoodsElement && alergenElement && dietElement) {
+                    displayUserInfo(user, usernameElement, emailElement, /*passwordElement*/ preferredFoodsElement, alergenElement, dietElement);
                 }
             });
         })
@@ -44,14 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
         user: User,
         usernameElement: HTMLElement,
         emailElement: HTMLElement,
-        passwordElement: HTMLElement,
+        /* passwordElement: HTMLElement*/
         preferredFoodsElement: HTMLElement,
         alergenElement: HTMLElement,
         dietElement: HTMLElement
     ) {
         usernameElement.textContent = user.uname;
         emailElement.textContent = user.email;
-        passwordElement.textContent = user.password;
+        // passwordElement.textContent = user.password;
         alergenElement.textContent = user.alergen;
         dietElement.textContent = user.diet;
 
