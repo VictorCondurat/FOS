@@ -100,9 +100,9 @@ const server = http.createServer(async (req, res) => {
                         uname: row[0],
                         email: row[1],
                         //password: row[2] as string,
-                        preferredFoods: row[3].split(','),
-                        alergen: row[4],
-                        diet: row[5],
+                        preferredFoods: row[2].split(','),
+                        alergen: row[3],
+                        diet: row[4],
                     }));
                     await connection.close();
                     // Render the user profile page with the retrieved user data
@@ -113,6 +113,51 @@ const server = http.createServer(async (req, res) => {
                     res.writeHead(500);
                     res.end('No user found.');
                 }
+            }
+            catch (error) {
+                res.writeHead(500);
+                res.end(`Sorry, an error occurred: ${error.message}`);
+            }
+        }
+        else {
+            res.writeHead(401); // Unauthorized status code
+            res.end('Unauthorized');
+        }
+    }
+    else if (requestUrl === '/update-profile' && req.method === 'POST') {
+        // Check if the session cookie exists
+        const cookies = parse(req.headers.cookie || '');
+        const sessionCookie = cookies[sessionCookieName];
+        if (sessionCookie) {
+            try {
+                const sessionDataString = Buffer.from(sessionCookie, 'base64').toString();
+                const sessionData = JSON.parse(sessionDataString);
+                const { uname } = sessionData;
+                const requestBody = await new Promise((resolve, reject) => {
+                    let body = '';
+                    req.on('data', (chunk) => {
+                        body += chunk.toString();
+                    });
+                    req.on('end', () => {
+                        resolve(body);
+                    });
+                    req.on('error', (error) => {
+                        reject(error);
+                    });
+                });
+                const { email, preferredFoods, alergen, diet } = querystring.parse(requestBody);
+                // Update the user's profile in the database
+                const connection = await oracledb.getConnection(dbConfig);
+                const query = `
+                    UPDATE users
+                    SET email='${email}', preferred_foods='${preferredFoods}', alergen='${alergen}', diet='${diet}'
+                    WHERE uname='${uname}'
+                `;
+                await connection.execute(query);
+                await connection.commit();
+                await connection.close();
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end();
             }
             catch (error) {
                 res.writeHead(500);
