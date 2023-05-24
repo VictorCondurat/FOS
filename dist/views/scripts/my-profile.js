@@ -45,4 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+    const modifyButton = document.getElementById('modify-btn');
+    if (modifyButton) {
+        modifyButton.addEventListener('click', handleModifyButtonClick);
+    }
+    function handleModifyButtonClick() {
+        // Implement your desired behavior when the "Modify" button is clicked
+        // For example, you can show a form or redirect to a separate edit profile page
+        // You can access the user information and make the necessary modifications
+        // Example: Redirecting to an edit profile page
+        window.location.href = 'edit-profile.html';
+    }
 });
