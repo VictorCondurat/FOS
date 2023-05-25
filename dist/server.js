@@ -13,11 +13,14 @@ const dbConfig = {
     password: 'student',
     connectString: '//localhost:1521/xe',
 };
-const sessionCookieName = 'session';
+// Session configuration
+const sessionCookieName = 'session'; // Name of the session cookie
 const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 const server = http.createServer(async (req, res) => {
     const requestUrl = req.url || '/';
     if (requestUrl === '/sign-up' && req.method === 'POST') {
+        // Handling the '/sign-up' route for POST requests (user registration)
+        // Parsing the request body
         const requestBody = await new Promise((resolve, reject) => {
             let body = '';
             req.on('data', (chunk) => {
@@ -46,6 +49,8 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
     else if (requestUrl === '/login' && req.method === 'POST') {
+        // Handling the '/login' route for POST requests (user login)
+        // Parsing the request body
         const requestBody = await new Promise((resolve, reject) => {
             let body = '';
             req.on('data', (chunk) => {
@@ -99,7 +104,6 @@ const server = http.createServer(async (req, res) => {
                     const users = result.rows.map((row) => ({
                         uname: row[0],
                         email: row[1],
-                        //password: row[2] as string,
                         preferredFoods: row[2].split(','),
                         alergen: row[3],
                         diet: row[4],
@@ -145,7 +149,12 @@ const server = http.createServer(async (req, res) => {
                         reject(error);
                     });
                 });
-                const { email, preferredFoods, alergen, diet } = querystring.parse(requestBody);
+                const parsedData = JSON.parse(requestBody);
+                console.log(parsedData.email);
+                const email = parsedData.email;
+                const preferredFoods = parsedData.preferred_foods;
+                const alergen = parsedData.allergen;
+                const diet = parsedData.diet;
                 // Update the user's profile in the database
                 const connection = await oracledb.getConnection(dbConfig);
                 const query = `
@@ -170,24 +179,30 @@ const server = http.createServer(async (req, res) => {
         }
     }
     else {
-        let filePath = path.join(__dirname, requestUrl);
+        let filePath = path.join(__dirname, requestUrl); // Constructing the file path based on the request URL
         if (requestUrl === '/') {
+            // If the request URL is '/', serve the index.html file
             filePath = path.join(__dirname, 'views', 'index.html');
         }
         else if (requestUrl.startsWith('/styles')) {
+            // If the request URL starts with '/styles', serve the corresponding style file
             filePath = path.join(__dirname, 'views', requestUrl);
         }
         else if (requestUrl.startsWith('/scripts')) {
+            // If the request URL starts with '/scripts', serve the corresponding JavaScript file
             filePath = path.join(__dirname, 'views', 'scripts', path.basename(requestUrl).replace('.ts', '.js'));
         }
         else if (requestUrl.startsWith('/images') || requestUrl.startsWith('/fonts')) {
+            // If the request URL starts with '/images' or '/fonts', serve the corresponding file from the 'public' directory
             filePath = path.join(__dirname, '..', 'public', requestUrl);
         }
         else {
+            // For any other request URL, assume it corresponds to a file in the 'views' directory
             filePath = path.join(__dirname, 'views', path.basename(requestUrl));
         }
-        const extname = String(path.extname(filePath)).toLowerCase();
+        const extname = String(path.extname(filePath)).toLowerCase(); // Extracting the file extension from the file path
         const mimeTypes = {
+            // Mapping file extensions to MIME types for content type determination
             '.html': 'text/html',
             '.js': 'text/javascript',
             '.css': 'text/css',
@@ -196,15 +211,15 @@ const server = http.createServer(async (req, res) => {
             '.woff': 'application/font-woff',
             '.woff2': 'application/font-woff2',
         };
-        const contentType = mimeTypes[extname] || 'application/octet-stream';
+        const contentType = mimeTypes[extname] || 'application/octet-stream'; // Determining the content type based on the file extension
         try {
-            const content = await fs.readFile(filePath);
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(content, 'utf-8');
+            const content = await fs.readFile(filePath); // Reading the file content asynchronously
+            res.writeHead(200, { 'Content-Type': contentType }); // Setting the response headers with the determined content type
+            res.end(content, 'utf-8'); // Sending the file content as the response body
         }
         catch (error) {
-            res.writeHead(500);
-            res.end(`Sorry, an error occurred: ${error.code}`);
+            res.writeHead(500); // Internal server error status code
+            res.end(`Sorry, an error occurred: ${error.code}`); // Sending an error message as the response body
         }
     }
 });
