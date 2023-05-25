@@ -65,7 +65,7 @@ const server = http.createServer(async (req, res) => {
 
         await connection.commit();
 
-        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.writeHead(302, { 'Location': 'index.html' }); // Redirect to index.html
         res.end();
     }
 
@@ -103,13 +103,14 @@ const server = http.createServer(async (req, res) => {
             });
 
             res.setHeader('Set-Cookie', sessionCookie);
-            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.writeHead(302, { 'Location': 'index.html' }); // Redirect to index.html
             res.end();
         } else {
             // User credentials are invalid
             res.writeHead(401); // Unauthorized status code
             res.end('Invalid username or password');
         }
+
 
     }
     else if (requestUrl === '/get-user') {

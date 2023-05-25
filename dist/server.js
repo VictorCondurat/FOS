@@ -78,7 +78,7 @@ const server = http.createServer(async (req, res) => {
                 path: '/',
             });
             res.setHeader('Set-Cookie', sessionCookie);
-            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.writeHead(302, { 'Location': 'index.html' }); // Redirect to index.html
             res.end();
         }
         else {
@@ -150,7 +150,6 @@ const server = http.createServer(async (req, res) => {
                     });
                 });
                 const parsedData = JSON.parse(requestBody);
-                console.log(parsedData.email);
                 const email = parsedData.email;
                 const preferredFoods = parsedData.preferred_foods;
                 const alergen = parsedData.allergen;
