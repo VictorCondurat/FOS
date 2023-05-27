@@ -181,21 +181,35 @@ const server = http.createServer(async (req, res) => {
                     });
                 });
 
-
                 const parsedData = JSON.parse(requestBody);
-                const email = parsedData.email;
-                const preferredFoods = parsedData.preferred_foods;
-                const alergen = parsedData.allergen;
-                const diet = parsedData.diet;
+                const { email, preferred_foods, allergen, diet } = parsedData;
+
                 // Update the user's profile in the database
                 const connection = await oracledb.getConnection(dbConfig);
-                const query = `
-                    UPDATE users
-                    SET email='${email}', preferred_foods='${preferredFoods}', alergen='${alergen}', diet='${diet}'
-                    WHERE uname='${uname}'
-                `;
-                await connection.execute(query);
-                await connection.commit();
+                let query = 'UPDATE users SET ';
+                const updateFields = [];
+
+                if (email) {
+                    updateFields.push(`email = '${email}'`);
+                }
+                if (preferred_foods) {
+                    updateFields.push(`preferred_foods = '${preferred_foods}'`);
+                }
+                if (allergen) {
+                    updateFields.push(`alergen = '${allergen}'`);
+                }
+                if (diet) {
+                    updateFields.push(`diet = '${diet}'`);
+                }
+
+                if (updateFields.length > 0) {
+                    query += updateFields.join(', ');
+                    query += ` WHERE uname = '${uname}'`;
+
+                    await connection.execute(query);
+                    await connection.commit();
+                }
+
                 await connection.close();
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -204,6 +218,7 @@ const server = http.createServer(async (req, res) => {
                 res.writeHead(500);
                 res.end(`Sorry, an error occurred: ${(error as { message: string }).message}`);
             }
+
         } else {
             res.writeHead(401); // Unauthorized status code
             res.end('Unauthorized');

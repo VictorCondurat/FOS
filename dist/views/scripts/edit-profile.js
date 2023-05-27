@@ -18,15 +18,30 @@ document.addEventListener('DOMContentLoaded', () => {
             const preferredFoods = preferredFoodsInput.value.split('\n').filter(food => food.trim() !== '');
             const allergen = allergenInput.value;
             const diet = dietInput.value;
+            // Create an empty object to store the user data
+            const user = {};
+            // Add fields to the user object if they have data input
+            if (username.trim() !== '') {
+                user.uname = username;
+            }
+            if (email.trim() !== '') {
+                user.email = email;
+            }
+            if (preferredFoods.length > 0) {
+                user.preferredFoods = preferredFoods;
+            }
+            if (allergen.trim() !== '') {
+                user.allergen = allergen;
+            }
+            if (diet.trim() !== '') {
+                user.diet = diet;
+            }
             // Perform validation or any additional logic as needed
-            // Example: Update the user information via an AJAX request
-            const user = {
-                uname: username,
-                email: email,
-                preferredFoods: preferredFoods,
-                allergen: allergen,
-                diet: diet
-            };
+            // Check if the user object has any data fields
+            if (Object.keys(user).length === 0) {
+                alert('No data input. Please enter some information.');
+                return;
+            }
             // Send the updated user information to the server
             fetch('/update-profile', {
                 method: 'POST',
