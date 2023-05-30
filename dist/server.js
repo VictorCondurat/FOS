@@ -69,6 +69,7 @@ const server = http.createServer(async (req, res) => {
         const query = `SELECT uname, email, preferred_foods, alergen, diet FROM users WHERE uname='${uname}' AND password='${pass}'`;
         const result = await connection.execute(query);
         if (result.rows && result.rows.length > 0) {
+            // Inside the '/login' route for successful login
             // User credentials are valid
             const sessionData = { uname }; // Store necessary session data (e.g., username)
             const sessionCookieValue = Buffer.from(JSON.stringify(sessionData)).toString('base64');
