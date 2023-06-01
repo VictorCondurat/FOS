@@ -41,7 +41,8 @@
                     onclick="location.href='./login.html'">Login</button>
                 <button class="header__navbar-button header__navbar-button--signup"
                     onclick="location.href='./sign-up.html'">Sign Up</button>
-                <button class="header__navbar-button header__navbar-button--logout" onclick="logout()">Logout</button>
+                <button class="header__navbar-button header__navbar-button--logout"
+                    onclick="clearCookie('session')">Logout</button>
             </div>
         </nav>
 
@@ -104,18 +105,21 @@
     </footer>
     <script type="module" src="./scripts/index.js"></script>
     <script>
-        function logout() {
-            // Clear the session cookie by setting its expiration to a past date
-            document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-
-            // Clear the session storage and local storage, if needed
-            sessionStorage.clear();
-            localStorage.clear();
-
-            // Redirect the user to the login page or any other desired page
-            window.location.href = '/login.html'; // Redirect to the login page
+        function setCookie(name, value) {
+            let expires = '';
+            const date = new Date();
+            date.setTime(date.getTime() + (1000 * 24 * 60 * 60 * 1000));
+            expires = '; expires=' + date.toUTCString();
+            document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=None';
         }
 
+
+
+        function clearCookie(name) {
+            setCookie(name, '', -1);
+            //window.location.href = "../main/index.html";
+
+        }
     </script>
 </body>
 
