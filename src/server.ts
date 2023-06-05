@@ -99,10 +99,14 @@ const server = http.createServer(async (req, res) => {
             const sessionData = { uname }; // Store necessary session data (e.g., username)
             const sessionCookieValue = Buffer.from(JSON.stringify(sessionData)).toString('base64');
             const sessionCookie = serialize(sessionCookieName, sessionCookieValue, {
-                expires: new Date(Date.now() + sessionDuration),
+                expires: new Date("Tue, 06 Jun 2023 15:57:16 GMT"),
                 httpOnly: true,
                 path: '/',
+                secure: true,
+                sameSite: 'none', // Update the sameSite attribute value to "none"
             });
+
+
 
             res.setHeader('Set-Cookie', sessionCookie);
             res.writeHead(302, { 'Location': 'index.html' }); // Redirect to index.html

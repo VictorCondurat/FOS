@@ -42,7 +42,7 @@
                 <button class="header__navbar-button header__navbar-button--signup"
                     onclick="location.href='./sign-up.html'">Sign Up</button>
                 <button class="header__navbar-button header__navbar-button--logout"
-                    onclick="clearCookie('session')">Logout</button>
+                    onclick=clearCookie()>Logout</button>
             </div>
         </nav>
 
@@ -115,11 +115,12 @@
 
 
 
-        function clearCookie(name) {
-            setCookie(name, '', -1);
+        function clearCookie() {
+            setCookie("session", '', -1);
             //window.location.href = "../main/index.html";
 
         }
+
     </script>
 </body>
 
