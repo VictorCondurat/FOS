@@ -8,44 +8,27 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         // Get the input values from the form
-        const usernameInput = document.getElementById('uname') as HTMLInputElement;
-        const emailInput = document.getElementById('email') as HTMLInputElement;
         const preferredFoodsInput = document.getElementById('preferred-foods') as HTMLInputElement;
         const allergenInput = document.getElementById('allergen') as HTMLInputElement;
         const dietInput = document.getElementById('diet') as HTMLInputElement;
 
-        if (usernameInput && emailInput && preferredFoodsInput && allergenInput && dietInput) {
-            const username = usernameInput.value;
-            const email = emailInput.value;
+        if (preferredFoodsInput && allergenInput && dietInput) {
             const preferredFoods = preferredFoodsInput.value.split('\n').filter(food => food.trim() !== '');
-            const allergen = allergenInput.value;
-            const diet = dietInput.value;
+
+            const allergen: string = allergenInput.value;
+            const diet: string = dietInput.value;
+            console.log(preferredFoods);
 
             // Create an empty object to store the user data
             const user: {
-                uname?: string;
-                email?: string;
                 preferredFoods?: string[];
                 allergen?: string;
                 diet?: string;
-            } = {};
-
-            // Add fields to the user object if they have data input
-            if (username.trim() !== '') {
-                user.uname = username;
-            }
-            if (email.trim() !== '') {
-                user.email = email;
-            }
-            if (preferredFoods.length > 0) {
-                user.preferredFoods = preferredFoods;
-            }
-            if (allergen.trim() !== '') {
-                user.allergen = allergen;
-            }
-            if (diet.trim() !== '') {
-                user.diet = diet;
-            }
+            } = {
+                preferredFoods,
+                allergen,
+                diet
+            };
 
             // Perform validation or any additional logic as needed
 

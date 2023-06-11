@@ -74,7 +74,7 @@ const server = http.createServer(async (req, res) => {
             const sessionData = { uname }; // Store necessary session data (e.g., username)
             const sessionCookieValue = Buffer.from(JSON.stringify(sessionData)).toString('base64');
             const sessionCookie = serialize(sessionCookieName, sessionCookieValue, {
-                expires: new Date("Tue, 06 Jun 2023 15:57:16 GMT"),
+                expires: new Date("Tue, 06 Jul 2023 15:57:16 GMT"),
                 httpOnly: true,
                 path: '/',
                 secure: true,
@@ -101,18 +101,18 @@ const server = http.createServer(async (req, res) => {
                 const { uname } = sessionData;
                 // Fetch user data from the database based on the session information
                 const connection = await oracledb.getConnection(dbConfig);
-                const query = `SELECT uname, email, preferred_foods, alergen, diet FROM users WHERE uname='${uname}'`;
+                const query = `SELECT preferred_foods, alergen, diet FROM users WHERE uname='${uname}'`;
                 const result = await connection.execute(query);
                 if (result.rows && result.rows.length > 0) {
                     const users = result.rows.map((row) => ({
-                        uname: row[0],
-                        email: row[1],
-                        preferredFoods: row[2].split(','),
-                        alergen: row[3],
-                        diet: row[4],
+                        /*uname: row[0] as string,
+                        email: row[1] as string,*/
+                        preferredFoods: row[0].split(','),
+                        alergen: row[1],
+                        diet: row[2],
                     }));
                     await connection.close();
-                    // Render the user profile page with the retrieved user data
+                    console.log(JSON.stringify(users)); // Log the user data to check the format
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify(users));
                 }
@@ -153,14 +153,14 @@ const server = http.createServer(async (req, res) => {
                     });
                 });
                 const parsedData = JSON.parse(requestBody);
-                const { email, preferred_foods, allergen, diet } = parsedData;
+                const { /*email*/ preferred_foods, allergen, diet } = parsedData;
                 // Update the user's profile in the database
                 const connection = await oracledb.getConnection(dbConfig);
                 let query = 'UPDATE users SET ';
                 const updateFields = [];
-                if (email) {
-                    updateFields.push(`email = '${email}'`);
-                }
+                /* if (email) {
+                     updateFields.push(`email = '${email}'`);
+                 }*/
                 if (preferred_foods) {
                     updateFields.push(`preferred_foods = '${preferred_foods}'`);
                 }
@@ -170,6 +170,7 @@ const server = http.createServer(async (req, res) => {
                 if (diet) {
                     updateFields.push(`diet = '${diet}'`);
                 }
+                console.log(updateFields);
                 if (updateFields.length > 0) {
                     query += updateFields.join(', ');
                     query += ` WHERE uname = '${uname}'`;

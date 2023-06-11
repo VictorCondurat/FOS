@@ -4,28 +4,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!userInfoSection) return;
 
     interface User {
-        uname: string;
-        email: string;
+        // uname: string;
+        //email: string;
         //password: string;
         preferredFoods: string[];
         alergen: string;
         diet: string;
     }
 
-    fetch('/get-user')
-        .then((response) => response.json())
+    fetch('/get-user', { credentials: 'include' })
+        .then((response) => {
+            console.log(response);
+            return response.json();
+        })
         .then((users) => {
             users.forEach((user: User) => {
                 // Assuming you have corresponding HTML elements for displaying user information
-                const usernameElement = document.getElementById('uname');
-                const emailElement = document.getElementById('email');
+                //const usernameElement = document.getElementById('uname');
+                //const emailElement = document.getElementById('email');
                 // const passwordElement = document.getElementById('password');
                 const preferredFoodsElement = document.getElementById('preferred-foods');
                 const alergenElement = document.getElementById('alergen');
                 const dietElement = document.getElementById('diet');
 
-                if (usernameElement && emailElement && /*passwordElement*/  preferredFoodsElement && alergenElement && dietElement) {
-                    displayUserInfo(user, usernameElement, emailElement, /*passwordElement*/ preferredFoodsElement, alergenElement, dietElement);
+                if (/*usernameElement && emailElement &&*/ /*passwordElement*/  preferredFoodsElement && alergenElement && dietElement) {
+                    displayUserInfo(user, preferredFoodsElement, alergenElement, dietElement);
                 }
             });
         })
@@ -42,15 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayUserInfo(
         user: User,
-        usernameElement: HTMLElement,
-        emailElement: HTMLElement,
+        // usernameElement: HTMLElement,
+        //emailElement: HTMLElement,
         /* passwordElement: HTMLElement*/
         preferredFoodsElement: HTMLElement,
         alergenElement: HTMLElement,
         dietElement: HTMLElement
     ) {
-        usernameElement.textContent = user.uname;
-        emailElement.textContent = user.email;
+        // usernameElement.textContent = user.uname;
+        //emailElement.textContent = user.email;
         // passwordElement.textContent = user.password;
         alergenElement.textContent = user.alergen;
         dietElement.textContent = user.diet;
