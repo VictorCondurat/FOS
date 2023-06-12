@@ -12,22 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const allergenInput = document.getElementById('allergen') as HTMLInputElement;
         const dietInput = document.getElementById('diet') as HTMLInputElement;
 
-        if (preferredFoodsInput && allergenInput && dietInput) {
-            const preferredFoods = preferredFoodsInput.value.split('\n').filter(food => food.trim() !== '');
 
-            const allergen: string = allergenInput.value;
-            const diet: string = dietInput.value;
-            console.log(preferredFoods);
+        if (preferredFoodsInput && allergenInput && dietInput) {
+            const preferredFoods = preferredFoodsInput.value;
+            const allergen = allergenInput.value;
+            const diet = dietInput.value;
 
             // Create an empty object to store the user data
-            const user: {
-                preferredFoods?: string[];
-                allergen?: string;
-                diet?: string;
-            } = {
-                preferredFoods,
-                allergen,
-                diet
+            const user = {
+                preferred_foods: preferredFoods,
+                allergen: allergen,
+                diet: diet
             };
 
             // Perform validation or any additional logic as needed

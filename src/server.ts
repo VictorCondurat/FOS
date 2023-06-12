@@ -20,14 +20,30 @@ const dbConfig = {
 interface User {
     // uname: string;
     //email: string;
-    preferredFoods: string[];
+    preferredFoods: string;
     alergen: string;
     diet: string;
 }
 
 // Session configuration
 const sessionCookieName = 'session'; // Name of the session cookie
-const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const sessionExpirationTime = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+
+function generateRandomSessionId(): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const sessionIdLength = 32;
+    let sessionId = '';
+
+    for (let i = 0; i < sessionIdLength; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        sessionId += characters.charAt(randomIndex);
+    }
+
+    return sessionId;
+}
+
+
 
 const server = http.createServer(async (req, res) => {
     const requestUrl = req.url || '/';
@@ -65,7 +81,7 @@ const server = http.createServer(async (req, res) => {
 
         await connection.commit();
 
-        res.writeHead(302, { 'Location': 'index.html' }); // Redirect to index.html
+        res.writeHead(302, { 'Location': 'login.html' }); // Redirect to login.html
         res.end();
     }
 
@@ -90,23 +106,22 @@ const server = http.createServer(async (req, res) => {
 
         // Verify the user's credentials
         const connection = await oracledb.getConnection(dbConfig);
-        const query = `SELECT uname, email, preferred_foods, alergen, diet FROM users WHERE uname='${uname}' AND password='${pass}'`;
-        const result = await connection.execute(query);
+        const query = `SELECT uname, email, preferred_foods, alergen, diet FROM users WHERE uname=:uname AND password=:pass`;
+        const result = await connection.execute(query, [uname, pass]);
+        console.log(result);
+        console.log(uname);
         if (result.rows && result.rows.length > 0) {
             // Inside the '/login' route for successful login
-
             // User credentials are valid
-            const sessionData = { uname }; // Store necessary session data (e.g., username)
+            const sessionData = { sessionId: generateRandomSessionId(), uname }; // Store necessary session data (e.g., username and session ID)
             const sessionCookieValue = Buffer.from(JSON.stringify(sessionData)).toString('base64');
             const sessionCookie = serialize(sessionCookieName, sessionCookieValue, {
-                expires: new Date("Tue, 06 Jul 2023 15:57:16 GMT"),
+                expires: new Date(Date.now() + sessionExpirationTime), // Set a proper expiration date (e.g., add milliseconds for the desired duration)
                 httpOnly: true,
                 path: '/',
                 secure: true,
-                sameSite: 'none', // Update the sameSite attribute value to "none"
+                sameSite: 'none' // Update the sameSite attribute value to "None"
             });
-
-
 
             res.setHeader('Set-Cookie', sessionCookie);
             res.writeHead(302, { 'Location': 'index.html' }); // Redirect to index.html
@@ -116,9 +131,8 @@ const server = http.createServer(async (req, res) => {
             res.writeHead(401); // Unauthorized status code
             res.end('Invalid username or password');
         }
-
-
     }
+
     else if (requestUrl === '/get-user') {
         // Check if the session cookie exists
         const cookies = parse(req.headers.cookie || '');
@@ -133,16 +147,15 @@ const server = http.createServer(async (req, res) => {
 
                 // Fetch user data from the database based on the session information
                 const connection = await oracledb.getConnection(dbConfig);
-                const query = `SELECT preferred_foods, alergen, diet FROM users WHERE uname='${uname}'`;
+                const query = `SELECT uname,preferred_foods, alergen, diet FROM users WHERE uname='${uname}'`;
                 const result = await connection.execute(query);
 
                 if (result.rows && result.rows.length > 0) {
                     const users: User[] = result.rows.map((row: any) => ({
-                        /*uname: row[0] as string,
-                        email: row[1] as string,*/
-                        preferredFoods: (row[0] as string).split(','),
-                        alergen: row[1] as string,
-                        diet: row[2] as string,
+                        uname: row[0] as string,
+                        preferredFoods: row[1] as string,
+                        alergen: row[2] as string,
+                        diet: row[3] as string,
                     }));
                     await connection.close();
 
@@ -189,16 +202,13 @@ const server = http.createServer(async (req, res) => {
                 });
 
                 const parsedData = JSON.parse(requestBody);
-                const { /*email*/ preferred_foods, allergen, diet } = parsedData;
+                const { preferred_foods, allergen, diet } = parsedData;
 
                 // Update the user's profile in the database
                 const connection = await oracledb.getConnection(dbConfig);
                 let query = 'UPDATE users SET ';
                 const updateFields = [];
 
-                /* if (email) {
-                     updateFields.push(`email = '${email}'`);
-                 }*/
                 if (preferred_foods) {
                     updateFields.push(`preferred_foods = '${preferred_foods}'`);
                 }
@@ -206,10 +216,11 @@ const server = http.createServer(async (req, res) => {
                 if (allergen) {
                     updateFields.push(`alergen = '${allergen}'`);
                 }
+
                 if (diet) {
                     updateFields.push(`diet = '${diet}'`);
                 }
-                console.log(updateFields);
+
                 if (updateFields.length > 0) {
                     query += updateFields.join(', ');
                     query += ` WHERE uname = '${uname}'`;
@@ -226,12 +237,12 @@ const server = http.createServer(async (req, res) => {
                 res.writeHead(500);
                 res.end(`Sorry, an error occurred: ${(error as { message: string }).message}`);
             }
-
         } else {
             res.writeHead(401); // Unauthorized status code
             res.end('Unauthorized');
         }
     }
+
 
 
     else {

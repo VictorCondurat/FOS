@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="module" src="./scripts/index.ts" defer></script>
 </head>
 
 <body>
@@ -41,8 +42,8 @@
                     onclick="location.href='./login.html'">Login</button>
                 <button class="header__navbar-button header__navbar-button--signup"
                     onclick="location.href='./sign-up.html'">Sign Up</button>
-                <button class="header__navbar-button header__navbar-button--logout"
-                    onclick=clearCookie()>Logout</button>
+                <button class="header__navbar-button header__navbar-button--logout" id="logout">Logout</button>
+
             </div>
         </nav>
 
@@ -103,25 +104,7 @@
             <a href="#" class="footer__social-icon"><i class="fab fa-linkedin-in"></i></a>
         </div>
     </footer>
-    <script type="module" src="./scripts/index.js"></script>
-    <script>
-        function setCookie(name, value) {
-            let expires = '';
-            const date = new Date();
-            date.setTime(date.getTime() + (1000 * 24 * 60 * 60 * 1000));
-            expires = '; expires=' + date.toUTCString();
-            document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=None';
-        }
 
-
-
-        function clearCookie() {
-            setCookie("session", '', -1);
-            //window.location.href = "../main/index.html";
-
-        }
-
-    </script>
 </body>
 
 </html>

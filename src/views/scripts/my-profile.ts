@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!userInfoSection) return;
 
     interface User {
-        // uname: string;
+        uname: string;
         //email: string;
         //password: string;
-        preferredFoods: string[];
+        preferredFoods: string;
         alergen: string;
         diet: string;
     }
@@ -20,15 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
         .then((users) => {
             users.forEach((user: User) => {
                 // Assuming you have corresponding HTML elements for displaying user information
-                //const usernameElement = document.getElementById('uname');
+                const usernameElement = document.getElementById('uname');
                 //const emailElement = document.getElementById('email');
                 // const passwordElement = document.getElementById('password');
                 const preferredFoodsElement = document.getElementById('preferred-foods');
                 const alergenElement = document.getElementById('alergen');
                 const dietElement = document.getElementById('diet');
 
-                if (/*usernameElement && emailElement &&*/ /*passwordElement*/  preferredFoodsElement && alergenElement && dietElement) {
-                    displayUserInfo(user, preferredFoodsElement, alergenElement, dietElement);
+                if (usernameElement && /*emailElement &&*/ /*passwordElement*/  preferredFoodsElement && alergenElement && dietElement) {
+                    displayUserInfo(user, usernameElement, preferredFoodsElement, alergenElement, dietElement);
                 }
             });
         })
@@ -45,27 +45,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayUserInfo(
         user: User,
-        // usernameElement: HTMLElement,
+        usernameElement: HTMLElement,
         //emailElement: HTMLElement,
         /* passwordElement: HTMLElement*/
         preferredFoodsElement: HTMLElement,
         alergenElement: HTMLElement,
         dietElement: HTMLElement
     ) {
-        // usernameElement.textContent = user.uname;
+        usernameElement.textContent = user.uname;
         //emailElement.textContent = user.email;
         // passwordElement.textContent = user.password;
+        preferredFoodsElement.textContent = user.preferredFoods;
         alergenElement.textContent = user.alergen;
         dietElement.textContent = user.diet;
 
-        preferredFoodsElement.innerHTML = '';
+        /* preferredFoodsElement.innerHTML = '';
         if (Array.isArray(user.preferredFoods)) {
             user.preferredFoods.forEach((food: string) => {
                 const li = document.createElement('li');
                 li.textContent = food;
                 preferredFoodsElement.appendChild(li);
             });
-        }
+        } */
     }
     const modifyButton = document.getElementById('modify-btn');
     if (modifyButton) {
