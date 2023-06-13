@@ -5,9 +5,11 @@ import url from 'url';
 import oracledb from 'oracledb';
 import querystring from 'querystring';
 import { parse, serialize } from 'cookie';
+// __dirname represents the current directory
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const hostname = '127.0.0.1';
 const port = 3000;
+// Database configuration
 const dbConfig = {
     user: 'student',
     password: 'student',
@@ -16,6 +18,7 @@ const dbConfig = {
 // Session configuration
 const sessionCookieName = 'session'; // Name of the session cookie
 const sessionExpirationTime = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+// Function to generate a random session ID
 function generateRandomSessionId() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const sessionIdLength = 32;
@@ -26,6 +29,7 @@ function generateRandomSessionId() {
     }
     return sessionId;
 }
+// Creating an HTTP server
 const server = http.createServer(async (req, res) => {
     const requestUrl = req.url || '/';
     if (requestUrl === '/sign-up' && req.method === 'POST') {
@@ -43,6 +47,7 @@ const server = http.createServer(async (req, res) => {
                 reject(error);
             });
         });
+        // Extracting user registration data from the request body
         const { uname, email, psw, 'psw-repeat': pswRepeat } = querystring.parse(requestBody);
         // Check if passwords match
         if (psw !== pswRepeat) {
@@ -73,24 +78,25 @@ const server = http.createServer(async (req, res) => {
                 reject(error);
             });
         });
+        // Extracting user login credentials from the request body
         const { uname, pass } = querystring.parse(requestBody);
         // Verify the user's credentials
         const connection = await oracledb.getConnection(dbConfig);
         const query = `SELECT uname, email, preferred_foods, alergen, diet FROM users WHERE uname=:uname AND password=:pass`;
         const result = await connection.execute(query, [uname, pass]);
-        console.log(result);
-        console.log(uname);
         if (result.rows && result.rows.length > 0) {
             // Inside the '/login' route for successful login
             // User credentials are valid
-            const sessionData = { sessionId: generateRandomSessionId(), uname }; // Store necessary session data (e.g., username and session ID)
+            // Create a session ID and store necessary session data
+            const sessionData = { sessionId: generateRandomSessionId(), uname };
             const sessionCookieValue = Buffer.from(JSON.stringify(sessionData)).toString('base64');
+            // Create a session cookie and set it in the response headers
             const sessionCookie = serialize(sessionCookieName, sessionCookieValue, {
                 expires: new Date(Date.now() + sessionExpirationTime),
                 httpOnly: true,
                 path: '/',
                 secure: true,
-                sameSite: 'none' // Update the sameSite attribute value to "None"
+                sameSite: 'none'
             });
             res.setHeader('Set-Cookie', sessionCookie);
             res.writeHead(302, { 'Location': 'index.html' }); // Redirect to index.html
@@ -103,19 +109,22 @@ const server = http.createServer(async (req, res) => {
         }
     }
     else if (requestUrl === '/get-user') {
+        // Handling the '/get-user' route
         // Check if the session cookie exists
         const cookies = parse(req.headers.cookie || '');
         const sessionCookie = cookies[sessionCookieName];
         if (sessionCookie) {
             try {
+                // Decode the session cookie and retrieve session data
                 const sessionDataString = Buffer.from(sessionCookie, 'base64').toString();
                 const sessionData = JSON.parse(sessionDataString);
                 const { uname } = sessionData;
                 // Fetch user data from the database based on the session information
                 const connection = await oracledb.getConnection(dbConfig);
-                const query = `SELECT uname,preferred_foods, alergen, diet FROM users WHERE uname='${uname}'`;
+                const query = `SELECT uname, preferred_foods, alergen, diet FROM users WHERE uname='${uname}'`;
                 const result = await connection.execute(query);
                 if (result.rows && result.rows.length > 0) {
+                    // Map the retrieved user data to User objects
                     const users = result.rows.map((row) => ({
                         uname: row[0],
                         preferredFoods: row[1],
@@ -143,14 +152,17 @@ const server = http.createServer(async (req, res) => {
         }
     }
     else if (requestUrl === '/update-profile' && req.method === 'POST') {
+        // Handling the '/update-profile' route for POST requests
         // Check if the session cookie exists
         const cookies = parse(req.headers.cookie || '');
         const sessionCookie = cookies[sessionCookieName];
         if (sessionCookie) {
             try {
+                // Decode the session cookie and retrieve session data
                 const sessionDataString = Buffer.from(sessionCookie, 'base64').toString();
                 const sessionData = JSON.parse(sessionDataString);
                 const { uname } = sessionData;
+                // Parse the request body
                 const requestBody = await new Promise((resolve, reject) => {
                     let body = '';
                     req.on('data', (chunk) => {
@@ -199,6 +211,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
     else {
+        // Handling other routes
         let filePath = path.join(__dirname, requestUrl); // Constructing the file path based on the request URL
         if (requestUrl === '/') {
             // If the request URL is '/', serve the index.html file
@@ -233,16 +246,17 @@ const server = http.createServer(async (req, res) => {
         };
         const contentType = mimeTypes[extname] || 'application/octet-stream'; // Determining the content type based on the file extension
         try {
-            const content = await fs.readFile(filePath); // Reading the file content asynchronously
-            res.writeHead(200, { 'Content-Type': contentType }); // Setting the response headers with the determined content type
-            res.end(content, 'utf-8'); // Sending the file content as the response body
+            const content = await fs.readFile(filePath); // Reading the file content
+            res.writeHead(200, { 'Content-Type': contentType });
+            res.end(content);
         }
         catch (error) {
-            res.writeHead(500); // Internal server error status code
-            res.end(`Sorry, an error occurred: ${error.code}`); // Sending an error message as the response body
+            res.writeHead(404); // File not found status code
+            res.end('File not found');
         }
     }
 });
+// Starting the HTTP server
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
