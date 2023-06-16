@@ -7,6 +7,9 @@ import querystring from 'querystring';
 import { parse, serialize } from 'cookie';
 import * as cookie from 'cookie';
 
+
+
+
 // __dirname represents the current directory
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
@@ -25,6 +28,33 @@ interface User {
     preferredFoods: string;
     alergen: string;
     diet: string;
+}
+interface Statistics {
+    userCount: number;
+    // Add other desired statistics properties here
+}
+
+
+
+import { PDFDocument } from 'pdf-lib';
+
+async function generatePDF(statistics: Statistics) {
+    const doc = await PDFDocument.create();
+
+    // Add content to the PDF document
+    doc.setTitle('Statistics');
+    const page = doc.addPage();
+    page.drawText('Statistics:', { x: 50, y: 700 });
+    let y = 670;
+    Object.entries(statistics).forEach(([key, value]) => {
+        page.drawText(`${key}: ${value}`, { x: 50, y });
+        y -= 20;
+    });
+
+    // Generate the PDF data as a blob
+    const pdfData = await doc.save();
+
+    return pdfData;
 }
 
 // Session configuration
@@ -289,6 +319,60 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    else if (req.url === '/export' && req.method === 'GET') {
+        // Interogare SQL pentru a obține numărul de utilizatori
+        const query = 'SELECT COUNT(*) AS userCount FROM users';
+
+        // Executare interogare
+        oracledb.getConnection(dbConfig, (err, connection) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Eroare la conectarea la baza de date');
+            } else {
+                connection.execute(query, (error, result: oracledb.Result<any>) => {
+                    if (error) {
+                        res.writeHead(500, { 'Content-Type': 'text/plain' });
+                        res.end('Eroare la executarea interogării SQL');
+                    } else {
+                        if (result.rows && result.rows.length > 0) {
+                            const userCount = result.rows[0][0];
+
+                            // Exportul statisticilor în funcție de formatul cerut
+                            const format = (req.url as string).includes('?format=') ? (req.url as string).split('?format=')[1] : 'pdf';
+
+                            if (format === 'pdf') {
+                                const statistics: Statistics = {
+                                    userCount: userCount,
+                                    // Assign other desired statistics properties here
+                                };
+
+                                const pdfData = generatePDF(statistics);
+
+                                res.setHeader('Content-Type', 'application/pdf');
+                                res.writeHead(200);
+                                res.end(pdfData);
+                            }
+
+                            else {
+                                res.writeHead(406, { 'Content-Type': 'text/plain' });
+                                res.end('Formatul răspunsului nu este suportat');
+                            }
+                        } else {
+                            res.writeHead(500, { 'Content-Type': 'text/plain' });
+                            res.end('Eroare: Nu s-au găsit rezultate în interogare');
+                        }
+                    }
+
+                    // Eliberează conexiunea la baza de date
+                    connection.close((err) => {
+                        if (err) {
+                            console.error(err.message);
+                        }
+                    });
+                });
+            }
+        });
+    }
 
     else {
         // Handling other routes

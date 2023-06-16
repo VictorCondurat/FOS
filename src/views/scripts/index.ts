@@ -29,6 +29,40 @@ if (logoutButton) {
             });
     });
 }
+const exportButton = document.getElementById('export');
+if (exportButton) {
+    exportButton.addEventListener('click', () => {
+        fetch('/export', {
+            method: 'GET',
+        })
+            .then((response) => {
+                if (response.ok) {
+                    // Răspunsul este OK, deci putem trata datele exportate
+                    // Verifică header-urile răspunsului pentru a determina formatul
+                    const contentType = response.headers.get('Content-Type');
+
+                    if (contentType === 'application/pdf') {
+                        // Răspunsul este în format PDF
+                        return response.arrayBuffer().then((pdfData) => {
+                            // Utilizează datele PDF
+                            console.log(pdfData);
+                        });
+                    } else {
+                        // Formatul răspunsului nu este suportat
+                        throw new Error('Formatul răspunsului nu este suportat');
+                    }
+                } else {
+                    // Răspunsul a întors o eroare
+                    throw new Error('Eroare la obținerea datelor exportate');
+                }
+            })
+            .catch((error) => {
+                // Gestionarea erorilor
+                console.error(error);
+            });
+    });
+}
+
 
 
 
