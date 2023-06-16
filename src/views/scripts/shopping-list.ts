@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.forEach((link) => {
         link.addEventListener('click', () => {
             shoppingListsSection.innerHTML = '';
+
         });
     });
 });
@@ -60,3 +61,4 @@ function displayShoppingLists(
         container.appendChild(div);
     });
 }
+

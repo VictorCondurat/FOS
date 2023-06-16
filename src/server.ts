@@ -5,6 +5,7 @@ import url from 'url';
 import oracledb from 'oracledb';
 import querystring from 'querystring';
 import { parse, serialize } from 'cookie';
+import * as cookie from 'cookie';
 
 // __dirname represents the current directory
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -43,6 +44,8 @@ function generateRandomSessionId(): string {
 
     return sessionId;
 }
+
+const sessions: { [sessionId: string]: User } = {};
 
 // Creating an HTTP server
 const server = http.createServer(async (req, res) => {
@@ -254,6 +257,38 @@ const server = http.createServer(async (req, res) => {
             res.end('Unauthorized');
         }
     }
+    else if (req.url === '/logout' && req.method === 'GET') {
+        const cookies = parse(req.headers.cookie || '');
+        const sessionCookie = cookies[sessionCookieName];
+
+        if (sessionCookie) {
+            try {
+                const sessionDataString = Buffer.from(sessionCookie, 'base64').toString();
+                const sessionData = JSON.parse(sessionDataString);
+                const sessionId = sessionData.sessionId;
+
+                delete sessions[sessionId];
+                console.log('Session successfully destroyed.');
+
+                // Deleting the session cookie by setting it with an expiration date in the past
+                res.setHeader('Set-Cookie', cookie.serialize(sessionCookieName, '', {
+                    expires: new Date(0),
+                    httpOnly: true,
+                    sameSite: 'none',
+                    secure: true
+                }));
+
+                // Redirecting to the login page
+                res.statusCode = 302;
+                res.setHeader('Location', 'login.html');
+                res.end();
+                return;
+            } catch (error) {
+                console.error('Error destroying session:', error);
+            }
+        }
+    }
+
 
     else {
         // Handling other routes

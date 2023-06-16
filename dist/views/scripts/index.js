@@ -3,16 +3,29 @@ const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
 if (mobileMenuToggle) {
     mobileMenuToggle.addEventListener('click', toggleMobileMenu);
 }
-const logoutButton = document.getElementById("logout");
-function logout() {
-    console.log("Logout button clicked"); // Add this console.log statement
-    // Clear the session cookie by setting an expired date
-    document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure';
-    // Redirect the user to the login page or any other desired page
-    window.location.href = '/login.html'; // Redirect to the login page
-}
+const logoutButton = document.getElementById('logout');
 if (logoutButton) {
-    logoutButton.addEventListener('click', logout);
+    logoutButton.addEventListener('click', () => {
+        fetch('/logout', {
+            method: 'GET',
+            credentials: 'same-origin' // ensures that the request includes session cookies
+        })
+            .then(response => {
+            if (response.ok) {
+                // Logout successful, perform any additional necessary actions
+                console.log('Logout successful');
+                // Redirect the user to the login page or another relevant page
+                window.location.href = 'src\views\login.html';
+            }
+            else {
+                // Logout failed, display an error message or take appropriate actions
+                console.error('Logout failed');
+            }
+        })
+            .catch(error => {
+            console.error('Logout error:', error);
+        });
+    });
 }
 /* // Check user's login status and update the buttons accordingly
 window.addEventListener('DOMContentLoaded', () => {
