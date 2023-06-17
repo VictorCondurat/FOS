@@ -16,15 +16,6 @@ const dbConfig = {
     password: 'student',
     connectString: '//localhost:1521/xe',
 };
-// Function to convert statistics to CSV format
-function convertToCSV(statistics) {
-    // Convert the statistics object to CSV format
-    const csvHeaders = Object.keys(statistics).join(',');
-    const csvValues = Object.values(statistics).join(',');
-    // Combine the headers and values into a single CSV row
-    const csvData = `${csvHeaders}\n${csvValues}`;
-    return csvData;
-}
 import { PDFDocument } from 'pdf-lib';
 async function generatePDF(statistics) {
     const doc = await PDFDocument.create();
@@ -87,7 +78,7 @@ const server = http.createServer(async (req, res) => {
         const query = `INSERT INTO users (uname, email, password) VALUES ('${uname}', '${email}', '${psw}')`;
         await connection.execute(query);
         await connection.commit();
-        res.writeHead(302, { 'Location': 'login.html' }); // Redirect to login.html
+        res.writeHead(302, { 'Location': '/login' }); // Redirect to login.html
         res.end();
     }
     else if (requestUrl === '/login' && req.method === 'POST') {

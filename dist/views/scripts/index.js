@@ -15,7 +15,7 @@ if (logoutButton) {
                 // Logout successful, perform any additional necessary actions
                 console.log('Logout successful');
                 // Redirect the user to the login page or another relevant page
-                window.location.href = 'src\views\login.html';
+                window.location.href = './login.html';
             }
             else {
                 // Logout failed, display an error message or take appropriate actions

@@ -7,9 +7,6 @@ import querystring from 'querystring';
 import { parse, serialize } from 'cookie';
 import * as cookie from 'cookie';
 
-
-
-
 // __dirname represents the current directory
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
@@ -418,8 +415,15 @@ const server = http.createServer(async (req, res) => {
             res.writeHead(404); // File not found status code
             res.end('File not found');
         }
+
+
+
     }
 });
+
+
+
+
 
 // Starting the HTTP server
 server.listen(port, hostname, () => {
