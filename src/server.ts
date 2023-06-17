@@ -2,7 +2,7 @@ import http from 'http';
 import fs from 'fs/promises';
 import path from 'path';
 import url from 'url';
-import oracledb from 'oracledb';
+import { Pool } from 'pg';
 import querystring from 'querystring';
 import { parse, serialize } from 'cookie';
 import * as cookie from 'cookie';
@@ -15,10 +15,29 @@ const port = 3000;
 
 // Database configuration
 const dbConfig = {
-    user: 'student',
-    password: 'student',
-    connectString: '//localhost:1521/xe',
+    user: 'your_username',
+    password: 'your_password',
+    host: 'localhost',
+    port: 5432,
+    database: 'your_database_name',
 };
+
+const pool = new Pool(dbConfig);
+
+// Rest of your code
+
+import { QueryConfig } from 'pg';
+
+const executeQuery = async (query: string | QueryConfig, params: any[] = []) => {
+    const client = await pool.connect();
+    try {
+        const result = await client.query(query, params);
+        return result;
+    } finally {
+        client.release();
+    }
+};
+
 
 // Interface representing the User object
 interface User {
@@ -106,10 +125,9 @@ const server = http.createServer(async (req, res) => {
         }
 
         // Insert user credentials into the database
-        const connection = await oracledb.getConnection(dbConfig);
-        const query = `INSERT INTO users (uname, email, password) VALUES ('${uname}', '${email}', '${psw}')`;
-        await connection.execute(query);
-        await connection.commit();
+        const query = `INSERT INTO users (uname, email, password) VALUES ($1, $2, $3)`;
+        const params = [uname, email, psw];
+        await executeQuery(query, params);
 
         res.writeHead(302, { 'Location': 'login.html' }); // Redirect to login.html
         res.end();
@@ -134,11 +152,11 @@ const server = http.createServer(async (req, res) => {
 
         // Extracting user login credentials from the request body
         const { uname, pass } = querystring.parse(requestBody);
-
         // Verify the user's credentials
-        const connection = await oracledb.getConnection(dbConfig);
         const query = `SELECT uname, email, preferred_foods, alergen, diet FROM users WHERE uname=:uname AND password=:pass`;
-        const result = await connection.execute(query, [uname, pass]);
+        const params = [uname, pass];
+        const result = await executeQuery(query, params);
+
 
         if (result.rows && result.rows.length > 0) {
             // Inside the '/login' route for successful login
@@ -182,9 +200,11 @@ const server = http.createServer(async (req, res) => {
                 const { uname } = sessionData;
 
                 // Fetch user data from the database based on the session information
-                const connection = await oracledb.getConnection(dbConfig);
-                const query = `SELECT uname, preferred_foods, alergen, diet FROM users WHERE uname='${uname}'`;
-                const result = await connection.execute(query);
+                const query = `SELECT uname, preferred_foods, alergen, diet FROM users WHERE uname=:uname`;
+                const params = [uname];
+                const result = await executeQuery(query, params);
+
+
 
                 if (result.rows && result.rows.length > 0) {
                     // Map the retrieved user data to User objects
@@ -195,7 +215,6 @@ const server = http.createServer(async (req, res) => {
                         diet: row[3] as string,
                     }));
 
-                    await connection.close();
 
                     console.log(JSON.stringify(users)); // Log the user data to check the format
 
@@ -247,31 +266,33 @@ const server = http.createServer(async (req, res) => {
                 const { preferred_foods, allergen, diet } = parsedData;
 
                 // Update the user's profile in the database
-                const connection = await oracledb.getConnection(dbConfig);
                 let query = 'UPDATE users SET ';
                 const updateFields = [];
+                const params = [];
 
                 if (preferred_foods) {
-                    updateFields.push(`preferred_foods = '${preferred_foods}'`);
+                    updateFields.push('preferred_foods = :preferred_foods');
+                    params.push(preferred_foods);
                 }
 
                 if (allergen) {
-                    updateFields.push(`alergen = '${allergen}'`);
+                    updateFields.push('alergen = :allergen');
+                    params.push(allergen);
                 }
 
                 if (diet) {
-                    updateFields.push(`diet = '${diet}'`);
+                    updateFields.push('diet = :diet');
+                    params.push(diet);
                 }
 
                 if (updateFields.length > 0) {
                     query += updateFields.join(', ');
-                    query += ` WHERE uname = '${uname}'`;
+                    query += ' WHERE uname = :uname';
+                    params.push(uname);
 
-                    await connection.execute(query);
-                    await connection.commit();
+                    await executeQuery(query, params);
                 }
 
-                await connection.close();
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end();
@@ -320,55 +341,40 @@ const server = http.createServer(async (req, res) => {
         // Interogare SQL pentru a obține numărul de utilizatori
         const query = 'SELECT COUNT(*) AS userCount FROM users';
 
-        // Executare interogare
-        oracledb.getConnection(dbConfig, (err, connection) => {
-            if (err) {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Eroare la conectarea la baza de date');
+        try {
+            // Executare interogare
+            const result = await executeQuery(query);
+
+            if (result.rows && result.rows.length > 0) {
+                const userCount = result.rows[0].userCount;
+
+                // Exportul statisticilor în funcție de formatul cerut
+                const format = (req.url as string).includes('?format=') ? (req.url as string).split('?format=')[1] : 'pdf';
+
+                if (format === 'pdf') {
+                    const statistics: Statistics = {
+                        userCount: userCount,
+                        // Assign other desired statistics properties here
+                    };
+
+                    const pdfData = generatePDF(statistics);
+
+                    res.setHeader('Content-Type', 'application/pdf');
+                    res.writeHead(200);
+                    res.end(pdfData);
+                } else {
+                    res.writeHead(406, { 'Content-Type': 'text/plain' });
+                    res.end('Formatul răspunsului nu este suportat');
+                }
             } else {
-                connection.execute(query, (error, result: oracledb.Result<any>) => {
-                    if (error) {
-                        res.writeHead(500, { 'Content-Type': 'text/plain' });
-                        res.end('Eroare la executarea interogării SQL');
-                    } else {
-                        if (result.rows && result.rows.length > 0) {
-                            const userCount = result.rows[0][0];
-
-                            // Exportul statisticilor în funcție de formatul cerut
-                            const format = (req.url as string).includes('?format=') ? (req.url as string).split('?format=')[1] : 'pdf';
-
-                            if (format === 'pdf') {
-                                const statistics: Statistics = {
-                                    userCount: userCount,
-                                    // Assign other desired statistics properties here
-                                };
-
-                                const pdfData = generatePDF(statistics);
-
-                                res.setHeader('Content-Type', 'application/pdf');
-                                res.writeHead(200);
-                                res.end(pdfData);
-                            }
-
-                            else {
-                                res.writeHead(406, { 'Content-Type': 'text/plain' });
-                                res.end('Formatul răspunsului nu este suportat');
-                            }
-                        } else {
-                            res.writeHead(500, { 'Content-Type': 'text/plain' });
-                            res.end('Eroare: Nu s-au găsit rezultate în interogare');
-                        }
-                    }
-
-                    // Eliberează conexiunea la baza de date
-                    connection.close((err) => {
-                        if (err) {
-                            console.error(err.message);
-                        }
-                    });
-                });
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Eroare: Nu s-au găsit rezultate în interogare');
             }
-        });
+        } catch (error) {
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Eroare la executarea interogării SQL');
+        }
+
     }
 
     else {
