@@ -22,8 +22,6 @@ FOS is a web application that will provide users the ability to create, update, 
 
 - [@Koroem](https://github.com/Koroem)             -  Condurat Victor
 - [@George166382](https://github.com/George166382) -  Cojocaru George
-- [@GDP13](https://github.com/GDP13)               -  Pricop George-Daniel (404 User Not Found)
-
 
 ## Prerequisites
 

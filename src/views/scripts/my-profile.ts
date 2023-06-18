@@ -1,85 +1,48 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const userInfoSection = document.getElementById('user-info');
+const modifyButton = document.getElementById('modify-btn');
+if (modifyButton) {
+    modifyButton.addEventListener('click', handleModifyButtonClick);
+}
 
-    if (!userInfoSection) return;
+function handleModifyButtonClick() {
+    // Implement your desired behavior when the "Modify" button is clicked
+    // For example, you can show a form or redirect to a separate edit profile page
+    // You can access the user information and make the necessary modifications
 
-    interface User {
-        uname: string;
-        //email: string;
-        //password: string;
-        preferredFoods: string;
-        alergen: string;
-        diet: string;
-    }
+    // Example: Redirecting to an edit profile page
+    window.location.href = 'edit-profile.html';
+}
 
-    fetch('/get-user', { credentials: 'include' })
-        .then((response) => {
-            console.log(response);
-            return response.json();
-        })
-        .then((users) => {
-            users.forEach((user: User) => {
-                // Assuming you have corresponding HTML elements for displaying user information
-                const usernameElement = document.getElementById('uname');
-                //const emailElement = document.getElementById('email');
-                // const passwordElement = document.getElementById('password');
-                const preferredFoodsElement = document.getElementById('preferred-foods');
-                const alergenElement = document.getElementById('alergen');
-                const dietElement = document.getElementById('diet');
-
-                if (usernameElement && /*emailElement &&*/ /*passwordElement*/  preferredFoodsElement && alergenElement && dietElement) {
-                    displayUserInfo(user, usernameElement, preferredFoodsElement, alergenElement, dietElement);
-                }
-            });
-        })
-        .catch((error) => {
-            console.error('Error fetching user data:', error);
+window.onload = async function () {
+    try {
+        const response = await fetch('/user-info', {
+            method: 'GET',
+            credentials: 'same-origin', // Include cookies in the request
         });
-
-    const navLinks = document.querySelectorAll('.left-menu a:not(#my-profile)');
-    navLinks.forEach((link) => {
-        link.addEventListener('click', () => {
-            userInfoSection.innerHTML = '';
-        });
-    });
-
-    function displayUserInfo(
-        user: User,
-        usernameElement: HTMLElement,
-        //emailElement: HTMLElement,
-        /* passwordElement: HTMLElement*/
-        preferredFoodsElement: HTMLElement,
-        alergenElement: HTMLElement,
-        dietElement: HTMLElement
-    ) {
-        usernameElement.textContent = user.uname;
-        //emailElement.textContent = user.email;
-        // passwordElement.textContent = user.password;
-        preferredFoodsElement.textContent = user.preferredFoods;
-        alergenElement.textContent = user.alergen;
-        dietElement.textContent = user.diet;
-
-        /* preferredFoodsElement.innerHTML = '';
-        if (Array.isArray(user.preferredFoods)) {
-            user.preferredFoods.forEach((food: string) => {
-                const li = document.createElement('li');
-                li.textContent = food;
-                preferredFoodsElement.appendChild(li);
-            });
-        } */
+        if (response.ok) {
+            const userData = await response.json();
+            populateUserInfo(userData);
+        } else {
+            throw new Error('Request failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
     }
-    const modifyButton = document.getElementById('modify-btn');
-    if (modifyButton) {
-        modifyButton.addEventListener('click', handleModifyButtonClick);
+};
+
+function populateUserInfo(userData: {
+    username: string;
+    email: string;
+    preferredFoods: string[];
+    allergen: string[];
+    diet: string;
+}) {
+    const unameElement = document.getElementById('uname');
+    if (unameElement) {
+        unameElement.textContent = userData.username;
+    }
+    const emailElement = document.getElementById('email');
+    if (emailElement) {
+        emailElement.textContent = userData.email;
     }
 
-    function handleModifyButtonClick() {
-        // Implement your desired behavior when the "Modify" button is clicked
-        // For example, you can show a form or redirect to a separate edit profile page
-        // You can access the user information and make the necessary modifications
-
-        // Example: Redirecting to an edit profile page
-        window.location.href = 'edit-profile.html';
-    }
-
-});
+}

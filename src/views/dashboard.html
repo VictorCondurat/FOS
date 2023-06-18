@@ -24,8 +24,7 @@
                 <li><a href="user-settings.html">User settings</a></li>
             </ul>
             <div class="left-menu__bottom">
-                <a href="index.html" id="back"><button>Back</button></a>
-                <a href="index.html" id="logout"><button>Logout</button></a>
+                <a href="#" id="logout"><button>Logout</button></a>
             </div>
         </nav>
 
@@ -36,7 +35,12 @@
     </div>
 
     <script src="./scripts/shopping-list.ts"></script>
-
+    <script>
+        document.getElementById('logout').addEventListener('click', function (e) {
+            e.preventDefault();
+            fetch('/logout', { method: 'POST' }).then(() => window.location.href = '/');
+        });
+    </script>
 </body>
 
 </html>

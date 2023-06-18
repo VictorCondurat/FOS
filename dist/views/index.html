@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script type="module" src="./scripts/index.js" defer></script>
 </head>
 
 <body>
@@ -37,13 +36,10 @@
             </div>
             <div class="header__navbar-right">
                 <a class="header__navbar-item hidden" href="./user-settings.html">User Settings</a>
-                <button class="header__navbar-button" id="export">Export</button>
                 <button class="header__navbar-button header__navbar-button--login"
                     onclick="location.href='./login.html'">Login</button>
                 <button class="header__navbar-button header__navbar-button--signup"
                     onclick="location.href='./sign-up.html'">Sign Up</button>
-                <button class="header__navbar-button header__navbar-button--logout" id="logout">Logout</button>
-
             </div>
         </nav>
 
@@ -53,7 +49,7 @@
                 <i class="fas fa-bars"></i>
             </button>
             <div class="header__navbar-dropdown-mobile" id="mobileMenu">
-                <a href="./dashboard.html">Dashboard</a>
+                <a id="dashboard-link" href="./dashboard.html">Dashboard</a>
                 <a href="#features">Features</a>
                 <a href="./market.html">Market</a>
                 <a href="./login.html">Login</a>
@@ -104,6 +100,9 @@
             <a href="#" class="footer__social-icon"><i class="fab fa-linkedin-in"></i></a>
         </div>
     </footer>
+
+    <script type="module" src="./scripts/index.js"></script>
+    <script type="module" src="./scripts/user.js"></script>
 
 </body>
 
