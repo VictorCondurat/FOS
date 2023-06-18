@@ -10,4 +10,11 @@ const db = pgp({
     user: 'postgres',
     password: 'Pass4Postgres1!'
 });
+db.connect()
+    .then(obj => {
+        obj.done();
+    })
+    .catch(error => {
+        console.log("ERROR:", error.message || error);
+    });
 export default db;

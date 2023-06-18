@@ -11,7 +11,7 @@ window.onload = function () {
             body: `uname=${uname}&pass=${pass}`
         }).then(response => {
             if (response.ok) {
-                window.location.href = '/index.html';
+                window.location.href = './dashboard.html';
             }
             else {
                 alert('Login failed');

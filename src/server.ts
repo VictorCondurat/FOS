@@ -22,53 +22,66 @@ const mimeTypes: { [key: string]: string } = {
 const server = http.createServer(async (req, res) => {
     const requestUrl = req.url || '/';
     console.log("Url:", req.url);
-
-    let filePath = path.join(__dirname, requestUrl); // Constructing the file path based on the request URL
-    console.log(filePath);
-    if (requestUrl === '/') {
-        filePath = path.join(__dirname, 'views', 'index.html');
-    } else if (requestUrl.startsWith('/styles')) {
-        filePath = path.join(__dirname, 'views', requestUrl);
-    } else if (requestUrl.startsWith('/scripts')) {
-        filePath = path.join(__dirname, 'views', 'scripts', path.basename(requestUrl).replace('.ts', '.js'));
-    } else if (requestUrl.startsWith('/images')) {
-        filePath = path.join(__dirname, '..', 'public', requestUrl);
-    }
-    else {
-        filePath = path.join(__dirname, 'views', path.basename(requestUrl));
-    }
     if (req.method === 'POST') {
-        if (requestUrl === '/login') {
-            let body = '';
-            req.on('data', chunk => {
-                body += chunk.toString();
-            });
-            req.on('end', () => {
-                const postData = querystring.parse(body);
-                UserController.login(req, res);
-            });
-        } else if (requestUrl === '/sign-up') {
-            let body = '';
-            req.on('data', chunk => {
-                body += chunk.toString();
-            });
-            req.on('end', () => {
-                const postData = querystring.parse(body);
-                UserController.signup(req, res);
-            });
+        let body: any = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', async () => {
+            if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+                body = querystring.parse(body);
+            } else if (req.headers['content-type'] === 'application/json') {
+                body = JSON.parse(body);
+            }
+
+            if (requestUrl === '/login') {
+                UserController.login(body, req, res);
+            } else if (requestUrl === '/sign-up') {
+                UserController.signup(body, req, res);
+            }
+            if (requestUrl === '/logout') {
+                res.setHeader('Set-Cookie', `username=; HttpOnly; Max-Age=0;`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ message: 'Logout successful' }));
+            }
+
+        });
+    } else {
+        let filePath = path.join(__dirname, requestUrl);
+        console.log(filePath);
+        if (requestUrl === '/') {
+            filePath = path.join(__dirname, 'views', 'index.html');
+        } else if (requestUrl.startsWith('/styles')) {
+            filePath = path.join(__dirname, 'views', requestUrl);
+        } else if (requestUrl.startsWith('/scripts')) {
+            filePath = path.join(__dirname, 'views', 'scripts', path.basename(requestUrl).replace('.ts', '.js'));
+        } else if (requestUrl.startsWith('/images')) {
+            filePath = path.join(__dirname, '..', 'public', requestUrl);
         }
-    }
+        else if (requestUrl === '/dashboard.html') {
+            const cookies = req.headers.cookie?.split(';');
+            const usernameCookie = cookies?.find(cookie => cookie.trim().startsWith('username='));
+            if (usernameCookie) {
+                filePath = path.join(__dirname, 'views', 'dashboard.html');
+            } else {
+                filePath = path.join(__dirname, 'views', 'login.html');
+            }
+        }
+        else {
+            filePath = path.join(__dirname, 'views', path.basename(requestUrl));
+        }
 
-    const extname = String(path.extname(filePath)).toLowerCase();
-    const contentType = mimeTypes[extname] || 'application/octet-stream';
+        const extname = String(path.extname(filePath)).toLowerCase();
+        const contentType = mimeTypes[extname] || 'application/octet-stream';
 
-    try {
-        const content = await fs.readFile(filePath);
-        res.writeHead(200, { 'Content-Type': contentType });
-        res.end(content, 'utf-8');
-    } catch (error) {
-        res.writeHead(500);
-        res.end(`Sorry, an error occurred: ${(error as { code: string }).code}`);
+        try {
+            const content = await fs.readFile(filePath);
+            res.writeHead(200, { 'Content-Type': contentType });
+            res.end(content, 'utf-8');
+        } catch (error) {
+            res.writeHead(500);
+            res.end(`Sorry, an error occurred: ${(error as { code: string }).code}`);
+        }
     }
 });
 
