@@ -2,6 +2,22 @@
 const profileForm = document.getElementById('profile-form');
 const unameInput = document.getElementById('uname');
 const emailInput = document.getElementById('email');
+fetch('/user-info', {
+    method: 'GET',
+    credentials: 'same-origin', // Include cookies in the request
+})
+    .then(response => response.json())
+    .then(userData => {
+    if (unameInput) {
+        unameInput.value = userData.username;
+    }
+    if (emailInput) {
+        emailInput.value = userData.email;
+    }
+})
+    .catch(error => {
+    console.error('Error retrieving user data:', error);
+});
 if (profileForm && unameInput && emailInput) {
     profileForm.addEventListener('submit', (event) => {
         event.preventDefault();
