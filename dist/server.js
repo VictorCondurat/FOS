@@ -44,7 +44,36 @@ const server = http.createServer(async (req, res) => {
             }
         });
     }
+    else if (req.method === 'PUT') {
+        let body = '';
+        await new Promise((resolve, reject) => {
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            req.on('end', () => {
+                if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+                    body = querystring.parse(body);
+                }
+                else if (req.headers['content-type'] === 'application/json') {
+                    body = JSON.parse(body);
+                }
+                resolve(); // Resolve the promise once the request body is fully processed
+            });
+            req.on('error', (err) => {
+                reject(err); // Reject the promise if there's an error
+            });
+        });
+        if (requestUrl === '/update-profile') {
+            UserController.updateUser(body, req, res);
+        }
+    }
     else {
+        if (req.method === 'GET') {
+            if (requestUrl === '/user-info') {
+                UserController.getUserInfo(req, res);
+                return;
+            }
+        }
         let filePath = path.join(__dirname, requestUrl);
         console.log(filePath);
         if (requestUrl === '/') {

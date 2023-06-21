@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles/edit-profile.css">
     <script defer src="scripts/edit-profile.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-
+    <script type="module" src="./scripts/edit-profile.js"></script>
     <title>Edit Profile</title>
 </head>
 
@@ -46,18 +46,7 @@
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email">
                     </div>
-                    <div class="edit-profile__item">
-                        <label for="preferred-foods">Preferred Foods:</label>
-                        <textarea id="preferred-foods" name="preferred-foods"></textarea>
-                    </div>
-                    <div class="edit-profile__item">
-                        <label for="allergen">Allergen:</label>
-                        <textarea id="allergen" name="allergen"></textarea>
-                    </div>
-                    <div class="edit-profile__item">
-                        <label for="diet">Diet:</label>
-                        <input type="text" id="diet" name="diet">
-                    </div>
+
                     <div class="edit-profile__item">
                         <button type="submit" id="save-btn">Save</button>
                     </div>

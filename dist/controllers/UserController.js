@@ -1,6 +1,39 @@
 var _a;
 import { User } from '../models/user.js';
 export class UserController {
+    static async updateUser(postData, req, res) {
+        console.log("Received update user request with data:", postData);
+        const cookies = req.headers.cookie?.split(';');
+        const usernameCookie = cookies?.find((cookie) => cookie.trim().startsWith('username='));
+        if (usernameCookie) {
+            const username = usernameCookie.trim().split('=')[1];
+            const { newUsername, email } = postData;
+            console.log("Values before invoking updateUser:", username, email, newUsername);
+            try {
+                const result = await User.updateUser(username, email, newUsername);
+                if (result) {
+                    // Update the cookie value
+                    const updatedCookie = `username=${newUsername}; HttpOnly;`;
+                    res.setHeader('Set-Cookie', updatedCookie);
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: true, message: 'User updated successfully' }));
+                }
+                else {
+                    res.writeHead(404, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'User not found or update unsuccessful' }));
+                }
+            }
+            catch (err) {
+                console.error('Error in updateUser controller:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, message: 'Internal server error' }));
+            }
+        }
+        else {
+            res.writeHead(401, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Unauthorized' }));
+        }
+    }
 }
 _a = UserController;
 UserController.signup = async (postData, req, res) => {
@@ -45,5 +78,25 @@ UserController.login = async (postData, req, res) => {
     else {
         res.writeHead(401, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Invalid username or password' }));
+    }
+};
+UserController.getUserInfo = async (req, res) => {
+    const cookies = req.headers.cookie?.split(';');
+    const usernameCookie = cookies?.find((cookie) => cookie.trim().startsWith('username='));
+    if (usernameCookie) {
+        const username = usernameCookie.trim().split('=')[1];
+        const user = await User.getUserByInfo(username);
+        if (user) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(user));
+        }
+        else {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'User not found' }));
+        }
+    }
+    else {
+        res.writeHead(401, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Unauthorized' }));
     }
 };

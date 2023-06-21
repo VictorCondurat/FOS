@@ -20,13 +20,13 @@ export class User {
                 throw new Error('User with this email already exists');
             }
 
-            const result = await db.query('INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING id', [email, password, username]);
-            console.log('Running query:', 'INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING id', [email, password, username]);
+            const result = await db.query('INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING iid', [email, password, username]);
+            console.log('Running query:', 'INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING iid', [email, password, username]);
             console.log('Result:', result);
 
             if (result.length > 0) {
                 const row = result[0];
-                return new User(row.id, email, password, username);
+                return new User(row.iid, email, password, username);
             } else {
                 throw new Error('User not created');
             }
@@ -53,5 +53,37 @@ export class User {
         }
     }
 
+    static async getUserByInfo(username: string) {
+        try {
+            const result = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+            console.log('getUserByUsername result:', result);
+            if (result.length > 0) {
+                const row = result[0];
+                return new User(row.iid, row.email, row.password, row.username);
+            } else {
+                return null;
+            }
+        } catch (err: unknown) {
+            console.error('Error in getUserByUsername:', err);
+            return null;
+        }
+    }
+
+
+    static async updateUser(username: string, email: string, newUsername: string): Promise<boolean> {
+        try {
+            const query = 'UPDATE users SET email = $1, username = $2 WHERE username = $3';
+            await db.query(query, [email, newUsername, username]);
+            return true;
+        } catch (err: unknown) {
+            console.error('Error in updateUser:', err);
+            return false;
+        }
+    }
+
+
+
 
 }
+
+
