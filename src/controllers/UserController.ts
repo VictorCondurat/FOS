@@ -64,7 +64,7 @@ export class UserController {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ message: 'Logout successful' }));
     };
-    /* userinfo */
+    /* userinfo 2*/
     static getUserInfo = async (req: http.IncomingMessage, res: http.ServerResponse) => {
         const cookies = req.headers.cookie?.split(';');
         const sessionIdCookie = cookies?.find((cookie) => cookie.trim().startsWith('sessionId='));
