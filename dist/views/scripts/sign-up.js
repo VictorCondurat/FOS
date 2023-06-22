@@ -27,7 +27,7 @@ window.onload = function () {
                 window.location.href = './dashboard.html';
             }
             else {
-                alert(data.error || 'Sign up failed');
+                alert(data.error || 'Username or Email already Used');
             }
         });
     };

@@ -2,12 +2,14 @@ import http from 'http';
 import fs from 'fs/promises';
 import path from 'path';
 import url from 'url';
+import crypto from 'crypto';
 import { UserController } from './controllers/UserController.js';
 import querystring from 'querystring';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const hostname = '127.0.0.1';
 const port = 3000;
+
 
 const mimeTypes: { [key: string]: string } = {
     '.html': 'text/html',
@@ -19,10 +21,64 @@ const mimeTypes: { [key: string]: string } = {
     '.woff2': 'application/font-woff2',
 };
 
+export const sessions: Map<string, string> = new Map();
+
+export function generateSessionId(): string {
+    return crypto.randomBytes(16).toString('hex');
+}
+
 const server = http.createServer(async (req, res) => {
+    /* ruta default */
     const requestUrl = req.url || '/';
+
     console.log("Url:", req.url);
-    if (req.method === 'POST') {
+
+    /* GET REQUESTS */
+    if (req.method === 'GET') {
+
+        let filePath = path.join(__dirname, requestUrl);
+        console.log(filePath);
+
+        /* creare path fisiere in functie de tipul de resursa ceruta */
+        if (requestUrl === '/') {
+            filePath = path.join(__dirname, 'views', 'index.html');
+        }
+        else if (requestUrl === '/dashboard.html') {
+            const cookies = req.headers.cookie?.split(';');
+            const sessionIdCookie = cookies?.find(cookie => cookie.trim().startsWith('sessionId='));
+            /* Daca avem cookie cu sessionId intram in dashboard, altfel redirectionam la pagina de login */
+            if (sessionIdCookie) {
+                filePath = path.join(__dirname, 'views', 'dashboard.html');
+            } else {
+                filePath = path.join(__dirname, 'views', 'login.html');
+            }
+        }
+        else if (requestUrl.startsWith('/styles')) {
+            filePath = path.join(__dirname, 'views', requestUrl);
+        }
+        else if (requestUrl.startsWith('/scripts')) {
+            filePath = path.join(__dirname, 'views', 'scripts', path.basename(requestUrl).replace('.ts', '.js'));
+        }
+        else if (requestUrl.startsWith('/images')) {
+            filePath = path.join(__dirname, '..', 'public', requestUrl);
+        }
+
+        else {
+            filePath = path.join(__dirname, 'views', path.basename(requestUrl));
+        }
+        const extname = String(path.extname(filePath)).toLowerCase();
+        const contentType = mimeTypes[extname] || 'application/octet-stream';
+        try {
+            const content = await fs.readFile(filePath);
+            res.writeHead(200, { 'Content-Type': contentType });
+            res.end(content, 'utf-8');
+        } catch (error) {
+            res.writeHead(500);
+            res.end(`Sorry, an error occurred: ${(error as { code: string }).code}`);
+        }
+    }
+    /* POST REQUESTS */
+    else if (req.method === 'POST') {
         let body: any = '';
         req.on('data', chunk => {
             body += chunk.toString();
@@ -35,19 +91,17 @@ const server = http.createServer(async (req, res) => {
             }
 
             if (requestUrl === '/login') {
-                UserController.login(body, req, res);
+                UserController.login(body, res);
             } else if (requestUrl === '/sign-up') {
-                UserController.signup(body, req, res);
+                UserController.signup(body, res);
             }
-
-            if (requestUrl === '/logout') {
-                res.setHeader('Set-Cookie', `username=; HttpOnly; Max-Age=0;`);
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ message: 'Logout successful' }));
+            else if (requestUrl === '/logout') {
+                UserController.logout(req, res);
             }
 
         });
     }
+    /* PUT REQUESTS */
     else if (req.method === 'PUT') {
         let body: any = '';
         await new Promise<void>((resolve, reject) => {
@@ -60,10 +114,10 @@ const server = http.createServer(async (req, res) => {
                 } else if (req.headers['content-type'] === 'application/json') {
                     body = JSON.parse(body);
                 }
-                resolve(); // Resolve the promise once the request body is fully processed
+                resolve();
             });
             req.on('error', (err) => {
-                reject(err); // Reject the promise if there's an error
+                reject(err);
             });
         });
 
@@ -72,52 +126,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
-
-    else {
-        if (req.method === 'GET') {
-            if (requestUrl === '/user-info') {
-                UserController.getUserInfo(req, res);
-                return;
-            }
-        }
-        let filePath = path.join(__dirname, requestUrl);
-        console.log(filePath);
-        if (requestUrl === '/') {
-            filePath = path.join(__dirname, 'views', 'index.html');
-        } else if (requestUrl.startsWith('/styles')) {
-            filePath = path.join(__dirname, 'views', requestUrl);
-        } else if (requestUrl.startsWith('/scripts')) {
-            filePath = path.join(__dirname, 'views', 'scripts', path.basename(requestUrl).replace('.ts', '.js'));
-        } else if (requestUrl.startsWith('/images')) {
-            filePath = path.join(__dirname, '..', 'public', requestUrl);
-        }
-        else if (requestUrl === '/dashboard.html') {
-            const cookies = req.headers.cookie?.split(';');
-            const usernameCookie = cookies?.find(cookie => cookie.trim().startsWith('username='));
-            if (usernameCookie) {
-                filePath = path.join(__dirname, 'views', 'dashboard.html');
-            } else {
-                filePath = path.join(__dirname, 'views', 'login.html');
-            }
-        }
-        else {
-            filePath = path.join(__dirname, 'views', path.basename(requestUrl));
-        }
-
-        const extname = String(path.extname(filePath)).toLowerCase();
-        const contentType = mimeTypes[extname] || 'application/octet-stream';
-
-        try {
-            const content = await fs.readFile(filePath);
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(content, 'utf-8');
-        } catch (error) {
-            res.writeHead(500);
-            res.end(`Sorry, an error occurred: ${(error as { code: string }).code}`);
-        }
-    }
 });
-
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });

@@ -18,29 +18,21 @@
     <div class="wrapper">
         <nav class="left-menu">
             <ul>
-                <li><a id="my-shopping-lists" href="#">My shopping lists</a></li>
-                <li><a href="create-shopping-list.html">Create a shopping list</a></li>
-                <li><a href="my-profile.html">My profile</a></li>
-                <li><a href="user-settings.html">User settings</a></li>
+                <li><a id="my-shopping-lists" href="#">Store</a></li>
+                <li><a href="create-shopping-list.html">Favorite Products</a></li>
+                <li><a href="my-profile.html">My Shopping lists</a></li>
+                <li><a href="user-settings.html">Settings</a></li>
             </ul>
+
             <div class="left-menu__bottom">
                 <a href="#" id="logout"><button>Logout</button></a>
             </div>
+
         </nav>
 
-
-        <main>
-            <section id="shopping-lists"></section>
-        </main>
     </div>
 
-    <script src="./scripts/shopping-list.ts"></script>
-    <script>
-        document.getElementById('logout').addEventListener('click', function (e) {
-            e.preventDefault();
-            fetch('/logout', { method: 'POST' }).then(() => window.location.href = '/');
-        });
-    </script>
+    <script src="./scripts/dashboard.js"></script>
 </body>
 
 </html>

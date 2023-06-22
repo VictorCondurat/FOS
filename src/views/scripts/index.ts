@@ -1,11 +1,19 @@
-import { toggleMobileMenu } from './toggleMobileMenu.js';
+function toggleMobileMenu() {
+    const mobileMenuContent = document.querySelector('.header__navbar-dropdown-mobile') as HTMLElement;
 
-const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    if (mobileMenuContent) {
+        if (mobileMenuContent.style.display === 'block') {
+            mobileMenuContent.style.display = 'none';
+        } else {
+            mobileMenuContent.style.display = 'block';
+        }
 
-if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+        mobileMenuContent.addEventListener('mouseleave', () => {
+            mobileMenuContent.style.display = 'none';
+        });
+    }
 }
-// Function to get a cookie
+
 function getCookie(name: string): string | null {
     const value = "; " + document.cookie;
     const parts = value.split("; " + name + "=");
@@ -13,7 +21,6 @@ function getCookie(name: string): string | null {
     return null;
 }
 
-// Event listener for dashboard link
 document.getElementById('dashboard-link')?.addEventListener('click', function (e: Event) {
     const username = getCookie("username");
     if (!username) {
@@ -21,3 +28,9 @@ document.getElementById('dashboard-link')?.addEventListener('click', function (e
         window.location.href = './login.html';
     }
 });
+
+const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+
+if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+}

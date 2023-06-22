@@ -1,4 +1,5 @@
 import db from '../db.js';
+import bcrypt from 'bcrypt';
 
 export class User {
     id: number;
@@ -20,13 +21,14 @@ export class User {
                 throw new Error('User with this email already exists');
             }
 
-            const result = await db.query('INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING iid', [email, password, username]);
-            console.log('Running query:', 'INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING iid', [email, password, username]);
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const result = await db.query('INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING id', [email, hashedPassword, username]);
+            console.log('Running query:', 'INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING id', [email, password, username]);
             console.log('Result:', result);
 
             if (result.length > 0) {
                 const row = result[0];
-                return new User(row.iid, email, password, username);
+                return new User(row.id, email, password, username);
             } else {
                 throw new Error('User not created');
             }
