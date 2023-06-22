@@ -2,6 +2,7 @@ import http from 'http';
 import fs from 'fs/promises';
 import path from 'path';
 import url from 'url';
+import crypto from 'crypto';
 import { UserController } from './controllers/UserController.js';
 import querystring from 'querystring';
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -16,68 +17,32 @@ const mimeTypes = {
     '.woff': 'application/font-woff',
     '.woff2': 'application/font-woff2',
 };
+export const sessions = new Map();
+export function generateSessionId() {
+    return crypto.randomBytes(16).toString('hex');
+}
 const server = http.createServer(async (req, res) => {
+    /* ruta default */
     const requestUrl = req.url || '/';
     console.log("Url:", req.url);
-    if (req.method === 'POST') {
-        let body = '';
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
-        req.on('end', async () => {
-            if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-                body = querystring.parse(body);
-            }
-            else if (req.headers['content-type'] === 'application/json') {
-                body = JSON.parse(body);
-            }
-            if (requestUrl === '/login') {
-                UserController.login(body, req, res);
-            }
-            else if (requestUrl === '/sign-up') {
-                UserController.signup(body, req, res);
-            }
-            if (requestUrl === '/logout') {
-                res.setHeader('Set-Cookie', `username=; HttpOnly; Max-Age=0;`);
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ message: 'Logout successful' }));
-            }
-        });
-    }
-    else if (req.method === 'PUT') {
-        let body = '';
-        await new Promise((resolve, reject) => {
-            req.on('data', chunk => {
-                body += chunk.toString();
-            });
-            req.on('end', () => {
-                if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-                    body = querystring.parse(body);
-                }
-                else if (req.headers['content-type'] === 'application/json') {
-                    body = JSON.parse(body);
-                }
-                resolve(); // Resolve the promise once the request body is fully processed
-            });
-            req.on('error', (err) => {
-                reject(err); // Reject the promise if there's an error
-            });
-        });
-        if (requestUrl === '/update-profile') {
-            UserController.updateUser(body, req, res);
-        }
-    }
-    else {
-        if (req.method === 'GET') {
-            if (requestUrl === '/user-info') {
-                UserController.getUserInfo(req, res);
-                return;
-            }
-        }
+    /* GET REQUESTS */
+    if (req.method === 'GET') {
         let filePath = path.join(__dirname, requestUrl);
         console.log(filePath);
+        /* creare path fisiere in functie de tipul de resursa ceruta */
         if (requestUrl === '/') {
             filePath = path.join(__dirname, 'views', 'index.html');
+        }
+        else if (requestUrl === '/dashboard.html') {
+            const cookies = req.headers.cookie?.split(';');
+            const sessionIdCookie = cookies?.find(cookie => cookie.trim().startsWith('sessionId='));
+            /* Daca avem cookie cu sessionId intram in dashboard, altfel redirectionam la pagina de login */
+            if (sessionIdCookie) {
+                filePath = path.join(__dirname, 'views', 'dashboard.html');
+            }
+            else {
+                filePath = path.join(__dirname, 'views', 'login.html');
+            }
         }
         else if (requestUrl.startsWith('/styles')) {
             filePath = path.join(__dirname, 'views', requestUrl);
@@ -87,16 +52,6 @@ const server = http.createServer(async (req, res) => {
         }
         else if (requestUrl.startsWith('/images')) {
             filePath = path.join(__dirname, '..', 'public', requestUrl);
-        }
-        else if (requestUrl === '/dashboard.html') {
-            const cookies = req.headers.cookie?.split(';');
-            const usernameCookie = cookies?.find(cookie => cookie.trim().startsWith('username='));
-            if (usernameCookie) {
-                filePath = path.join(__dirname, 'views', 'dashboard.html');
-            }
-            else {
-                filePath = path.join(__dirname, 'views', 'login.html');
-            }
         }
         else {
             filePath = path.join(__dirname, 'views', path.basename(requestUrl));
@@ -111,6 +66,54 @@ const server = http.createServer(async (req, res) => {
         catch (error) {
             res.writeHead(500);
             res.end(`Sorry, an error occurred: ${error.code}`);
+        }
+    }
+    /* POST REQUESTS */
+    else if (req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', async () => {
+            if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+                body = querystring.parse(body);
+            }
+            else if (req.headers['content-type'] === 'application/json') {
+                body = JSON.parse(body);
+            }
+            if (requestUrl === '/login') {
+                UserController.login(body, res);
+            }
+            else if (requestUrl === '/sign-up') {
+                UserController.signup(body, res);
+            }
+            else if (requestUrl === '/logout') {
+                UserController.logout(req, res);
+            }
+        });
+    }
+    /* PUT REQUESTS */
+    else if (req.method === 'PUT') {
+        let body = '';
+        await new Promise((resolve, reject) => {
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            req.on('end', () => {
+                if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+                    body = querystring.parse(body);
+                }
+                else if (req.headers['content-type'] === 'application/json') {
+                    body = JSON.parse(body);
+                }
+                resolve();
+            });
+            req.on('error', (err) => {
+                reject(err);
+            });
+        });
+        if (requestUrl === '/update-profile') {
+            UserController.updateUser(body, req, res);
         }
     }
 });

@@ -29,8 +29,9 @@ window.onload = function () {
                 if (data.message === 'Signup successful') {
                     window.location.href = './dashboard.html';
                 } else {
-                    alert(data.error || 'Sign up failed');
+                    alert(data.error || 'Username or Email already Used');
                 }
             });
     }
 }
+

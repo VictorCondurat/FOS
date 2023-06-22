@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             username = cookie.substring('username='.length, cookie.length);
         }
     }
-
     if (username) {
         const navbarRight = document.querySelector('.header__navbar-right');
         if (navbarRight) {
