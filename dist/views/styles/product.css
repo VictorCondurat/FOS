@@ -1,0 +1,189 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #F4F5F7;
+  color: #000000;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #5C6AC4;
+  padding: 20px 0;
+}
+
+#productDetailContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.1);
+  background: #FFFFFF;
+  padding: 3em 2em;
+  margin: 2em 0;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 15px;
+}
+@media only screen and (max-width: 900px) {
+  #productDetailContainer {
+    width: 100%;
+    padding: 2em 1em;
+  }
+}
+#productDetailContainer .product-info {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+}
+@media only screen and (max-width: 900px) {
+  #productDetailContainer .product-info {
+    grid-template-columns: 1fr;
+  }
+}
+#productDetailContainer .product-info .product-img img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  transition: all 0.3s ease-in-out;
+}
+#productDetailContainer .product-info .product-img img:hover {
+  transform: scale(1.05);
+}
+#productDetailContainer .product-info .product-details h1 {
+  font-size: 2rem;
+  color: black;
+  margin-bottom: 1em;
+  font-weight: 700;
+}
+#productDetailContainer .product-info .product-details p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: black;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 3em 0;
+}
+.product-table thead {
+  background-color: #5C6AC4;
+  color: #FFFFFF;
+}
+.product-table thead tr th {
+  padding: 1em;
+  text-transform: uppercase;
+}
+.product-table tbody {
+  background-color: #FFFFFF;
+}
+.product-table tbody tr td {
+  padding: 1em;
+  border-top: 1px solid #e5e8ec;
+  color: black;
+}
+
+.button {
+  padding: 15px 30px;
+  background-color: #5C6AC4;
+  color: #FFFFFF;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 2em;
+  display: inline-block;
+  border-radius: 15px;
+  transition: all 0.3s ease-in-out;
+}
+.button:hover {
+  background-color: #3f4eae;
+}
+
+.dropdown {
+  position: absolute;
+  width: 200px;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+  z-index: 1;
+  padding: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  animation: fadein 0.5s;
+}
+.dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+.dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+.dropdown::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+.dropdown::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.dropdown button {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+  text-align: left;
+  background-color: #f8f8f8;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.dropdown button:hover {
+  background-color: #e7e7e7;
+}
+.dropdown .list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 10px;
+}
+.dropdown .list-item .list-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+.dropdown .list-item .add-item {
+  font-size: 12px;
+  color: #007bff;
+  cursor: pointer;
+}
+.dropdown .list-item .add-item:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*# sourceMappingURL=product.css.map */

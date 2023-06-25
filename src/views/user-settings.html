@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/user-settings.css">
+    <script defer src="./scripts/user-settings.ts">
+    </script>
+    <title>User Settings</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__logo-container">
+            <img src="images/logo.png" alt="Logo" class="header__logo">
+            <h1 class="header__product-name">Food Organization System</h1>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <nav class="left-menu">
+            <ul>
+                <li><a href="#">User Settings</a></li>
+            </ul>
+            <div class="left-menu__bottom">
+                <a href="dashboard.html">
+                    <button id="back">Back</button>
+                </a>
+                <a href="index.html">
+                    <button id="logout">Logout</button>
+                </a>
+            </div>
+        </nav>
+
+        <main class="main">
+            <section id="user-info" class="user-info">
+                <h2 class="user-info__title">Personal Data</h2>
+                <div class="user-info__details">
+                    <div class="user-info__item">
+                        <div class="user-info__item-inner">
+                            <h3 class="user-info__label">User:</h3>
+                            <span class="user-info__value" id="uname"></span>
+                        </div>
+                    </div>
+                    <div class="user-info__item">
+                        <div class="user-info__item-inner">
+                            <h3 class="user-info__label">Email:</h3>
+                            <span class="user-info__value" id="email"></span>
+                        </div>
+                    </div>
+                    <div class="user-info__item">
+                        <div class="user-info__item-inner">
+                            <h3 class="user-info__label">Allergens:</h3>
+                            <span class="user-info__value" id="allergen"></span>
+                        </div>
+                    </div>
+                    <div class="user-info__item">
+                        <div class="user-info__item-inner">
+                            <h3 class="user-info__label">Brands:</h3>
+                            <span class="user-info__value" id="brand"></span>
+                        </div>
+                    </div>
+                    <div class="user-info__item">
+                        <div class="user-info__item-inner">
+                            <h3 class="user-info__label">Category:</h3>
+                            <span class="user-info__value" id="category"></span>
+                        </div>
+                    </div>
+                    <div class="user-info__item">
+                        <div class="user-info__item-inner">
+                            <h3 class="user-info__label">Country:</h3>
+                            <span class="user-info__value" id="country"></span>
+                        </div>
+                    </div>
+                    <div class="user-info__item">
+                        <div class="user-info__item-inner">
+                            <h3 class="user-info__label">Grade:</h3>
+                            <span class="user-info__value" id="grade"></span>
+                        </div>
+                    </div>
+                    <div class="user-info__item">
+                        <div class="user-info__item-inner">
+                            <h3 class="user-info__label">Label:</h3>
+                            <span class="user-info__value" id="label"></span>
+                        </div>
+                    </div>
+                    <!-- Repeat for each item -->
+                    <div class="user-info__item">
+                        <button id="modify-btn">Modify</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

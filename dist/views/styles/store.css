@@ -1,0 +1,284 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+#mainContainer {
+  display: flex;
+  padding-left: 4em;
+}
+#mainContainer #filterSidebar {
+  position: sticky;
+  height: 800px;
+  top: 0;
+  width: 25vw;
+  max-width: 300px;
+  margin-left: 2%;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  text-align: center;
+}
+#mainContainer #filterSidebar #applyFilters {
+  width: auto;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#mainContainer #filterSidebar #applyFilters:hover {
+  background-color: #0056b3;
+}
+#mainContainer #filterSidebar .filter-category {
+  margin-bottom: 20px;
+  text-align: left;
+}
+#mainContainer #filterSidebar .filter-category .filter-category-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.1em;
+  text-align: left;
+  border: none;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#mainContainer #filterSidebar .filter-category .filter-category-button:hover {
+  background-color: #e8e8e8;
+}
+#mainContainer #filterSidebar .filter-category ul {
+  list-style: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#mainContainer #filterSidebar .filter-category ul li {
+  margin-bottom: 10px;
+}
+#mainContainer #filterSidebar .filter-category ul input[type=checkbox] {
+  margin-right: 5px;
+}
+#mainContainer #rightContainer {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#mainContainer #rightContainer #searchContainer {
+  display: flex;
+  margin-bottom: 20px;
+  width: 100%;
+}
+#mainContainer #rightContainer #searchContainer #searchInput {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+}
+#mainContainer #rightContainer #searchContainer #searchButton {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+#mainContainer #rightContainer #searchContainer #searchButton img {
+  width: 16px;
+  height: 16px;
+}
+#mainContainer #rightContainer #productContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+#mainContainer #rightContainer #productContainer .product {
+  width: calc(25% - 100px);
+  margin: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  text-align: center;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown {
+  display: block;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  overflow: auto;
+  border: none;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  max-height: 200px;
+  border-radius: 4px;
+  overflow-y: auto;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown button {
+  color: black;
+  padding: 10px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  border: none;
+  background-color: inherit;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown button:hover {
+  background-color: #f1f1f1;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown button:focus {
+  outline: none;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown .add-list-input {
+  margin-top: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: none;
+  background-color: #f9f9f9;
+  font-size: 18px;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown .add-list-input:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgb(81, 203, 238);
+  padding: 5px;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown .add-list-button {
+  margin-top: 5px;
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown .add-list-button:hover {
+  background-color: #45a049;
+}
+#mainContainer #rightContainer #productContainer .product .dropdown .add-list-button:focus {
+  outline: none;
+}
+#mainContainer #rightContainer #productContainer .product .product-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+#mainContainer #rightContainer #productContainer .product .product-name {
+  display: block;
+  margin: 10px 0;
+  text-decoration: none;
+  color: #000;
+  height: 40px;
+}
+#mainContainer #rightContainer #productContainer .product .add-to-favorites,
+#mainContainer #rightContainer #productContainer .product .add-to-list {
+  width: 100%;
+  padding: 5px;
+  margin: 5px 0;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#mainContainer #rightContainer #productContainer .product .add-to-favorites:hover,
+#mainContainer #rightContainer #productContainer .product .add-to-list:hover {
+  background-color: #0056b3;
+}
+#mainContainer #rightContainer #productContainer .product .add-to-favorites {
+  background-color: #007bff;
+}
+#mainContainer #rightContainer #productContainer .product .add-to-list {
+  background-color: #28a745;
+}
+#mainContainer #rightContainer #loadMoreContainer {
+  width: 100%;
+  text-align: center;
+}
+#mainContainer #rightContainer #loadMoreContainer #loadMoreButton {
+  padding: 10px;
+  font-size: 1.2em;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#mainContainer #rightContainer #loadMoreContainer #loadMoreButton:hover {
+  background-color: #0056b3;
+}
+
+#paginationFooter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+#paginationFooter .pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+#paginationFooter .pagination-container .page-item {
+  margin: 0 5px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#paginationFooter .pagination-container .page-item:hover {
+  background-color: #eee;
+}
+#paginationFooter .pagination-container .page-item.active {
+  color: white;
+  background-color: #007bff;
+}
+#paginationFooter .pagination-container .page-item.disabled {
+  color: #aaa;
+  cursor: not-allowed;
+}
+#paginationFooter #pageNumbers {
+  margin: 10px 0;
+}
+#paginationFooter #pageInputContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#paginationFooter #pageInputContainer input {
+  margin-right: 10px;
+}
+
+/*# sourceMappingURL=store.css.map */

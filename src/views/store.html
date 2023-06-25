@@ -1,0 +1,48 @@
+<!-- Store.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Page</title>
+    <link rel="stylesheet" href="./styles/store.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <div id="mainContainer">
+        <div id="filterSidebar">
+            <button id="applyFilters">Apply Filters</button>
+        </div>
+        <div id="rightContainer">
+            <div id="searchContainer">
+                <input type="text" id="searchInput" placeholder="Search...">
+                <button id="searchButton">
+                    <span class="material-icons">search</span>
+                </button>
+            </div>
+            <div id="productContainer">
+                <!-- Products will be inserted here -->
+            </div>
+            <div id="paginationFooter">
+                <div class="pagination-container">
+                    <!-- Pagination buttons will be inserted here -->
+                </div>
+                <div id="pageNumbers">
+                    <span id="currentPage">1</span>
+                    <span>/</span>
+                    <span id="totalPages">1</span>
+                </div>
+                <div id="pageInputContainer">
+                    <input type="number" id="pageInput" min="1" placeholder="Enter page number">
+                    <button id="goToPage">Go</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="./scripts/store.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/infos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <title>Edit Profile</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__logo-container">
+            <img src="images/logo.png" alt="Logo" class="header__logo">
+            <h1 class="header__product-name">My App</h1>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <nav class="left-menu">
+            <ul>
+                <li><a href="edit-profile.html">My Profile</a></li>
+                <li><a href="#">My Prefs</a></li>
+            </ul>
+            <div class="left-menu__bottom">
+                <a href="dashboard.html">
+                    <button id="back">Back</button>
+                </a>
+                <a href="index.html">
+                    <button id="logout">Logout</button>
+                </a>
+            </div>
+        </nav>
+
+        <main>
+            <section id="filter-section" class="filter-section">
+                <h2 class="filter-section__title">Prefs</h2>
+                <form id="profile-form">
+                    <div class="filter-section__dropdown">
+                        <label for="allergens">Allergens:</label>
+                        <select id="allergens" data-dropdown="allergens"></select>
+                        <button class="btn-plus" id="allergens-plus" data-dropdown="allergens">+</button>
+                        <button class="btn-minus" id="allergens-minus" data-dropdown="allergens">-</button>
+                    </div>
+
+                    <div class="filter-section__dropdown">
+                        <label for="brands">Brands:</label>
+                        <select id="brands" data-dropdown="brands"></select>
+                        <button class="btn-plus" id="brands-plus" data-dropdown="brands">+</button>
+                        <button class="btn-minus" id="brands-minus" data-dropdown="brands">-</button>
+                    </div>
+
+                    <div class="filter-section__dropdown">
+                        <label for="categories">Categories:</label>
+                        <select id="categories" data-dropdown="categories"></select>
+                        <button class="btn-plus" id="categories-plus" data-dropdown="categories">+</button>
+                        <button class="btn-minus" id="categories-minus" data-dropdown="categories">-</button>
+                    </div>
+
+                    <div class="filter-section__dropdown">
+                        <label for="countries">Countries:</label>
+                        <select id="countries" data-dropdown="countries"></select>
+                        <button class="btn-plus" id="countries-plus" data-dropdown="countries">+</button>
+                        <button class="btn-minus" id="countries-minus" data-dropdown="countries">-</button>
+                    </div>
+
+                    <div class="filter-section__dropdown">
+                        <label for="grades">Grades:</label>
+                        <select id="grades" data-dropdown="grades"></select>
+                        <button class="btn-plus" id="grades-plus" data-dropdown="grades">+</button>
+                        <button class="btn-minus" id="grades-minus" data-dropdown="grades">-</button>
+                    </div>
+
+                    <div class="filter-section__dropdown">
+                        <label for="labels">Labels:</label>
+                        <select id="labels" data-dropdown="labels"></select>
+                        <button class="btn-plus" id="labels-plus" data-dropdown="labels">+</button>
+                        <button class="btn-minus" id="labels-minus" data-dropdown="labels">-</button>
+                    </div>
+
+                    <!-- Add similar blocks for other dropdowns... -->
+
+                    <div class="edit-profile__item">
+                        <button type="submit" id="save-btn">Save</button>
+                    </div>
+                </form>
+
+                <!-- Add similar blocks for other dropdowns... -->
+            </section>
+        </main>
+    </div>
+    <script src="scripts/infos.js"></script>
+</body>
+
+</html>

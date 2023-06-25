@@ -1,0 +1,145 @@
+$primary-color: #3498db;
+$secondary-color: #2c3e50;
+$light-color: #ecf0f1;
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: $light-color;
+    color: $secondary-color;
+    padding-top: 70px; // Allow space for the fixed header
+}
+
+.header {
+    background-color: $secondary-color;
+    color: $primary-color;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    position: fixed; // Make the header fixed
+    top: 0;
+    width: 100%;
+    z-index: 1000; // Ensure the header is on top of other elements
+
+    &__logo-container {
+        display: flex;
+        align-items: center;
+    }
+
+    &__logo {
+        width: 50px;
+        height: 50px;
+        margin-right: 15px;
+    }
+
+    &__product-name {
+        font-size: 24px;
+    }
+}
+
+.wrapper {
+    display: flex;
+}
+
+.left-menu {
+    background-color: $secondary-color;
+    color: $light-color;
+    width: 20%;
+    padding: 20px;
+    height: calc(100vh - 70px); // Subtract the header height
+    overflow-y: auto; // Add scrollbar if content is too long
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+
+            &:hover {
+                background-color: darken($secondary-color, 10%); // Add hover effect
+            }
+        }
+
+        a {
+            color: $light-color;
+            text-decoration: none;
+        }
+    }
+
+    &__bottom {
+        position: sticky;
+        bottom: 0;
+        padding: 20px;
+
+        button {
+            width: 100%;
+            color: $secondary-color;
+            background-color: $primary-color;
+            border: none;
+            padding: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px; // Add rounded corners
+
+            &:hover {
+                background-color: lighten($primary-color, 10%);
+            }
+        }
+    }
+}
+
+main {
+    width: 80%;
+    padding: 20px;
+
+    .filter-section {
+        &__title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            .filter-section__dropdown {
+                margin-bottom: 20px;
+
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                }
+
+                select {
+                    width: 70%;
+                    padding: 5px;
+                }
+
+                button {
+                    width: 40px;
+                    margin-left: 5px;
+                    padding: 5px;
+                    background-color: $primary-color;
+                    color: $light-color;
+                    border: none;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: lighten($primary-color, 10%);
+                    }
+                }
+            }
+
+            #save-btn {
+                padding: 10px 20px;
+                background-color: $primary-color;
+                border: none;
+                color: $light-color;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: lighten($primary-color, 10%);
+                }
+            }
+        }
+    }
+}

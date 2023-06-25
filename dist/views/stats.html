@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Statistics</title>
+    <link rel="stylesheet" href="/styles/stats.css">
+
+</head>
+
+<body>
+    <h1>User Statistics</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Number of Allergens</td>
+                <td id="numAllergens"></td>
+            </tr>
+            <tr>
+                <td>Number of Grades</td>
+                <td id="numGrades"></td>
+            </tr>
+            <!-- Add more rows for other statistics -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to populate statistics
+        function populateStatistics() {
+            // Retrieve statistics from the server
+            fetch('/statistics')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the HTML table with the obtained statistics
+                    document.getElementById('numAllergens').textContent = data.num_allergens;
+                    document.getElementById('numGrades').textContent = data.num_grades;
+                    // Add more lines to populate other statistics
+                })
+                .catch(error => {
+                    console.error('Error retrieving statistics:', error);
+                });
+        }
+
+        // Call the function to populate statistics when the page loads
+        document.addEventListener('DOMContentLoaded', populateStatistics);
+    </script>
+
+</body>
+
+</html>
