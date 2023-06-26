@@ -64,9 +64,6 @@ body {
         margin-bottom: 10px;
         transition: background-color 0.2s;
 
-        &:hover {
-            background-color: #1a3b5f;
-        }
     }
 
     &__bottom {
@@ -77,8 +74,8 @@ body {
             display: block;
             width: 100%;
             padding: 10px;
-            color: #fff;
-            background-color: #0d253f;
+            color: black;
+            background-color: yellow;
             border: none;
             margin-bottom: 10px;
             border-radius: 4px;
@@ -86,7 +83,7 @@ body {
             transition: background-color 0.2s;
 
             &:hover {
-                background-color: #1a3b5f;
+                background-color: red
             }
         }
     }

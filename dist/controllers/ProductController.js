@@ -1,5 +1,69 @@
 import https from 'https';
 export class ProductController {
+    static getFilteredProducts(body, res) {
+        console.log("Entered Filtered Products");
+        console.log("Data", body);
+        let receivedData;
+        try {
+            receivedData = body;
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                console.log('Error parsing JSON:', error.message);
+            }
+            else {
+                console.log('Error parsing JSON:', error);
+            }
+            res.writeHead(400, { 'Content-Type': 'text/plain' });
+            res.end('Bad request');
+            return;
+        }
+        const filterMap = {
+            "brands": "brands_tags",
+            "grades": "nutrition_grades_tags",
+            "allergens": "allergens_tags",
+            "labels": "labels_tags",
+            "manufacturing_places": "manufacturing_places_tags",
+            "countries": "countries_tags",
+            "categories": "categories_tags"
+        };
+        const page = receivedData.page || 1;
+        let filterQuery = `&page=${page}`;
+        for (const [filterName, filterValues] of Object.entries(receivedData.filters)) {
+            if (Array.isArray(filterValues) && filterValues.length === 0)
+                continue;
+            const apiFilterName = filterMap[filterName];
+            if (!apiFilterName)
+                continue;
+            const filterValueString = filterValues.map(value => encodeURIComponent(value)).join(',');
+            filterQuery += `&${apiFilterName}=${filterValueString}`;
+        }
+        const url = `https://world.openfoodfacts.org/api/v2/search?${filterQuery}`;
+        console.log("Api query url", url);
+        https.get(url, (response) => {
+            let responseData = '';
+            response.on('data', (chunk) => {
+                responseData += chunk;
+            });
+            response.on('end', () => {
+                const parsedData = JSON.parse(responseData);
+                const responseDataToSend = {
+                    page_count: Math.ceil(parsedData.count / parsedData.page_size),
+                    products: parsedData.products.map((product) => ({
+                        id: product._id,
+                        product_name: product.product_name,
+                        image_url: product.image_url
+                    }))
+                };
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify(responseDataToSend));
+            });
+        }).on('error', (err) => {
+            console.log("Error: " + err.message);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Internal server error');
+        });
+    }
     static getProducts(req, res) {
         const page = Number(new URL(req.url, `http://${req.headers.host}`).searchParams.get('page')) || 1;
         const url = `https://world.openfoodfacts.org/api/v2/search?&page=${page}`;

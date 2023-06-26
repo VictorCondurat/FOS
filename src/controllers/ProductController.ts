@@ -22,6 +22,78 @@ interface ProductDetail {
 
 
 export class ProductController {
+  public static getFilteredProducts(body: any, res: ServerResponse): void {
+    console.log("Entered Filtered Products");
+    console.log("Data", body);
+
+    let receivedData: any;
+    try {
+      receivedData = body;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log('Error parsing JSON:', error.message);
+      } else {
+        console.log('Error parsing JSON:', error);
+      }
+      res.writeHead(400, { 'Content-Type': 'text/plain' });
+      res.end('Bad request');
+      return;
+    }
+
+    const filterMap: { [key: string]: string } = {
+      "brands": "brands_tags",
+      "grades": "nutrition_grades_tags",
+      "allergens": "allergens_tags",
+      "labels": "labels_tags",
+      "manufacturing_places": "manufacturing_places_tags",
+      "countries": "countries_tags",
+      "categories": "categories_tags"
+    };
+
+    const page: number = receivedData.page || 1;
+    let filterQuery = `&page=${page}`;
+
+    for (const [filterName, filterValues] of Object.entries(receivedData.filters)) {
+      if (Array.isArray(filterValues) && filterValues.length === 0) continue;
+
+      const apiFilterName = filterMap[filterName];
+      if (!apiFilterName) continue;
+
+      const filterValueString = (filterValues as string[]).map(value => encodeURIComponent(value)).join(',');
+      filterQuery += `&${apiFilterName}=${filterValueString}`;
+    }
+
+    const url: string = `https://world.openfoodfacts.org/api/v2/search?${filterQuery}`;
+    console.log("Api query url", url);
+
+    https.get(url, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+        responseData += chunk;
+      });
+
+      response.on('end', () => {
+        const parsedData = JSON.parse(responseData);
+        const responseDataToSend = {
+          page_count: Math.ceil(parsedData.count / parsedData.page_size),
+          products: parsedData.products.map((product: any) => ({
+            id: product._id,
+            product_name: product.product_name,
+            image_url: product.image_url
+          }))
+        };
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(responseDataToSend));
+      });
+
+    }).on('error', (err) => {
+      console.log("Error: " + err.message);
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Internal server error');
+    });
+  }
   public static getProducts(req: IncomingMessage, res: ServerResponse): void {
     const page: number = Number(new URL(req.url as string, `http://${req.headers.host}`).searchParams.get('page')) || 1;
     const url: string = `https://world.openfoodfacts.org/api/v2/search?&page=${page}`;
@@ -71,6 +143,8 @@ export class ProductController {
       res.end(JSON.stringify({ error: 'Internal server error' }));
     }
   }
+
+
 }
 function generateProductDetailHTML(productDetail: ProductDetail): string {
   return `

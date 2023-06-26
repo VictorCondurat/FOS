@@ -3,7 +3,7 @@ let favorites: any[] = [];
 async function loadFavorites() {
     favorites = await fetch('/get-favorites').then(res => res.json());
 
-    console.log(favorites);  // Add this line
+    console.log(favorites);
 
     renderFavorites(favorites);
 }

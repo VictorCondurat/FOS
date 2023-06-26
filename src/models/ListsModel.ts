@@ -40,46 +40,13 @@ export class ListsModel {
     static async removeItemFromList(listId: number, productId: number) {
         console.log("List+Id Removal", listId, productId);
         try {
-            const res = await db.query(`
-            SELECT items FROM public.lists WHERE list_id = $1
-        `, [listId]);
-
-            console.log("Query result: ", res);
-
-            let listItems;
-            if (res.rows) {  // Case for pg library
-                if (!res.rows.length) {
-                    console.error(`No list found with id ${listId}`);
-                    return false;
-                }
-                listItems = res.rows[0].items;
-            } else if (res.length) { // Case for pg-promise library
-                listItems = res[0].items;
-            } else {
-                console.error(`No list found with id ${listId}`);
-                return false;
-            }
-
-            console.log("List items before removal: ", listItems);
-
-            if (!listItems.includes(productId.toString())) {
-                console.error(`Product id ${productId} not found in list items for list id ${listId}`);
-                return false;
-            }
-
             await db.query(`
             UPDATE public.lists
             SET items = array_remove(items, $1::text)
             WHERE list_id = $2
         `, [productId.toString(), listId]);
 
-            const resAfterRemoval = await db.query(`
-            SELECT items FROM public.lists WHERE list_id = $1
-        `, [listId]);
-
-            console.log("List items after removal: ", resAfterRemoval.rows || resAfterRemoval);
-
-            return true; // Explicitly return true when the item is removed successfully
+            return true; //return true when the item is removed successfully
         } catch (error) {
             console.error("An error occurred while removing item from list: ", error);
             return false;

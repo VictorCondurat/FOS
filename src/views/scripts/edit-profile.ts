@@ -10,7 +10,7 @@ let initialUserData = {
 
 fetch('/user-info', {
   method: 'GET',
-  credentials: 'same-origin', // Include cookies in the request
+  credentials: 'same-origin',
 })
   .then(response => response.json())
   .then(userData => {
@@ -21,7 +21,6 @@ fetch('/user-info', {
       (emailInput as HTMLInputElement).value = userData.email;
     }
 
-    // Save the initial user data
     initialUserData = {
       username: userData.username,
       email: userData.email,
@@ -41,7 +40,6 @@ if (profileForm && unameInput && emailInput) {
 
     const updatedUserData: { newUsername?: string; email?: string } = {};
 
-    // Only include fields that have changed
     if (username !== initialUserData.username) {
       updatedUserData.newUsername = username;
     }

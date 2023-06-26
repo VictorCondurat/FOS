@@ -75,13 +75,13 @@ const server = http.createServer(async (req, res) => {
                 res.setHeader('Content-Type', 'application/json');
                 res.statusCode = 200;
                 res.end(JSON.stringify(filters));
-                return; // Return after sending the response
+                return;
             }
             catch (error) {
                 console.error(error);
                 res.statusCode = 500;
                 res.end(JSON.stringify({ error: 'Internal Server Error' }));
-                return; // Return after sending the response
+                return;
             }
         }
         else if (requestUrl === '/statistics') {
@@ -127,12 +127,6 @@ const server = http.createServer(async (req, res) => {
         else if (requestUrl === '/lists') {
             console.log("Server side get lists");
             ListController.getLists(req, res);
-            return;
-        }
-        else if (requestUrl.startsWith('/lists/') && requestUrl.includes('/products')) {
-            const paths = requestUrl.split('/');
-            const listId = paths[2];
-            //ListController.getProductsForList(listId, req, res);
             return;
         }
         else {
@@ -186,6 +180,12 @@ const server = http.createServer(async (req, res) => {
             }
             else if (requestUrl === '/products/multiple') {
                 UserController.getListProducts(body, res);
+            }
+            else if (requestUrl === '/products/filtered') {
+                console.log("Entered Filtered products");
+                console.log("request body", body);
+                console.log(req.headers);
+                ProductController.getFilteredProducts(body, res);
             }
         });
     }

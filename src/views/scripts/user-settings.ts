@@ -10,18 +10,15 @@ const exportUserInfo = () => {
     })
         .then(response => {
             if (response.ok) {
-                // Extract the filename from the Content-Disposition header
                 const contentDisposition = response.headers.get('Content-Disposition');
                 const filenameMatch = contentDisposition?.match(/filename="(.+)"/);
                 const filename = filenameMatch ? filenameMatch[1] : 'user_information.json';
 
-                // Create a link element to trigger the download
                 const downloadLink = document.createElement('a');
                 response.blob().then(blob => {
                     downloadLink.href = URL.createObjectURL(blob);
                     downloadLink.download = filename;
 
-                    // Trigger the download
                     downloadLink.click();
                 });
             } else {
@@ -51,7 +48,7 @@ window.onload = async function () {
     try {
         const response = await fetch('/user-info', {
             method: 'GET',
-            credentials: 'same-origin', // Include cookies in the request
+            credentials: 'same-origin',
         });
         if (response.ok) {
             const userData = await response.json();
