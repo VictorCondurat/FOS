@@ -1,8 +1,7 @@
-// Variables
 $primary-color: #336699;
 $secondary-color: #cccccc;
 
-// Global Styles
+
 body {
     font-family: Arial, sans-serif;
 }
@@ -22,7 +21,7 @@ td {
     border: 1px solid $secondary-color;
 }
 
-// Specific Styles
+
 h1 {
     color: $primary-color;
     margin-bottom: 20px;
@@ -49,5 +48,24 @@ td:first-child {
     font-weight: bold;
 }
 
-// Additional Customizations
-// Add your own custom styles here
+
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: darken($primary-color, 10%);
+}
+
+button:active {
+    background-color: darken($primary-color, 20%);
+}

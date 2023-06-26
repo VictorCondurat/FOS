@@ -128,19 +128,22 @@ export class User {
     }
     static async getStatistics(username) {
         const query = `
-    SELECT
-        COUNT(DISTINCT allergent) AS num_allergens,
-        COUNT(DISTINCT grade) AS num_grades
-    FROM
-        users,
-        LATERAL unnest(allergents) AS allergent,
-        LATERAL unnest(grades) AS grade
-    WHERE
-        username = $1
+        SELECT
+        (SELECT COUNT(*) FROM unnest(allergents)) AS num_allergens,
+        (SELECT COUNT(*) FROM unnest(grades)) AS num_grades,
+        (SELECT COUNT(*) FROM unnest(brands)) AS num_brands,
+        (SELECT COUNT(*) FROM unnest(labels)) AS num_labels,
+        (SELECT COUNT(*) FROM unnest(places)) AS num_places,
+        (SELECT COUNT(*) FROM unnest(categories)) AS num_categories,
+        (SELECT COUNT(*) FROM unnest(favorites)) AS num_favorites
+    FROM users
+    WHERE username = $1;
+    
 `;
         try {
             const result = await db.query(query, [username]);
-            const statistics = result.rows && result.rows.length > 0 ? result.rows[0] : null;
+            console.log(result);
+            const statistics = result[0];
             return statistics;
         }
         catch (error) {
@@ -184,6 +187,25 @@ export class User {
         catch (err) {
             console.error('Error in updateUserPrefs:', err);
             return false;
+        }
+    }
+    static async getFavorites(username) {
+        const result = await db.query('SELECT favorites FROM users WHERE username = $1', [username]);
+        console.log("GetFavorites Result:", result[0]?.favorites);
+        return result[0]?.favorites || [];
+    }
+    static async removeFavorite(username, productId) {
+        const removeFavoriteQuery = `
+        UPDATE users
+        SET favorites = array_remove(favorites, $1)
+        WHERE username = $2;
+    `;
+        try {
+            await db.query(removeFavoriteQuery, [productId, username]);
+        }
+        catch (error) {
+            console.error('Error removing favorite product:', error);
+            throw error;
         }
     }
 }
