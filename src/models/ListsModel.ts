@@ -38,11 +38,74 @@ export class ListsModel {
         return res.rowCount > 0;
     }
     static async removeItemFromList(listId: number, productId: number) {
-        const res = await db.query(`
+        console.log("List+Id Removal", listId, productId);
+        try {
+            const res = await db.query(`
+            SELECT items FROM public.lists WHERE list_id = $1
+        `, [listId]);
+
+            console.log("Query result: ", res);
+
+            let listItems;
+            if (res.rows) {  // Case for pg library
+                if (!res.rows.length) {
+                    console.error(`No list found with id ${listId}`);
+                    return false;
+                }
+                listItems = res.rows[0].items;
+            } else if (res.length) { // Case for pg-promise library
+                listItems = res[0].items;
+            } else {
+                console.error(`No list found with id ${listId}`);
+                return false;
+            }
+
+            console.log("List items before removal: ", listItems);
+
+            if (!listItems.includes(productId.toString())) {
+                console.error(`Product id ${productId} not found in list items for list id ${listId}`);
+                return false;
+            }
+
+            await db.query(`
             UPDATE public.lists
-            SET items = array_remove(items, $1)
+            SET items = array_remove(items, $1::text)
             WHERE list_id = $2
-        `, [productId, listId]);
-        return res.rowCount > 0;
+        `, [productId.toString(), listId]);
+
+            const resAfterRemoval = await db.query(`
+            SELECT items FROM public.lists WHERE list_id = $1
+        `, [listId]);
+
+            console.log("List items after removal: ", resAfterRemoval.rows || resAfterRemoval);
+
+            return true; // Explicitly return true when the item is removed successfully
+        } catch (error) {
+            console.error("An error occurred while removing item from list: ", error);
+            return false;
+        }
+    }
+
+    static async removeList(listId: number) {
+        try {
+            const res = await db.query(`
+        DELETE FROM public.lists
+        WHERE list_id = $1
+    `, [listId]);
+        }
+        catch (error: any) {
+            console.log(`Error removing list: ${error.message}`);
+            return false;
+        }
+        return true;
+    }
+    static async getProductIdsForList(listId: number): Promise<number[]> {
+        const list: { items: number[] } | null = await db.oneOrNone('SELECT items FROM lists WHERE list_id = $1', [listId]);
+        console.log("Product Lists", list);
+        if (list && list.items.length > 0) {
+            return list.items;
+        } else {
+            throw new Error(`List with id ${listId} has no products`);
+        }
     }
 }

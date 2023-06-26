@@ -63,7 +63,7 @@ export class ListController {
             res.end(`Error: ${error.message}`);
         }
     }
-    static async removeItem(req, res, body) {
+    static async removeList(req, res) {
         try {
             const sessionId = req.headers.cookie.split('=')[1];
             const username = sessions.get(sessionId);
@@ -72,7 +72,35 @@ export class ListController {
                 res.end(JSON.stringify({ error: 'Not authenticated' }));
                 return;
             }
-            const result = await ListsModel.removeItemFromList(body.listId, body.productId);
+            const listId = req.url.split('/')[2];
+            const result = await ListsModel.removeList(listId);
+            if (result) {
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ message: "List successfully removed" }));
+            }
+            else {
+                throw new Error("Failed to remove list");
+            }
+        }
+        catch (error) {
+            res.writeHead(500);
+            res.end(`Error: ${error.message}`);
+        }
+    }
+    static async removeItem(listId, productId, req, res) {
+        try {
+            // Data validation
+            if (!listId || !productId) {
+                throw new Error('Invalid listId or productId');
+            }
+            const sessionId = req.headers.cookie.split('=')[1];
+            const username = sessions.get(sessionId);
+            if (!username) {
+                res.writeHead(401, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Not authenticated' }));
+                return;
+            }
+            const result = await ListsModel.removeItemFromList(listId, productId);
             if (result) {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ message: "Item successfully removed from list" }));
@@ -82,8 +110,22 @@ export class ListController {
             }
         }
         catch (error) {
+            console.error(error); // Print the entire error
             res.writeHead(500);
             res.end(`Error: ${error.message}`);
+        }
+    }
+    static async getProductsForList(req, res) {
+        const listId = Number(new URL(req.url, `http://${req.headers.host}`).searchParams.get('listId'));
+        try {
+            const productIds = await ListsModel.getProductIdsForList(listId);
+            req.url = JSON.stringify({ productIds });
+            //ProductController.getMultipleProducts(req, res);
+        }
+        catch (error) {
+            console.error(error);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: 'Internal Server Error' }));
         }
     }
 }

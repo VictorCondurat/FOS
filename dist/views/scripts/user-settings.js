@@ -3,8 +3,39 @@ const modifyButton = document.getElementById('modify-btn');
 if (modifyButton) {
     modifyButton.addEventListener('click', handleModifyButtonClick);
 }
+const exportUserInfo = () => {
+    fetch('/export-user-info', {
+        method: 'GET',
+        credentials: 'same-origin'
+    })
+        .then(response => {
+        if (response.ok) {
+            // Extract the filename from the Content-Disposition header
+            const contentDisposition = response.headers.get('Content-Disposition');
+            const filenameMatch = contentDisposition?.match(/filename="(.+)"/);
+            const filename = filenameMatch ? filenameMatch[1] : 'user_information.json';
+            // Create a link element to trigger the download
+            const downloadLink = document.createElement('a');
+            response.blob().then(blob => {
+                downloadLink.href = URL.createObjectURL(blob);
+                downloadLink.download = filename;
+                // Trigger the download
+                downloadLink.click();
+            });
+        }
+        else {
+            console.error('Error:', response.statusText);
+        }
+    })
+        .catch(error => {
+        console.error('Error:', error);
+    });
+};
+const exportButton = document.getElementById('export-json-btn');
+if (exportButton) {
+    exportButton.addEventListener('click', exportUserInfo);
+}
 function handleModifyButtonClick() {
-    // Example: Redirecting to an edit profile page
     window.location.href = 'edit-profile.html';
 }
 window.onload = async function () {
@@ -25,25 +56,6 @@ window.onload = async function () {
         console.error('Error:', error);
     }
 };
-/* function populateUserInfo(userData: {
-    username: string;
-    email: string;
-
-}) {
-    console.log('userData:', userData);
-
-    const unameElement = document.getElementById('uname');
-    if (unameElement) {
-        unameElement.textContent = userData.username;
-    }
-
-    const emailElement = document.getElementById('email');
-    if (emailElement) {
-        emailElement.textContent = userData.email;
-    }
-
-
-} */
 function populateUserInfo(userData) {
     console.log('userData:', userData);
     const unameElement = document.getElementById('uname');

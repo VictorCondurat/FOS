@@ -64,6 +64,11 @@ const server = http.createServer(async (req, res) => {
             UserController.getUserInfo(req, res);
             return;
         }
+        else if (requestUrl === '/get-favorites') {
+            console.log("Called the Get favorites server route");
+            UserController.getFavorites(req, res);
+            return;
+        }
         else if (requestUrl === '/filter') {
             try {
                 const filters = await FilterModel.getAll();
@@ -96,6 +101,18 @@ const server = http.createServer(async (req, res) => {
             FilterController.getFilters(req, res);
             return;
         }
+        else if (requestUrl === '/statistics/pdf') {
+            UserController.exportStatsPdf(req, res);
+            return;
+        }
+        else if (requestUrl === '/statistics/json') {
+            UserController.exportStatsJson(req, res);
+            return;
+        }
+        else if (requestUrl === '/export-user-info') {
+            UserController.exportUserInfo(req, res);
+            return;
+        }
         else if (url.parse(requestUrl).pathname === '/products') {
             ProductController.getProducts(req, res);
             return;
@@ -110,6 +127,12 @@ const server = http.createServer(async (req, res) => {
         else if (requestUrl === '/lists') {
             console.log("Server side get lists");
             ListController.getLists(req, res);
+            return;
+        }
+        else if (requestUrl.startsWith('/lists/') && requestUrl.includes('/products')) {
+            const paths = requestUrl.split('/');
+            const listId = paths[2];
+            //ListController.getProductsForList(listId, req, res);
             return;
         }
         else {
@@ -155,14 +178,14 @@ const server = http.createServer(async (req, res) => {
             else if (requestUrl === '/lists/addItem') {
                 ListController.addItem(req, res, body);
             }
-            else if (requestUrl === '/lists/removeItem') {
-                ListController.removeItem(req, res, body);
-            }
             else if (requestUrl == '/favorite') {
                 FavoriteController.addFavorite(req, res, body);
             }
             else if (requestUrl === '/update-prefs') {
                 UserController.updateUserPrefs(body, req, res);
+            }
+            else if (requestUrl === '/products/multiple') {
+                UserController.getListProducts(body, res);
             }
         });
     }
@@ -188,6 +211,24 @@ const server = http.createServer(async (req, res) => {
         });
         if (requestUrl === '/update-profile') {
             UserController.updateUser(body, req, res);
+        }
+    }
+    /* DELETE REQUESTS */
+    else if (req.method === 'DELETE') {
+        const requestUrl = req.url || '';
+        if (requestUrl.startsWith('/favorites/remove/')) {
+            const productId = requestUrl.split('/').pop() || '';
+            UserController.removeProduct(productId, req, res);
+        }
+        else if (requestUrl.startsWith('/lists/') && requestUrl.includes('/products/')) {
+            const paths = requestUrl.split('/');
+            const listId = paths[2];
+            const productId = paths[4];
+            ListController.removeItem(listId, productId, req, res);
+        }
+        else if (requestUrl.startsWith('/lists/')) {
+            console.log("request", req);
+            ListController.removeList(req, res);
         }
     }
 });

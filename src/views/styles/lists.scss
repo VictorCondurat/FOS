@@ -1,0 +1,216 @@
+// Define some colors, font, and other properties for use throughout the file
+$primary-color: #5c6ac4;
+$secondary-color: #007ace;
+$background-color: #f5f6fa;
+$font-family: 'Arial', sans-serif;
+$font-size: 16px;
+$error-color: red;
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $background-color;
+    font-family: $font-family;
+    font-size: $font-size;
+}
+
+#mainContainer {
+    padding: 20px;
+}
+
+#searchContainer {
+
+    top: 0;
+    width: 70%;
+    margin: 0 auto 20px auto; // Add space beneath the search bar
+    text-align: center;
+    padding: 10px;
+    z-index: 100;
+
+    input[type='text'] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid $primary-color;
+        transition: box-shadow 0.2s ease-in-out;
+
+        &:focus {
+            box-shadow: 0 0 5px $primary-color;
+        }
+    }
+}
+
+#sidebarsContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+// Left Sidebar - Filters
+#filtersSidebar {
+    width: 10%;
+    height: calc(100vh - 60px);
+    position: sticky;
+    top: 60px;
+    background-color: $primary-color;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    transition: background-color 0.2s ease-in-out;
+
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: white;
+        color: $secondary-color;
+        font-size: 1em;
+        cursor: pointer;
+        margin-bottom: 10px;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+        &:hover {
+            background-color: darken(white, 10%);
+            color: darken($secondary-color, 10%);
+        }
+    }
+
+    h2 {
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    ul {
+        list-style-type: none;
+        max-height: 200px;
+        overflow-y: auto;
+
+        li {
+            margin-bottom: 10px;
+
+            input[type='checkbox'] {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    &:hover {
+        background-color: darken($primary-color, 10%);
+    }
+}
+
+// Center Container - Products
+#contentContainer {
+    flex-grow: 1;
+    margin-left: 20px;
+    transition: transform 0.2s ease-in-out;
+
+    #productsContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+
+        .product {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+            h2 {
+                font-size: 1.2em;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            img {
+                max-width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .remove-product {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none;
+                color: $primary-color;
+                border: none;
+                cursor: pointer;
+            }
+
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            }
+        }
+    }
+}
+
+// Right Sidebar - Lists
+#listsSidebar {
+    width: 10%;
+    height: calc(100vh - 60px);
+    position: sticky;
+    top: 60px;
+    background-color: $secondary-color;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    transition: background-color 0.2s ease-in-out;
+
+    .list {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    button {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        width: 75%;
+        background-color: white;
+        color: $secondary-color;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+        &:hover {
+            background-color: darken(white, 10%);
+            color: darken($secondary-color, 10%);
+        }
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        button {
+            flex: 1;
+        }
+    }
+
+    .delete-list {
+        width: 20%;
+        height: 100%;
+        background-color: #ff0000;
+        border: none;
+        color: white;
+        text-align: center;
+        line-height: 20px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: darken(#ff0000, 10%);
+        }
+    }
+}

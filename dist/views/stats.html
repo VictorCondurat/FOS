@@ -4,7 +4,6 @@
 <head>
     <title>User Statistics</title>
     <link rel="stylesheet" href="/styles/stats.css">
-
 </head>
 
 <body>
@@ -26,28 +25,101 @@
                 <td>Number of Grades</td>
                 <td id="numGrades"></td>
             </tr>
-            <!-- Add more rows for other statistics -->
+            <tr>
+                <td>Number of Brands</td>
+                <td id="numBrands"></td>
+            </tr>
+            <tr>
+                <td>Number of Labels</td>
+                <td id="numLabels"></td>
+            </tr>
+            <tr>
+                <td>Number of Places</td>
+                <td id="numPlaces"></td>
+            </tr>
+            <tr>
+                <td>Number of Categories</td>
+                <td id="numCategories"></td>
+            </tr>
+            <tr>
+                <td>Number of Favorites</td>
+                <td id="numFavorites"></td>
+            </tr>
         </tbody>
     </table>
 
+    <button id="exportPdf">Export PDF</button>
+    <button id="exportJson">Export JSON</button>
+
+
     <script>
-        // Function to populate statistics
+
+
+        document.getElementById('exportPdf').addEventListener('click', exportPdf);
+        document.getElementById('exportJson').addEventListener('click', exportJson);
+
+        function exportPdf() {
+            fetch('/statistics/pdf')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'statistics.pdf';
+                    a.click();
+                })
+                .catch(error => {
+                    console.error('Error exporting PDF:', error);
+                });
+        }
+
+
+        function exportJson() {
+            fetch('/statistics/json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'statistics.json';
+                    a.click();
+                })
+                .catch(error => {
+                    console.error('Error exporting JSON:', error);
+                });
+        }
+
+
         function populateStatistics() {
-            // Retrieve statistics from the server
+
             fetch('/statistics')
                 .then(response => response.json())
                 .then(data => {
-                    // Update the HTML table with the obtained statistics
+
                     document.getElementById('numAllergens').textContent = data.num_allergens;
                     document.getElementById('numGrades').textContent = data.num_grades;
-                    // Add more lines to populate other statistics
+                    document.getElementById('numBrands').textContent = data.num_brands;
+                    document.getElementById('numLabels').textContent = data.num_labels;
+                    document.getElementById('numPlaces').textContent = data.num_places;
+                    document.getElementById('numCategories').textContent = data.num_categories;
+                    document.getElementById('numFavorites').textContent = data.num_favorites;
                 })
                 .catch(error => {
                     console.error('Error retrieving statistics:', error);
                 });
         }
 
-        // Call the function to populate statistics when the page loads
+
         document.addEventListener('DOMContentLoaded', populateStatistics);
     </script>
 
