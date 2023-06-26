@@ -209,7 +209,6 @@ export class User {
                 places = [],
             } = prefs;
 
-            // Check if the fields were initially non-empty and remain unchanged
             const shouldUpdateAllergens = allergens.length > 0 && !isEqual(allergens, []);
             const shouldUpdateBrands = brands.length > 0 && !isEqual(brands, []);
             const shouldUpdateCategories = categories.length > 0 && !isEqual(categories, []);
@@ -262,6 +261,24 @@ export class User {
             await db.query(removeFavoriteQuery, [productId, username]);
         } catch (error) {
             console.error('Error removing favorite product:', error);
+            throw error;
+        }
+    }
+    static async getNumLists(username: string): Promise<{ num_lists: string }> {
+        const query = `
+          SELECT users.id, COUNT(*) AS num_lists
+          FROM lists
+          JOIN users ON lists.user_id = users.id
+          WHERE users.username = $1
+          GROUP BY users.id;
+        `;
+        try {
+            const result = await db.query(query, [username]);
+            console.log(result);
+            const statistics = { num_lists: result[0].num_lists.toString() };
+            return statistics;
+        } catch (error) {
+            console.error('Error retrieving number of lists:', error);
             throw error;
         }
     }

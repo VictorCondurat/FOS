@@ -276,6 +276,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 10px;
 }
 #paginationFooter #pageInputContainer input {
   margin-right: 10px;

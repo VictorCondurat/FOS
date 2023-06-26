@@ -20,7 +20,6 @@ export class UserController {
                     const result = await User.updateUser(username, email, newUsername);
                     console.log(result);
                     if (result) {
-                        // Update the cookie value
                         sessions.set(sessionId, newUsername);
                         res.setHeader('Set-Cookie', `sessionId=${sessionId}; HttpOnly;`);
                         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -179,7 +178,7 @@ export class UserController {
                 res.end(JSON.stringify({ error: 'User not found' }));
                 return;
             }
-            await User.removeFavorite(username, productId); // Assuming you have a `removeFavorite` method in the User model that accepts username and productId
+            await User.removeFavorite(username, productId);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ message: 'Product removed from favorites' }));
         }
@@ -219,6 +218,7 @@ export class UserController {
                 if (username) {
                     console.log('Retrieving statistics for username:', username);
                     const statistics = await User.getStatistics(username);
+                    const numLists = await User.getNumLists(username);
                     console.log('Statistics:', statistics);
                     if (statistics) {
                         const doc = new PDFDocument();
@@ -227,6 +227,7 @@ export class UserController {
                         for (const key in statistics) {
                             doc.text(`${key}: ${statistics[key]}`);
                         }
+                        doc.text(`Number of Lists: ${numLists.num_lists}`);
                         doc.end();
                     }
                     else {
@@ -260,11 +261,12 @@ export class UserController {
                 if (username) {
                     console.log('Retrieving statistics for username:', username);
                     const statistics = await User.getStatistics(username);
-                    console.log('Statistics:', statistics);
+                    const numLists = await User.getNumLists(username);
                     if (statistics) {
+                        const statisticsWithLists = { ...statistics, num_lists: numLists.num_lists };
                         res.setHeader('Content-Type', 'application/json');
                         res.setHeader('Content-Disposition', 'attachment; filename=statistics.json');
-                        res.end(JSON.stringify(statistics));
+                        res.end(JSON.stringify(statisticsWithLists));
                     }
                     else {
                         res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -290,9 +292,7 @@ export class UserController {
 }
 _a = UserController;
 UserController.signup = async (postData, res) => {
-    console.log("Received signup request with data:", postData);
     if (postData.email && postData.password && postData.uname) {
-        console.log("Creating user", postData.email, postData.password, postData.uname);
         const user = await User.create(postData.email, postData.password, postData.uname);
         if (user) {
             console.log("User created successfully");
@@ -319,8 +319,14 @@ UserController.login = async (postData, res) => {
     let user;
     user = await User.getUserByUsername(postData.uname);
     if (user) {
-        console.log("Comparing user password:", user.password, "with provided password:", postData.pass);
         const match = await bcrypt.compare(postData.pass, user.password);
+        for (let [sessionId, username] of sessions.entries()) {
+            if (username === user.username) {
+                res.writeHead(403, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'User is already logged in' }));
+                return;
+            }
+        }
         if (match) {
             const sessionId = generateSessionId();
             sessions.set(sessionId, user.username);

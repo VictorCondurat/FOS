@@ -1,10 +1,30 @@
 "use strict";
+const selectedFilters = {
+    manufacturing_places: [],
+    allergens: [],
+    brands: [],
+    categories: [],
+    grades: [],
+    labels: [],
+    countries: [],
+};
 let totalPages;
 let currentPage = 1;
-async function loadProducts(page = 1) {
-    const response = await fetch(`/products?page=${page}`).then(res => res.json());
+async function loadProducts(page = 1, filters = null) {
+    let url = `/products?page=${page}`;
+    let options = {};
+    if (filters) {
+        url = '/products/filtered';
+        options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ page: page, filters: filters }),
+        };
+    }
+    const response = await fetch(url, options).then(res => res.json());
     totalPages = response.page_count;
-    ;
     document.querySelector('#currentPage').textContent = currentPage.toString();
     document.querySelector('#totalPages').textContent = isNaN(totalPages) ? '1' : totalPages.toString();
     const productContainer = document.querySelector('#productContainer');
@@ -26,7 +46,7 @@ async function loadProducts(page = 1) {
         addToFavoritesButton.textContent = 'Add to Favorites';
         addToFavoritesButton.className = 'add-to-favorites';
         addToFavoritesButton.addEventListener('click', async (event) => {
-            event.stopPropagation(); // prevent the productDiv click event
+            event.stopPropagation();
             await fetch('/favorite', {
                 method: 'POST',
                 headers: {
@@ -75,12 +95,10 @@ async function openDropdown(productId, parentElement) {
         isDropdownOpenStore = false;
     });
     console.log('Dropdown div created');
-    // Fetch the lists
     const response = await fetch('/lists', { method: 'GET', credentials: 'same-origin' });
     const responseText = await response.text();
     console.log(responseText);
     const lists = JSON.parse(responseText);
-    // If lists are returned, populate the dropdown with the list names
     if (lists && lists.length > 0) {
         lists.forEach((list) => {
             console.log('Creating button for list:', list);
@@ -89,7 +107,6 @@ async function openDropdown(productId, parentElement) {
             listItem.addEventListener('click', async (event) => {
                 console.log('List button clicked');
                 event.stopPropagation();
-                // When a list name is clicked, add the product to that list
                 await fetch('/lists/addItem', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -97,7 +114,7 @@ async function openDropdown(productId, parentElement) {
                     credentials: 'same-origin'
                 });
                 console.log('Product added to list');
-                dropdown.remove(); // Add this line to remove dropdown after a list is clicked
+                dropdown.remove();
                 isDropdownOpenStore = false;
             });
             dropdown.appendChild(listItem);
@@ -117,7 +134,7 @@ async function openDropdown(productId, parentElement) {
             event.stopPropagation();
         });
         textBox.addEventListener('keydown', (event) => {
-            event.stopPropagation(); // prevent event propagation for textBox keydown
+            event.stopPropagation();
         });
         const createButton = document.createElement('button');
         createButton.textContent = 'Create';
@@ -185,29 +202,24 @@ function createPaginationButton(pageNumber) {
     button.textContent = pageNumber.toString();
     button.addEventListener('click', () => {
         currentPage = pageNumber;
-        loadProducts(currentPage);
+        if (Object.values(selectedFilters).some(filterArray => filterArray.length > 0)) {
+            loadProducts(currentPage, selectedFilters);
+        }
+        else {
+            loadProducts(currentPage);
+        }
     });
     return button;
 }
 window.addEventListener('DOMContentLoaded', async () => {
-    await loadFilters();
+    loadFilters();
     await loadProducts(currentPage);
-    const nextPageButton = document.querySelector('#nextPage');
-    const prevPageButton = document.querySelector('#prevPage');
-    nextPageButton.addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            loadProducts(currentPage);
-        }
-    });
-    prevPageButton.addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            loadProducts(currentPage);
-        }
-    });
     const sidebarButton = document.querySelector('#sidebarButton');
     const filterSidebar = document.querySelector('#filterSidebar');
+    const pageBox = document.querySelector('#pageInputContainer');
+    pageBox.style.display = "flex";
+    const pageNumbers = document.querySelector('#pageNumbers');
+    pageNumbers.style.display = "flex";
     sidebarButton.addEventListener('click', () => {
         filterSidebar.style.width = filterSidebar.style.width === '0px' || !filterSidebar.style.width ? '250px' : '0px';
     });
@@ -215,11 +227,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     closeButton.addEventListener('click', () => {
         filterSidebar.style.width = '0px';
     });
-});
-// loadFilters and loadProducts are moved here.
-window.addEventListener('load', async () => {
-    await loadFilters();
-    await loadProducts(currentPage);
 });
 async function loadFilters() {
     const filters = await fetch('/filters').then(res => res.json());
@@ -234,6 +241,8 @@ async function loadFilters() {
         countries: "Country Specific"
     };
     for (const [category, options] of Object.entries(filters)) {
+        if (!(category in selectedFilters))
+            continue;
         const categoryDiv = document.createElement('div');
         categoryDiv.className = 'filter-category';
         const button = document.createElement('button');
@@ -250,6 +259,9 @@ async function loadFilters() {
             const input = document.createElement('input');
             input.type = 'checkbox';
             input.id = input.name = `${category}-${option}`;
+            input.addEventListener('change', function () {
+                updateSelectedFilters(category, option, this.checked);
+            });
             const label = document.createElement('label');
             label.htmlFor = input.id;
             label.textContent = option;
@@ -261,12 +273,95 @@ async function loadFilters() {
         filtersDiv?.appendChild(categoryDiv);
     }
 }
+function updateSelectedFilters(filterType, filterValue, isChecked) {
+    if (isChecked) {
+        selectedFilters[filterType].push(filterValue);
+    }
+    else {
+        const index = selectedFilters[filterType].indexOf(filterValue);
+        if (index > -1) {
+            selectedFilters[filterType].splice(index, 1);
+        }
+    }
+}
+function updateProductList(products) {
+    const productContainer = document.querySelector('#productContainer');
+    productContainer.innerHTML = '';
+    products.forEach((product) => {
+        const productDiv = document.createElement('div');
+        productDiv.className = 'product';
+        productDiv.addEventListener('click', () => {
+            window.location.href = `/product.html?productId=${product.id}`;
+        });
+        const image = document.createElement('img');
+        image.src = product.image_url;
+        image.className = 'product-img';
+        const productName = document.createElement('a');
+        productName.href = '#';
+        productName.textContent = product.product_name;
+        productName.className = 'product-name';
+        const addToFavoritesButton = document.createElement('button');
+        addToFavoritesButton.textContent = 'Add to Favorites';
+        addToFavoritesButton.className = 'add-to-favorites';
+        addToFavoritesButton.addEventListener('click', async (event) => {
+            event.stopPropagation();
+            await fetch('/favorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productId: product.id,
+                }),
+            });
+        });
+        const addToListButton = document.createElement('button');
+        addToListButton.textContent = 'Add to List';
+        addToListButton.className = 'add-to-list';
+        addToListButton.addEventListener('click', (event) => {
+            console.log('addToListButton clicked');
+            event.stopPropagation();
+            openDropdown(product.id, productDiv);
+        });
+        productDiv.appendChild(image);
+        productDiv.appendChild(productName);
+        productDiv.appendChild(addToFavoritesButton);
+        productDiv.appendChild(addToListButton);
+        productContainer.appendChild(productDiv);
+    });
+}
+async function onApplyButtonClick() {
+    try {
+        console.log("Filters", selectedFilters);
+        const response = await fetch('/products/filtered', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ page: currentPage, filters: selectedFilters })
+        });
+        if (response.ok) {
+            const responseData = await response.json();
+            totalPages = responseData.page_count;
+            document.querySelector('#totalPages').textContent = isNaN(totalPages) ? '1' : totalPages.toString();
+            generatePaginationButtons(totalPages, currentPage);
+            updateProductList(responseData.products);
+        }
+        else {
+            console.error(`HTTP error, status = ${response.status}`);
+        }
+    }
+    catch (error) {
+        console.error("Fetch error: ", error);
+    }
+}
 document.querySelector('#goToPage').addEventListener('click', () => {
     const pageInput = document.querySelector('#pageInput');
     const goToPage = Number(pageInput.value);
     if (goToPage >= 1 && goToPage <= totalPages) {
         currentPage = goToPage;
-        loadProducts();
+        loadProducts(goToPage);
     }
     pageInput.value = '';
 });
+document.querySelector('#applyFilters')?.addEventListener('click', onApplyButtonClick);

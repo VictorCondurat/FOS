@@ -43,12 +43,10 @@ async function openDropdownProduct(productId, parentElement) {
         isDropdownOpen = false;
     });
     console.log('Dropdown div created');
-    // Fetch the lists
     const response = await fetch('/lists', { method: 'GET', credentials: 'same-origin' });
     const responseText = await response.text();
     console.log(responseText);
     const lists = JSON.parse(responseText);
-    // If lists are returned, populate the dropdown with the list names
     if (lists && lists.length > 0) {
         lists.forEach((list) => {
             console.log('Creating button for list:', list);
@@ -57,7 +55,6 @@ async function openDropdownProduct(productId, parentElement) {
             listItem.addEventListener('click', async (event) => {
                 console.log('List button clicked');
                 event.stopPropagation();
-                // When a list name is clicked, add the product to that list
                 await fetch('/lists/addItem', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -65,7 +62,7 @@ async function openDropdownProduct(productId, parentElement) {
                     credentials: 'same-origin'
                 });
                 console.log('Product added to list');
-                dropdown.remove(); // Add this line to remove dropdown after a list is clicked
+                dropdown.remove();
                 isDropdownOpen = false;
             });
             dropdown.appendChild(listItem);
@@ -85,7 +82,7 @@ async function openDropdownProduct(productId, parentElement) {
             event.stopPropagation();
         });
         textBox.addEventListener('keydown', (event) => {
-            event.stopPropagation(); // prevent event propagation for textBox keydown
+            event.stopPropagation();
         });
         const createButton = document.createElement('button');
         createButton.textContent = 'Create';
@@ -121,5 +118,5 @@ async function openDropdownProduct(productId, parentElement) {
     dropdown.appendChild(addButton);
     console.log('Adding dropdown to parentElement');
     parentElement.appendChild(dropdown);
-    isDropdownOpen = true; // Set the flag to true after the dropdown is appended
+    isDropdownOpen = true;
 }

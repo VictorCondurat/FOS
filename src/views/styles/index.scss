@@ -77,12 +77,12 @@ main {
         font-size: 1rem;
         margin-right: 0.5rem;
         cursor: pointer;
-        border-radius: 6px; // Increased border-radius
+        border-radius: 6px;
         transition: background-color 0.3s, box-shadow 0.3s;
 
         &:hover {
             background-color: $navbar-button-hover-color;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); // Updated box-shadow
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
     }
 
@@ -251,12 +251,10 @@ main {
         display: none;
     }
 
-    // the container 
     .header__navbar-mobile {
         position: relative;
         display: inline-block;
 
-        //the content container
         .header__navbar-dropdown-mobile {
             position: absolute;
             background-color: $dropdown-content-color;
