@@ -1,17 +1,8 @@
 
 # FOS (Food Organization System)
 
-FOS is a web application that will provide users the ability to create, update, and manage custom
-                    shopping
-                    and
-                    food lists, track pantry inventory and expiration dates, and access a public marketplace of food
-                    lists. The
-                    application will utilize the OpenFoodFacts public API for retrieving product information and offer
-                    user
-                    account
-                    management features.
-
-                    
+FOS is a comprehensive web application designed to offer users seamless access to a vast store comprising over 3 million products. With FOS, users can effortlessly create, update, and manage personalized shopping and food lists, catering to their specific preferences and requirements. To enhance the user experience, FOS leverages the powerful OpenFoodFacts public API, allowing seamless retrieval of accurate and up-to-date product information. Additionally, FOS incorporates robust user account management features, ensuring a secure and personalized experience for each individual.
+ 
 <p align="center">
   <img src="https://i.ibb.co/b7BNs1S/logo.png" alt="Flowchart">
 </p>
